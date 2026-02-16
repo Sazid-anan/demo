@@ -170,20 +170,20 @@ export default function ImageSliderSection({
   const duplicatedImages = [...images, ...images];
 
   return (
-    <section className="pt-2 sm:pt-3 md:pt-4 lg:pt-6 xl:pt-8 pb-6 sm:pb-8 md:pb-12 lg:pb-16 xl:pb-20 bg-transparent">
+    <section className="pt-1 sm:pt-3 md:pt-4 lg:pt-6 xl:pt-8 pb-4 sm:pb-8 md:pb-12 lg:pb-16 xl:pb-20 bg-transparent">
       <Container className="content-maxwidth image-slider-content">
-        <div className="text-left mb-8 sm:mb-10 md:mb-12 lg:mb-16 mt-0 pt-0">
-          <div className="flex flex-col md:flex-row items-start gap-3 md:gap-4">
+        <div className="text-left mb-4 sm:mb-10 md:mb-12 lg:mb-16 mt-0 pt-0">
+          <div className="flex flex-col md:flex-row items-start gap-2 md:gap-4">
             {/* Left: Headline */}
             <div className="w-full md:flex-1 flex flex-col items-start text-left">
-              <h1 className="capabilities-gradient-text font-semibold leading-[1.25] tracking-tight mb-2 sm:mb-3 md:mb-4 lg:mb-6 text-[18px] sm:text-[24px] md:text-[32px] lg:text-[50px]">
+              <h1 className="capabilities-gradient-text font-semibold leading-[1.25] tracking-tight mb-1.5 sm:mb-3 md:mb-4 lg:mb-6 text-[16px] sm:text-[24px] md:text-[32px] lg:text-[50px]">
                 {title}
               </h1>
             </div>
 
             {/* Right: Description */}
             <div className="w-full md:flex-[1.5] flex flex-col items-start text-left">
-              <p className="text-justify text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-black">
+              <p className="text-justify text-xs sm:text-base md:text-lg lg:text-xl font-semibold text-black">
                 Stop worrying about design errors or manufacturing delays. Our
                 comprehensive approach integrates advanced simulation and
                 in-house prototyping to catch issues early, delivering

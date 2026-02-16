@@ -94,11 +94,11 @@ const PhaseCard = ({ process, index }) => {
     >
       {/* Glass Card Container with Fixed Aspect Ratio */}
       <div
-        className={`relative h-full min-h-[200px] sm:min-h-[210px] md:min-h-[225px] lg:min-h-[240px] flex flex-col bg-white/10 backdrop-blur-md rounded-xl md:rounded-2xl border border-white/20 p-2.5 md:p-3.5 lg:p-4 transition-all duration-300 ${isHovered ? "border-white/40 shadow-2xl shadow-white/10 transform scale-[1.02]" : "shadow-xl"}`}
+        className={`relative h-full min-h-[140px] sm:min-h-[210px] md:min-h-[225px] lg:min-h-[240px] flex flex-col bg-white/10 backdrop-blur-md rounded-xl md:rounded-2xl border border-white/20 p-1.5 sm:p-2.5 md:p-3.5 lg:p-4 transition-all duration-300 ${isHovered ? "border-white/40 shadow-2xl shadow-white/10 transform scale-[1.02]" : "shadow-xl"}`}
       >
         {/* Number Badge - Top Right with Better Positioning */}
         <div
-          className={`absolute top-3.5 right-3.5 w-8 h-8 md:w-9 md:h-9 rounded-full ${process.color} flex items-center justify-center font-bold text-[0.72rem] md:text-[0.8rem] shadow-lg transition-all duration-300 ${isHovered ? "rotate-12 scale-110" : ""}`}
+          className={`absolute top-2 right-2 w-6 h-6 md:w-9 md:h-9 rounded-full ${process.color} flex items-center justify-center font-bold text-[0.6rem] md:text-[0.8rem] shadow-lg transition-all duration-300 ${isHovered ? "rotate-12 scale-110" : ""}`}
           style={{ color: "#ffffff" }}
         >
           {process.number}
@@ -106,19 +106,19 @@ const PhaseCard = ({ process, index }) => {
 
         {/* Icon Container with Consistent Sizing */}
         <div
-          className={`w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 mb-2.5 md:mb-3 ${process.color} rounded-lg md:rounded-xl flex items-center justify-center transition-all duration-300 ${isHovered ? "shadow-2xl scale-105" : "shadow-lg"}`}
+          className={`w-9 h-9 md:w-12 md:h-12 lg:w-14 lg:h-14 mb-1.5 md:mb-3 ${process.color} rounded-lg md:rounded-xl flex items-center justify-center transition-all duration-300 ${isHovered ? "shadow-2xl scale-105" : "shadow-lg"}`}
         >
           <IconComponent
-            className={`w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 transition-transform duration-300 ${isHovered ? "scale-110 rotate-6" : ""}`}
+            className={`w-4 h-4 md:w-6 md:h-6 lg:w-7 lg:h-7 transition-transform duration-300 ${isHovered ? "scale-110 rotate-6" : ""}`}
             strokeWidth={1.5}
             color="#ffffff"
           />
         </div>
 
         {/* Content with Better Spacing */}
-        <div className="space-y-1.5 md:space-y-2 flex-1 flex flex-col">
+        <div className="space-y-0.5 md:space-y-2 flex-1 flex flex-col">
           <h3
-            className="text-[1rem] md:text-[1.06rem] lg:text-lg font-bold leading-tight"
+            className="text-[0.9rem] md:text-[1.06rem] lg:text-lg font-bold leading-tight"
             style={{ color: "#ffffff" }}
           >
             {process.title}
@@ -129,7 +129,7 @@ const PhaseCard = ({ process, index }) => {
           ></div>
 
           <p
-            className="text-[0.875rem] md:text-[0.875rem] lg:text-[0.875rem] leading-relaxed flex-1 text-white/90"
+            className="text-[0.55rem] md:text-[0.875rem] lg:text-[0.875rem] leading-relaxed flex-1 text-white/90"
             style={{ textAlign: "justify" }}
           >
             {process.description}
@@ -301,7 +301,7 @@ const PhaseSection = () => {
   }, [total]);
 
   return (
-    <section className="w-full bg-black font-sans py-8 sm:py-10 md:py-12 lg:py-16">
+    <section className="w-full bg-black font-sans py-2 sm:py-10 md:py-12 lg:py-16">
       <Container className="content-maxwidth w-full">
         {/* Header Section with Better Responsive Design */}
         <motion.div
@@ -309,9 +309,9 @@ const PhaseSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-8 sm:mb-10 md:mb-12 lg:mb-16"
+          className="mb-2 sm:mb-10 md:mb-12 lg:mb-16"
         >
-          <div className="flex flex-col lg:flex-row items-start gap-6 lg:gap-8">
+          <div className="flex flex-col lg:flex-row items-start gap-1.5 lg:gap-8">
             {/* Left: Headline */}
             <div className="w-full lg:flex-1 flex flex-col items-start text-left">
               <motion.h1
@@ -319,7 +319,7 @@ const PhaseSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.05 }}
-                className="animated-gradient-text section-heading font-semibold leading-tight tracking-tight text-2xl sm:text-3xl md:text-4xl lg:text-5xl"
+                className="animated-gradient-text section-heading font-semibold leading-tight tracking-tight text-lg sm:text-3xl md:text-4xl lg:text-5xl"
               >
                 Our Development Phases
               </motion.h1>
@@ -328,7 +328,7 @@ const PhaseSection = () => {
             {/* Right: Description */}
             <div className="w-full lg:flex-[1.5] flex flex-col items-start text-left">
               <p
-                className="text-white/90 text-sm sm:text-base md:text-lg lg:text-xl font-medium leading-relaxed"
+                className="text-white/90 text-[10px] sm:text-base md:text-lg lg:text-xl font-medium leading-relaxed"
                 style={{ textAlign: "justify" }}
               >
                 We streamline your success by handling every detail from initial
@@ -341,7 +341,7 @@ const PhaseSection = () => {
         {/* Phase Cards Grid with Snake Pattern and Better Responsive Spacing */}
         <div
           ref={gridRef}
-          className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8"
+          className="relative grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-5 md:gap-6 lg:gap-8"
         >
           {/* Dynamic Arrow Connectors */}
           {connectors.map((connector) => {
