@@ -141,8 +141,8 @@ export default function CapabilitiesSection({ homePage }) {
                   style={{ willChange: "transform, opacity" }}
                 >
                   <Card className="relative w-full h-full flex flex-col items-center justify-center gap-1.5 sm:gap-2 md:gap-2.5 p-2 sm:p-3 md:p-3.5 hover:shadow-lg transition-all duration-300 bg-white border border-gray-200 hover:border-orange-500/50 hover:shadow-orange-100/50 overflow-hidden">
-                    <capability.icon className="h-6 w-6 sm:h-9 sm:w-9 md:h-7 md:w-7 lg:h-11 lg:w-11 text-orange-500 flex-shrink-0" />
-                    <h3 className="text-center text-[8px] sm:text-sm md:text-[7px] lg:text-sm font-semibold text-foreground leading-tight">
+                    <capability.icon className="h-5 w-5 sm:h-9 sm:w-9 md:h-6 md:w-6 lg:h-11 lg:w-11 text-orange-500 flex-shrink-0" />
+                    <h3 className="text-center text-[7px] sm:text-sm md:text-[6px] lg:text-sm font-semibold text-foreground leading-tight">
                       {capability.title}
                     </h3>
                   </Card>
