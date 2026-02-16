@@ -129,7 +129,7 @@ const PhaseCard = ({ process, index }) => {
           ></div>
 
           <p
-            className="text-[0.55rem] md:text-[0.875rem] lg:text-[0.875rem] leading-relaxed flex-1 text-white/90"
+            className="text-[0.4rem] md:text-[0.875rem] lg:text-[0.875rem] leading-tight flex-1 text-white/90"
             style={{ textAlign: "justify" }}
           >
             {process.description}
