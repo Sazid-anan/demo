@@ -90,11 +90,11 @@ const PhaseCard = ({ process, index }) => {
       transition={{ duration: 0.6, delay: index * 0.1 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative group h-full"
+      className="relative group w-full h-full"
     >
       {/* Glass Card Container with Fixed Aspect Ratio */}
       <div
-        className={`relative h-full min-h-[160px] sm:min-h-[210px] md:min-h-[225px] lg:min-h-[240px] flex flex-col bg-white/10 backdrop-blur-md rounded-lg sm:rounded-xl md:rounded-2xl border border-white/20 p-2 sm:p-2.5 md:p-3.5 lg:p-4 transition-all duration-300 ${isHovered ? "border-white/40 shadow-2xl shadow-white/10 transform scale-[1.02]" : "shadow-xl"}`}
+        className={`relative w-full h-full min-h-[160px] sm:min-h-[210px] md:min-h-[225px] lg:min-h-[240px] flex flex-col bg-white/10 backdrop-blur-md rounded-lg sm:rounded-xl md:rounded-2xl border border-white/20 p-2 sm:p-2.5 md:p-3.5 lg:p-4 transition-all duration-300 ${isHovered ? "border-white/40 shadow-2xl shadow-white/10 transform scale-[1.02]" : "shadow-xl"}`}
       >
         {/* Number Badge - Top Right with Better Positioning */}
         <div
@@ -341,7 +341,7 @@ const PhaseSection = () => {
         {/* Phase Cards Grid with Snake Pattern and Better Responsive Spacing */}
         <div
           ref={gridRef}
-          className="relative grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-1.5 sm:gap-5 md:gap-6 lg:gap-8"
+          className="relative w-full grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-1 sm:gap-2 md:gap-6 lg:gap-8"
         >
           {/* Dynamic Arrow Connectors */}
           {connectors.map((connector) => {
