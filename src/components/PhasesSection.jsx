@@ -90,7 +90,7 @@ const PhaseCard = ({ process, index }) => {
       transition={{ duration: 0.6, delay: index * 0.1 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative group h-full w-full"
+      className="relative group h-full"
     >
       {/* Glass Card Container with Fixed Aspect Ratio */}
       <div
@@ -376,7 +376,7 @@ const PhaseSection = () => {
                 ref={(element) => {
                   cardRefs.current[index] = element;
                 }}
-                className="relative w-full"
+                className="relative"
                 id={phaseId}
               >
                 <PhaseCard process={process} index={index} />
