@@ -129,7 +129,7 @@ export default function CapabilitiesSection({ homePage }) {
 
         <div className="mb-2 sm:mb-5 md:mb-7">
           <Card className="relative w-full max-w-[1150px] lg:max-w-[1450px] xl:max-w-[1600px] mx-auto px-0.5 sm:px-1 md:px-2.5 lg:px-3 py-1 sm:py-2 md:py-3.5 lg:py-4 bg-white border-2 border-orange-200/60 shadow-lg shadow-orange-100/50">
-            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-0.5 sm:gap-1.5 md:gap-3 lg:gap-2.5 auto-rows-fr">
+            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-8 gap-0.5 sm:gap-1.5 md:gap-3 lg:gap-2.5 auto-rows-fr">
               {capabilities.map((capability, index) => (
                 <motion.div
                   key={index}
@@ -141,8 +141,8 @@ export default function CapabilitiesSection({ homePage }) {
                   style={{ willChange: "transform, opacity" }}
                 >
                   <Card className="relative w-full h-full flex flex-col items-center justify-center gap-0.5 sm:gap-2 md:gap-1.5 p-1.5 sm:p-3 md:p-2.5 hover:shadow-lg transition-all duration-300 bg-white border border-gray-200 hover:border-orange-500/50 hover:shadow-orange-100/50 overflow-hidden">
-                    <capability.icon className="h-4 w-4 sm:h-9 sm:w-9 md:h-6 md:w-6 lg:h-11 lg:w-11 text-orange-500 flex-shrink-0" />
-                    <h3 className="text-center text-[5px] sm:text-sm md:text-[4px] lg:text-sm font-semibold text-foreground leading-tight px-0.5">
+                    <capability.icon className="h-4 w-4 sm:h-9 sm:w-9 md:h-8 md:w-8 lg:h-11 lg:w-11 text-orange-500 flex-shrink-0" />
+                    <h3 className="text-center text-[5px] sm:text-sm md:text-[6px] lg:text-sm font-semibold text-foreground leading-tight px-0.5">
                       {capability.title}
                     </h3>
                   </Card>
