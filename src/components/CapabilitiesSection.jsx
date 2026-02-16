@@ -95,7 +95,18 @@ export default function CapabilitiesSection({ homePage }) {
     <section className="pt-1.5 sm:pt-3 md:pt-4 lg:pt-6 xl:pt-8 pb-1.5 sm:pb-4 md:pb-6 lg:pb-8 xl:pb-2 bg-white">
       <Container className="content-maxwidth capabilities-content">
         <div className="mb-2 sm:mb-3 md:mb-4 lg:mb-5">
-          <div className="flex flex-row items-start gap-2 sm:gap-3 md:gap-4">
+          {/* Mobile: Description first */}
+          <div className="flex sm:hidden flex-col items-start gap-2">
+            <div className="w-full flex flex-col items-start text-left">
+              <p className="text-justify text-[10px] font-semibold text-black mb-2">
+                From hardware design to edge AI deployment, we deliver complete
+                engineering solutions that bring intelligent products to life.
+              </p>
+            </div>
+          </div>
+
+          {/* Tablet & Desktop: Headline left, Description right */}
+          <div className="hidden sm:flex flex-row items-start gap-2 sm:gap-3 md:gap-4">
             {/* Left: Headline */}
             <div className="w-full sm:flex-1 flex flex-col items-start text-left sm:w-auto">
               <motion.h1
@@ -112,18 +123,27 @@ export default function CapabilitiesSection({ homePage }) {
             </div>
 
             {/* Right: Description */}
-            {/* <div className="flex-[1.5] flex flex-col items-start text-left mt-2 md:mt-3">
-              <p className="text-justify text-[10px] sm:text-[12px] md:text-[14px] lg:text-[21px] font-semibold text-black mt-2 md:mt-3">
-                {homePage?.capabilities_subtitle2 ||
-                  "From hardware design to edge AI deployment, we deliver complete engineering solutions that bring intelligent products to life."}
-              </p>
-            </div> */}
             <div className="w-full sm:flex-[1.5] flex flex-col items-start text-left mt-0 sm:mt-4 sm:w-auto">
               <p className="text-justify text-[10px] sm:text-base md:text-lg lg:text-xl font-semibold text-black">
                 From hardware design to edge AI deployment, we deliver complete
                 engineering solutions that bring intelligent products to life.
               </p>
             </div>
+          </div>
+
+          {/* Mobile: Headline */}
+          <div className="flex sm:hidden flex-col items-start gap-0">
+            <motion.h1
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.05 }}
+              className="capabilities-gradient-text font-semibold leading-[1.2] tracking-tight mb-0 text-[16px]"
+            >
+              {homePage?.capabilities_title || "Our Engineering"}
+              <br />
+              Capabilities
+            </motion.h1>
           </div>
         </div>
 
