@@ -118,7 +118,7 @@ const PhaseCard = ({ process, index }) => {
         {/* Content with Better Spacing */}
         <div className="space-y-0.5 md:space-y-2 flex-1 flex flex-col">
           <h3
-            className="text-[0.75rem] md:text-[1.06rem] lg:text-lg font-bold leading-tight"
+            className="text-[0.9rem] md:text-[1.06rem] lg:text-lg font-bold leading-tight"
             style={{ color: "#ffffff" }}
           >
             {process.title}
@@ -129,7 +129,7 @@ const PhaseCard = ({ process, index }) => {
           ></div>
 
           <p
-            className="text-[0.65rem] md:text-[0.875rem] lg:text-[0.875rem] leading-relaxed flex-1 text-white/90"
+            className="text-[0.55rem] md:text-[0.875rem] lg:text-[0.875rem] leading-relaxed flex-1 text-white/90"
             style={{ textAlign: "justify" }}
           >
             {process.description}
