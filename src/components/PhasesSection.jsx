@@ -301,7 +301,7 @@ const PhaseSection = () => {
   }, [total]);
 
   return (
-    <section className="w-full bg-black font-sans py-8 sm:py-10 md:py-12 lg:py-16">
+    <section className="w-full bg-black font-sans py-4 sm:py-10 md:py-12 lg:py-16">
       <Container className="content-maxwidth w-full">
         {/* Header Section with Better Responsive Design */}
         <motion.div
@@ -309,9 +309,9 @@ const PhaseSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-8 sm:mb-10 md:mb-12 lg:mb-16"
+          className="mb-4 sm:mb-10 md:mb-12 lg:mb-16"
         >
-          <div className="flex flex-col lg:flex-row items-start gap-6 lg:gap-8">
+          <div className="flex flex-col lg:flex-row items-start gap-3 lg:gap-8">
             {/* Left: Headline */}
             <div className="w-full lg:flex-1 flex flex-col items-start text-left">
               <motion.h1
@@ -319,7 +319,7 @@ const PhaseSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.05 }}
-                className="animated-gradient-text section-heading font-semibold leading-tight tracking-tight text-2xl sm:text-3xl md:text-4xl lg:text-5xl"
+                className="animated-gradient-text section-heading font-semibold leading-tight tracking-tight text-xl sm:text-3xl md:text-4xl lg:text-5xl"
               >
                 Our Development Phases
               </motion.h1>
@@ -328,7 +328,7 @@ const PhaseSection = () => {
             {/* Right: Description */}
             <div className="w-full lg:flex-[1.5] flex flex-col items-start text-left">
               <p
-                className="text-white/90 text-sm sm:text-base md:text-lg lg:text-xl font-medium leading-relaxed"
+                className="text-white/90 text-xs sm:text-base md:text-lg lg:text-xl font-medium leading-relaxed"
                 style={{ textAlign: "justify" }}
               >
                 We streamline your success by handling every detail from initial
@@ -341,7 +341,7 @@ const PhaseSection = () => {
         {/* Phase Cards Grid with Snake Pattern and Better Responsive Spacing */}
         <div
           ref={gridRef}
-          className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8"
+          className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 md:gap-6 lg:gap-8"
         >
           {/* Dynamic Arrow Connectors */}
           {connectors.map((connector) => {

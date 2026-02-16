@@ -28,11 +28,11 @@ export default function Header() {
     >
       <div className="w-full flex justify-center">
         <div className="w-full max-w-[1280px] px-4">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-14 sm:h-16">
             {/* Logo */}
             <Link
               to="/"
-              className="flex items-center gap-2 sm:gap-2"
+              className="flex items-center gap-1.5 sm:gap-2"
               onClick={(e) => {
                 e.preventDefault();
                 if (location.pathname === "/") {
@@ -45,7 +45,7 @@ export default function Header() {
               <motion.img
                 src="/logo.png"
                 alt="Danvion Logo"
-                className="h-8 w-8 sm:h-10 sm:w-10"
+                className="h-6 w-6 sm:h-10 sm:w-10"
                 whileHover={{
                   scale: 1.1,
                   rotate: [0, -10, 10, -10, 0],
@@ -57,7 +57,7 @@ export default function Header() {
               />
               <motion.div
                 whileHover={{ scale: 1.05 }}
-                className="font-bold text-brand-black text-[12px] sm:text-[14px] md:text-[16px] lg:text-[20px]"
+                className="font-bold text-brand-black text-[10px] sm:text-[14px] md:text-[16px] lg:text-[20px]"
               >
                 DANVION
               </motion.div>
@@ -152,16 +152,16 @@ export default function Header() {
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-nav"
-              className="md:hidden flex flex-col gap-2 p-3.5 rounded-lg hover:bg-gray-100 transition-colors"
+              className="md:hidden flex flex-col gap-1.5 p-2.5 rounded-lg hover:bg-gray-100 transition-colors"
             >
               <span
-                className={`w-8 h-1 bg-[#FF6F00] transition-all ${mobileMenuOpen ? "rotate-45 translate-y-3" : ""}`}
+                className={`w-6 h-0.5 bg-[#FF6F00] transition-all ${mobileMenuOpen ? "rotate-45 translate-y-2" : ""}`}
               ></span>
               <span
-                className={`w-8 h-1 bg-[#FF6F00] transition-all ${mobileMenuOpen ? "opacity-0" : ""}`}
+                className={`w-6 h-0.5 bg-[#FF6F00] transition-all ${mobileMenuOpen ? "opacity-0" : ""}`}
               ></span>
               <span
-                className={`w-8 h-1 bg-[#FF6F00] transition-all ${mobileMenuOpen ? "-rotate-45 -translate-y-3" : ""}`}
+                className={`w-6 h-0.5 bg-[#FF6F00] transition-all ${mobileMenuOpen ? "-rotate-45 -translate-y-2" : ""}`}
               ></span>
             </button>
           </div>

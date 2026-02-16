@@ -107,24 +107,24 @@ export default function Home() {
       {/* Contact Section */}
       <section
         id="contact"
-        className="pt-2 pb-5 xl:pb-2 xxl:pb-5 font-sans bg-black"
+        className="pt-1 pb-3 sm:pb-5 xl:pb-2 xxl:pb-5 font-sans bg-black"
       >
-        <div className="max-w-[1280px] w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-16 xxl:px-4">
+        <div className="max-w-[1280px] w-full mx-auto px-3 sm:px-6 md:px-8 lg:px-10 xl:px-16 xxl:px-4">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-left mb-6 sm:mb-6 md:mb-6 xl:mb-0 xxl:mb-6 mt-0 pt-0"
+            className="text-left mb-4 sm:mb-6 md:mb-6 xl:mb-0 xxl:mb-6 mt-0 pt-0"
           >
-            <div className="flex flex-row items-start gap-3 md:gap-4">
+            <div className="flex flex-col sm:flex-row items-start gap-2 md:gap-4">
               <div className="w-full sm:flex-1 flex flex-col items-start text-left sm:w-auto">
-                <h1 className="animated-gradient-text font-semibold leading-[1.25] tracking-tight mb-2 sm:mb-3 md:mb-4 lg:mb-6 text-[28px] sm:text-[32px] md:text-[40px] lg:text-[50px]">
+                <h1 className="animated-gradient-text font-semibold leading-[1.25] tracking-tight mb-1.5 sm:mb-3 md:mb-4 lg:mb-6 text-[20px] sm:text-[32px] md:text-[40px] lg:text-[50px]">
                   Get In Touch
                 </h1>
               </div>
-              <div className="w-full sm:flex-[1.5] flex flex-col items-start text-left mt-3 sm:mt-0 sm:w-auto">
-                <p className="text-justify text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-white">
+              <div className="w-full sm:flex-[1.5] flex flex-col items-start text-left mt-1.5 sm:mt-0 sm:w-auto">
+                <p className="text-justify text-xs sm:text-base md:text-lg lg:text-xl font-semibold text-white">
                   From hardware design to edge AI deployment, we deliver
                   complete engineering solutions that bring intelligent products
                   to life.
@@ -134,13 +134,13 @@ export default function Home() {
           </motion.div>
 
           {/* Two Column Layout: Cards + Form */}
-          <div className="grid md:grid-cols-2 gap-6 sm:gap-8 md:gap-6 lg:gap-12 xl:gap-16">
+          <div className="grid md:grid-cols-2 gap-4 sm:gap-8 md:gap-6 lg:gap-12 xl:gap-16">
             {/* Left Column: Innovation Message */}
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, delay: 0.1 }}
-              className="flex items-center justify-center w-full"
+              className="flex items-center justify-center w-full order-2 md:order-1"
             >
               <div className="w-full text-left center">
                 <style>
@@ -207,11 +207,11 @@ export default function Home() {
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="md:-ml-6 lg:ml-0"
+              className="md:-ml-6 lg:ml-0 order-1 md:order-2"
             >
               <div>
                 <h2
-                  className="text-[18px] sm:text-[20px] md:text-[20px] lg:text-[32px] xl:text-[20px] xxl:text-[32px] font-bold text-white mb-4 sm:mb-5 md:mb-1 lg:mb-8 xl:mb-1 xxl:mb-8 text-center md:text-left"
+                  className="text-[16px] sm:text-[20px] md:text-[20px] lg:text-[32px] xl:text-[20px] xxl:text-[32px] font-bold text-white mb-2 sm:mb-5 md:mb-1 lg:mb-8 xl:mb-1 xxl:mb-8 text-center md:text-left"
                   style={{ color: "#ffffff" }}
                 >
                   Send a Message
@@ -219,18 +219,18 @@ export default function Home() {
 
                 <form
                   onSubmit={handleSubmit}
-                  className="space-y-5 sm:space-y-6 md:space-y-0 lg:space-y-6 xl:space-y-0 xxl:space-y-6"
+                  className="space-y-3 sm:space-y-6 md:space-y-0 lg:space-y-6 xl:space-y-0 xxl:space-y-6"
                 >
                   {/* Name */}
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3, duration: 0.5 }}
-                    className="mt-4 sm:mt-5 md:mt-1 lg:mt-6"
+                    className="mt-0 sm:mt-5 md:mt-1 lg:mt-6"
                   >
                     <label
                       htmlFor="name"
-                      className="block text-xs sm:text-sm md:text-base lg:text-lg xl:text-sm xxl:text-lg font-semibold text-white mb-2 md:mb-0.5 lg:mb-2 xl:mb-0.5 xxl:mb-2"
+                      className="block text-[11px] sm:text-sm md:text-base lg:text-lg xl:text-sm xxl:text-lg font-semibold text-white mb-1 md:mb-0.5 lg:mb-2 xl:mb-0.5 xxl:mb-2"
                     >
                       Full Name *
                     </label>
@@ -243,7 +243,7 @@ export default function Home() {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder=""
-                      className="w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2 xl:py-1 xxl:py-2 border-2 border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 bg-gray-900 text-white shadow-sm hover:shadow-md text-[13px] sm:text-sm md:text-base xl:text-sm xxl:text-base placeholder-gray-500"
+                      className="w-full px-2 sm:px-3 md:px-4 py-1 sm:py-2 md:py-2 xl:py-1 xxl:py-2 border-2 border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 bg-gray-900 text-white shadow-sm hover:shadow-md text-[11px] sm:text-sm md:text-base xl:text-sm xxl:text-base placeholder-gray-500"
                     />
                   </motion.div>
                   {/* Email */}
@@ -255,7 +255,7 @@ export default function Home() {
                   >
                     <label
                       htmlFor="email"
-                      className="block text-xs sm:text-sm md:text-base lg:text-lg xl:text-sm xxl:text-lg font-semibold text-white mb-2 md:mb-0.5 lg:mb-2 xl:mb-0.5 xxl:mb-2"
+                      className="block text-[11px] sm:text-sm md:text-base lg:text-lg xl:text-sm xxl:text-lg font-semibold text-white mb-1 md:mb-0.5 lg:mb-2 xl:mb-0.5 xxl:mb-2"
                     >
                       Email Address *
                     </label>
@@ -268,7 +268,7 @@ export default function Home() {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder=""
-                      className="w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2 xl:py-1 xxl:py-2 border-2 border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 bg-gray-900 text-white shadow-sm hover:shadow-md text-[13px] sm:text-sm md:text-base xl:text-sm xxl:text-base placeholder-gray-500"
+                      className="w-full px-2 sm:px-3 md:px-4 py-1 sm:py-2 md:py-2 xl:py-1 xxl:py-2 border-2 border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 bg-gray-900 text-white shadow-sm hover:shadow-md text-[11px] sm:text-sm md:text-base xl:text-sm xxl:text-base placeholder-gray-500"
                     />
                   </motion.div>
                   {/* Phone */}
@@ -280,7 +280,7 @@ export default function Home() {
                   >
                     <label
                       htmlFor="phone"
-                      className="block text-xs sm:text-sm md:text-base lg:text-lg xl:text-sm xxl:text-lg font-semibold text-white mb-2 md:mb-0.5 lg:mb-2 xl:mb-0.5 xxl:mb-2"
+                      className="block text-[11px] sm:text-sm md:text-base lg:text-lg xl:text-sm xxl:text-lg font-semibold text-white mb-1 md:mb-0.5 lg:mb-2 xl:mb-0.5 xxl:mb-2"
                     >
                       Phone Number
                     </label>
@@ -292,7 +292,7 @@ export default function Home() {
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder=""
-                      className="w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2 xl:py-1 xxl:py-2 border-2 border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 bg-gray-900 text-white shadow-sm hover:shadow-md text-[13px] sm:text-sm md:text-base xl:text-sm xxl:text-base placeholder-gray-500"
+                      className="w-full px-2 sm:px-3 md:px-4 py-1 sm:py-2 md:py-2 xl:py-1 xxl:py-2 border-2 border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 bg-gray-900 text-white shadow-sm hover:shadow-md text-[11px] sm:text-sm md:text-base xl:text-sm xxl:text-base placeholder-gray-500"
                     />
                   </motion.div>
                   {/* Message */}
@@ -304,7 +304,7 @@ export default function Home() {
                   >
                     <label
                       htmlFor="message"
-                      className="block text-xs sm:text-sm md:text-base lg:text-lg xl:text-sm xxl:text-lg font-semibold text-white mb-2 md:mb-0.5 lg:mb-2 xl:mb-0.5 xxl:mb-2"
+                      className="block text-[11px] sm:text-sm md:text-base lg:text-lg xl:text-sm xxl:text-lg font-semibold text-white mb-1 md:mb-0.5 lg:mb-2 xl:mb-0.5 xxl:mb-2"
                     >
                       Message *
                     </label>
@@ -312,11 +312,11 @@ export default function Home() {
                       id="message"
                       name="message"
                       required
-                      rows="3"
+                      rows="2"
                       value={formData.message}
                       onChange={handleChange}
                       placeholder=""
-                      className="w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2 xl:py-1 xxl:py-2 border-2 border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 bg-gray-900 text-white shadow-sm hover:shadow-md resize-none text-[13px] sm:text-sm md:text-base xl:text-sm xxl:text-base placeholder-gray-500"
+                      className="w-full px-2 sm:px-3 md:px-4 py-1 sm:py-2 md:py-2 xl:py-1 xxl:py-2 border-2 border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 bg-gray-900 text-white shadow-sm hover:shadow-md resize-none text-[11px] sm:text-sm md:text-base xl:text-sm xxl:text-base placeholder-gray-500"
                     />
                   </motion.div>
                   {/* Submit Button */}
@@ -328,9 +328,9 @@ export default function Home() {
                     whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={loading}
-                    className="group w-full bg-orange-500 hover:bg-white border border-orange-500 hover:shadow-lg font-bold rounded-full py-2.5 md:py-2 lg:py-3.5 px-8 transition-all duration-300 disabled:opacity-70 cursor-pointer"
+                    className="group w-full bg-orange-500 hover:bg-white border border-orange-500 hover:shadow-lg font-bold rounded-full py-1.5 sm:py-2 md:py-2 lg:py-3.5 px-6 sm:px-8 transition-all duration-300 disabled:opacity-70 cursor-pointer"
                   >
-                    <span className="text-[12px] sm:text-xs md:text-sm lg:text-base text-white group-hover:text-orange-500 transition-colors duration-300">
+                    <span className="text-[10px] sm:text-xs md:text-sm lg:text-base text-white group-hover:text-orange-500 transition-colors duration-300">
                       {loading ? "Sending..." : "Send Message"}
                     </span>
                   </motion.button>
