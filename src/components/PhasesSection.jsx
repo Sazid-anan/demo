@@ -94,11 +94,11 @@ const PhaseCard = ({ process, index }) => {
     >
       {/* Glass Card Container with Fixed Aspect Ratio */}
       <div
-        className={`relative h-full min-h-[140px] sm:min-h-[210px] md:min-h-[225px] lg:min-h-[240px] flex flex-col bg-white/10 backdrop-blur-md rounded-xl md:rounded-2xl border border-white/20 p-1.5 sm:p-2.5 md:p-3.5 lg:p-4 transition-all duration-300 ${isHovered ? "border-white/40 shadow-2xl shadow-white/10 transform scale-[1.02]" : "shadow-xl"}`}
+        className={`relative h-full min-h-[160px] sm:min-h-[210px] md:min-h-[225px] lg:min-h-[240px] flex flex-col bg-white/10 backdrop-blur-md rounded-lg sm:rounded-xl md:rounded-2xl border border-white/20 p-2 sm:p-2.5 md:p-3.5 lg:p-4 transition-all duration-300 ${isHovered ? "border-white/40 shadow-2xl shadow-white/10 transform scale-[1.02]" : "shadow-xl"}`}
       >
         {/* Number Badge - Top Right with Better Positioning */}
         <div
-          className={`absolute top-2 right-2 w-6 h-6 md:w-9 md:h-9 rounded-full ${process.color} flex items-center justify-center font-bold text-[0.6rem] md:text-[0.8rem] shadow-lg transition-all duration-300 ${isHovered ? "rotate-12 scale-110" : ""}`}
+          className={`absolute top-1.5 right-1.5 w-5 h-5 md:w-9 md:h-9 rounded-full ${process.color} flex items-center justify-center font-bold text-[0.5rem] md:text-[0.8rem] shadow-lg transition-all duration-300 ${isHovered ? "rotate-12 scale-110" : ""}`}
           style={{ color: "#ffffff" }}
         >
           {process.number}
@@ -106,19 +106,19 @@ const PhaseCard = ({ process, index }) => {
 
         {/* Icon Container with Consistent Sizing */}
         <div
-          className={`w-9 h-9 md:w-12 md:h-12 lg:w-14 lg:h-14 mb-1.5 md:mb-3 ${process.color} rounded-lg md:rounded-xl flex items-center justify-center transition-all duration-300 ${isHovered ? "shadow-2xl scale-105" : "shadow-lg"}`}
+          className={`w-8 h-8 md:w-12 md:h-12 lg:w-14 lg:h-14 mb-1 md:mb-3 ${process.color} rounded-lg md:rounded-xl flex items-center justify-center transition-all duration-300 ${isHovered ? "shadow-2xl scale-105" : "shadow-lg"}`}
         >
           <IconComponent
-            className={`w-4 h-4 md:w-6 md:h-6 lg:w-7 lg:h-7 transition-transform duration-300 ${isHovered ? "scale-110 rotate-6" : ""}`}
+            className={`w-3.5 h-3.5 md:w-6 md:h-6 lg:w-7 lg:h-7 transition-transform duration-300 ${isHovered ? "scale-110 rotate-6" : ""}`}
             strokeWidth={1.5}
             color="#ffffff"
           />
         </div>
 
         {/* Content with Better Spacing */}
-        <div className="space-y-0.5 md:space-y-2 flex-1 flex flex-col">
+        <div className="space-y-0.25 md:space-y-2 flex-1 flex flex-col">
           <h3
-            className="text-[0.9rem] md:text-[1.06rem] lg:text-lg font-bold leading-tight"
+            className="text-[0.8rem] md:text-[1.06rem] lg:text-lg font-bold leading-tight"
             style={{ color: "#ffffff" }}
           >
             {process.title}
@@ -129,7 +129,7 @@ const PhaseCard = ({ process, index }) => {
           ></div>
 
           <p
-            className="text-[0.4rem] md:text-[0.875rem] lg:text-[0.875rem] leading-tight flex-1 text-white/90"
+            className="text-[0.45rem] md:text-[0.875rem] lg:text-[0.875rem] leading-tight flex-1 text-white/90"
             style={{ textAlign: "justify" }}
           >
             {process.description}
@@ -341,7 +341,7 @@ const PhaseSection = () => {
         {/* Phase Cards Grid with Snake Pattern and Better Responsive Spacing */}
         <div
           ref={gridRef}
-          className="relative grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-5 md:gap-6 lg:gap-8"
+          className="relative grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-1.5 sm:gap-5 md:gap-6 lg:gap-8"
         >
           {/* Dynamic Arrow Connectors */}
           {connectors.map((connector) => {
