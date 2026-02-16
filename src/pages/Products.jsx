@@ -2,9 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchContent } from "../redux/slices/contentSlice";
 import Container from "../components/common/Container";
+import PageHero from "../components/common/PageHero";
+import EmptyStatePanel from "../components/common/EmptyStatePanel";
 import Button from "../components/ui/Button";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
+import FilterChips from "../components/common/FilterChips";
+import PaginationControls from "../components/common/PaginationControls";
+import DetailModalShell from "../components/common/DetailModalShell";
 import { renderMarkdown } from "../utils/markdown";
 import { Package } from "lucide-react";
 
@@ -94,57 +99,18 @@ export default function Products() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <div className="py-8 sm:py-10 md:py-12">
-        <Container className="content-maxwidth">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mb-6 sm:mb-7 md:mb-8 lg:mb-10"
-          >
-            <div className="flex flex-row items-start gap-3 md:gap-4">
-              <div className="w-full sm:flex-1 flex flex-col items-start text-left sm:w-auto">
-                <h1 className="capabilities-gradient-text font-semibold leading-[1.25] tracking-tight mb-2 sm:mb-3 md:mb-4 lg:mb-6 text-[18px] sm:text-[24px] md:text-[32px] lg:text-[50px]">
-                  Our Products
-                </h1>
-              </div>
-              <div className="w-full sm:flex-[1.5] flex flex-col items-start text-left mt-4 sm:mt-0 sm:w-auto">
-                <p className="text-justify text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-black">
-                  From hardware design to edge AI deployment, we deliver
-                  complete engineering solutions that bring intelligent products
-                  to life.
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        </Container>
-      </div>
+      <PageHero
+        title="Our Products"
+        description="From hardware design to edge AI deployment, we deliver complete engineering solutions that bring intelligent products to life."
+      />
 
       {/* Products Grid or Empty State */}
       {hasNoProducts ? (
-        <Container className="py-8 sm:py-12 md:py-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center max-w-2xl mx-auto px-4"
-          >
-            <div className="mb-6 inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-100">
-              <Package className="w-10 h-10 text-gray-400" />
-            </div>
-            <h2 className="text-h3 font-bold text-brand-black mb-4">
-              Coming Soon
-            </h2>
-            <p className="text-gray-600 text-xs sm:text-sm md:text-base lg:text-lg mb-8 leading-relaxed">
-              We're working on some amazing products that will transform your
-              business. Check back soon for exciting announcements!
-            </p>
-            <Link to="/">
-              <Button className="mt-4">Back to Home</Button>
-            </Link>
-          </motion.div>
-        </Container>
+        <EmptyStatePanel
+          icon={Package}
+          title="Coming Soon"
+          description="We're working on some amazing products that will transform your business. Check back soon for exciting announcements!"
+        />
       ) : (
         <Container className="py-12 sm:py-16 md:py-20">
           {/* Category Filter */}
@@ -153,34 +119,17 @@ export default function Products() {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="mb-6 sm:mb-7 md:mb-8 flex flex-wrap items-center gap-2 sm:gap-3"
             >
-              <span className="font-medium text-brand-black text-xs sm:text-xs md:text-sm uppercase tracking-wide">
-                Filter by Category:
-              </span>
-              <button
-                onClick={() => setSelectedCategory("")}
-                className={`px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-full font-medium transition-all text-xs sm:text-xs md:text-sm ${
-                  selectedCategory === ""
-                    ? "bg-brand-orange text-brand-black shadow-lg"
-                    : "bg-gray-100 text-brand-black hover:bg-gray-200"
-                }`}
-              >
-                All Products
-              </button>
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-full font-medium transition-all text-xs sm:text-xs md:text-sm orange-pop-hover ${
-                    selectedCategory === cat
-                      ? "bg-brand-orange text-brand-black shadow-lg"
-                      : "bg-gray-100 text-brand-black hover:bg-gray-200"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
+              <FilterChips
+                label="Filter by Category:"
+                options={categories}
+                selected={selectedCategory}
+                allLabel="All Products"
+                onChange={(value) => {
+                  setSelectedCategory(value);
+                  setCurrentPage(1);
+                }}
+              />
             </motion.div>
           )}
 
@@ -192,7 +141,7 @@ export default function Products() {
               animate={{ opacity: 1 }}
               className="text-center py-8 sm:py-12 px-4 text-gray-600"
             >
-              <p className="text-xs sm:text-xs md:text-sm lg:text-base">
+              <p className="text-[12px] sm:text-[13px] md:text-[14px] lg:text-base">
                 No products found in this category. Try selecting a different
                 one.
               </p>
@@ -235,7 +184,7 @@ export default function Products() {
                   <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-brand-black mb-2">
                     {product.name}
                   </h3>
-                  <p className="text-gray-600 text-xs sm:text-xs md:text-sm lg:text-base mb-3 sm:mb-4 line-clamp-2">
+                  <p className="text-gray-600 text-[12px] sm:text-[13px] md:text-[14px] lg:text-base mb-3 sm:mb-4 line-clamp-2">
                     {product.description}
                   </p>
 
@@ -271,90 +220,33 @@ export default function Products() {
           </div>
 
           {/* Pagination - Only show if actual products exist */}
-          {totalPages > 1 && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-2 mt-8 sm:mt-12"
-            >
-              <button
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                disabled={currentPage === 1}
-                className="w-full sm:w-auto px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-xs sm:text-xs md:text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-gray-100 text-brand-black hover:bg-brand-orange hover:text-white"
-              >
-                Previous
-              </button>
-
-              <div className="flex gap-1.5 sm:gap-2 overflow-x-auto max-w-full pb-2 sm:pb-0">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (page) => (
-                    <button
-                      key={page}
-                      onClick={() => setCurrentPage(page)}
-                      className={`min-w-[32px] sm:min-w-[36px] md:min-w-[40px] h-8 sm:h-9 md:h-10 rounded-lg font-medium text-xs sm:text-xs md:text-sm transition-all flex-shrink-0 ${
-                        currentPage === page
-                          ? "bg-brand-orange text-white shadow-lg"
-                          : "bg-gray-100 text-brand-black hover:bg-gray-200"
-                      }`}
-                    >
-                      {page}
-                    </button>
-                  ),
-                )}
-              </div>
-
-              <button
-                onClick={() =>
-                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                }
-                disabled={currentPage === totalPages}
-                className="w-full sm:w-auto px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-xs sm:text-xs md:text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-gray-100 text-brand-black hover:bg-brand-orange hover:text-white"
-              >
-                Next
-              </button>
-            </motion.div>
-          )}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <PaginationControls
+              totalPages={totalPages}
+              currentPage={currentPage}
+              onPageChange={setCurrentPage}
+              className="mt-8 sm:mt-12"
+            />
+          </motion.div>
         </Container>
       )}
 
       {/* Product Detail Modal */}
       {activeProduct && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={() => {
-            setSelectedProduct(null);
-            if (productId) setDismissedProductId(productId);
-          }}
-          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-2 sm:p-4"
-        >
-          <motion.div
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0.9 }}
-            onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-lg max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto"
-          >
-            <div className="sticky top-0 bg-white border-b border-gray-200 flex justify-between items-center p-4 sm:p-6 z-10">
-              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-brand-black pr-4">
-                {activeProduct.name}
-              </h2>
-              <button
-                onClick={() => {
-                  setSelectedProduct(null);
-                  if (productId) setDismissedProductId(productId);
-                }}
-                type="button"
-                aria-label="Close product details"
-                className="text-gray-600 hover:text-brand-black text-2xl sm:text-3xl flex-shrink-0"
-              >
-                ×
-              </button>
-            </div>
-
-            <div className="p-4 sm:p-6">
+      <DetailModalShell
+        isOpen={Boolean(activeProduct)}
+        onClose={() => {
+          setSelectedProduct(null);
+          if (productId) setDismissedProductId(productId);
+        }}
+        title={activeProduct?.name}
+        maxWidthClass="max-w-2xl"
+        showBackdropBlur={false}
+      >
               <img
                 src={activeProduct.image_url}
                 alt={activeProduct.name}
@@ -432,9 +324,7 @@ export default function Products() {
                   </Button>
                 </Link>
               </div>
-            </div>
-          </motion.div>
-        </motion.div>
+      </DetailModalShell>
       )}
     </div>
   );

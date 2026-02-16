@@ -1,13 +1,17 @@
 import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { fetchContent } from "../redux/slices/contentSlice";
 import Container from "../components/common/Container";
+import PageHero from "../components/common/PageHero";
+import EmptyStatePanel from "../components/common/EmptyStatePanel";
 import Button from "../components/ui/Button";
 import { motion } from "framer-motion";
+import FilterChips from "../components/common/FilterChips";
+import PaginationControls from "../components/common/PaginationControls";
+import DetailModalShell from "../components/common/DetailModalShell";
 import Badge from "../components/ui/Badge";
 import { Card, CardContent } from "../components/ui/Card";
-import { Calendar, Clock, ArrowRight, X, FileText } from "lucide-react";
+import { Calendar, Clock, ArrowRight, FileText } from "lucide-react";
 import { renderMarkdown } from "../utils/markdown";
 
 /**
@@ -66,104 +70,36 @@ export default function Blogs() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <div className="py-8 sm:py-10 md:py-12">
-        <Container className="content-maxwidth">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mb-6 sm:mb-7 md:mb-8 lg:mb-10"
-          >
-            <div className="flex flex-row items-start gap-3 md:gap-4">
-              <div className="w-full sm:flex-1 flex flex-col items-start text-left sm:w-auto">
-                <h1 className="capabilities-gradient-text font-semibold leading-[1.25] tracking-tight mb-2 sm:mb-3 md:mb-4 lg:mb-6 text-[18px] sm:text-[24px] md:text-[32px] lg:text-[50px]">
-                  Blogs
-                </h1>
-              </div>
-              <div className="w-full sm:flex-[1.5] flex flex-col items-start text-left mt-4 sm:mt-0 sm:w-auto">
-                <p className="text-justify text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-black">
-                  From hardware design to edge AI deployment, we deliver
-                  complete engineering solutions that bring intelligent products
-                  to life.
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        </Container>
-      </div>
+      <PageHero
+        title="Blogs"
+        description="From hardware design to edge AI deployment, we deliver complete engineering solutions that bring intelligent products to life."
+      />
 
       {/* Empty State or Content */}
       {hasNoBlogs ? (
-        <section className="py-8 sm:py-12 md:py-16">
-          <Container>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-center max-w-2xl mx-auto px-4"
-            >
-              <div className="mb-6 inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-100">
-                <FileText className="w-10 h-10 text-gray-400" />
-              </div>
-              <h2 className="text-h3 font-bold text-foreground mb-4">
-                Coming Soon
-              </h2>
-              <p className="text-gray-600 text-xs sm:text-sm md:text-base lg:text-lg mb-8 leading-relaxed">
-                We're crafting insightful articles and resources on Edge AI,
-                product development, and technology innovation. Stay tuned for
-                exciting content!
-              </p>
-              <Link to="/">
-                <Button className="mt-4">Back to Home</Button>
-              </Link>
-            </motion.div>
-          </Container>
-        </section>
+        <EmptyStatePanel
+          icon={FileText}
+          title="Coming Soon"
+          description="We're crafting insightful articles and resources on Edge AI, product development, and technology innovation. Stay tuned for exciting content!"
+        />
       ) : (
         <>
           {/* Category Filter */}
           {categories.length > 0 && (
             <section className="py-6 sm:py-7 md:py-8 border-b border-gray-200">
               <Container>
-                <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                  <span className="text-xs sm:text-xs md:text-sm font-semibold text-muted-foreground">
-                    Filter by:
-                  </span>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => {
-                      setSelectedCategory("");
-                      setCurrentPage(1);
-                    }}
-                    className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-xs md:text-sm font-medium transition-all ${
-                      !selectedCategory
-                        ? "bg-brand-orange text-white"
-                        : "bg-white border border-gray-200 text-gray-700 hover:border-brand-orange"
-                    }`}
-                  >
-                    All Posts
-                  </motion.button>
-                  {categories.map((category) => (
-                    <motion.button
-                      key={category}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => {
-                        setSelectedCategory(category);
-                        setCurrentPage(1);
-                      }}
-                      className={`px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-xs md:text-sm lg:text-base font-medium transition-all ${
-                        selectedCategory === category
-                          ? "bg-brand-orange text-white"
-                          : "bg-white border border-gray-200 text-gray-700 hover:border-brand-orange"
-                      }`}
-                    >
-                      {category}
-                    </motion.button>
-                  ))}
-                </div>
+                <FilterChips
+                  label="Filter by:"
+                  options={categories}
+                  selected={selectedCategory}
+                  allLabel="All Posts"
+                  selectedClass="bg-brand-orange text-white"
+                  unselectedClass="bg-white border border-gray-200 text-gray-700 hover:border-brand-orange"
+                  onChange={(value) => {
+                    setSelectedCategory(value);
+                    setCurrentPage(1);
+                  }}
+                />
               </Container>
             </section>
           )}
@@ -210,7 +146,7 @@ export default function Blogs() {
                             </div>
                           )}
                           <div className="p-5 sm:p-6">
-                            <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-xs text-muted-foreground mb-2 sm:mb-3">
+                            <div className="flex items-center gap-2 sm:gap-3 text-[12px] sm:text-[13px] text-muted-foreground mb-2 sm:mb-3">
                               {blog.published_date && (
                                 <div className="flex items-center gap-1">
                                   <Calendar className="w-3 h-3" />
@@ -227,7 +163,7 @@ export default function Blogs() {
                             <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-foreground mb-2 sm:mb-3 group-hover:text-brand-orange transition-colors">
                               {blog.title}
                             </h3>
-                            <p className="text-xs sm:text-xs md:text-sm lg:text-base text-muted-foreground mb-3 sm:mb-4 line-clamp-3">
+                            <p className="text-[13px] sm:text-[14px] md:text-[15px] lg:text-base text-muted-foreground mb-3 sm:mb-4 line-clamp-3">
                               {blog.excerpt || blog.description}
                             </p>
                             {blog.author && (
@@ -235,7 +171,7 @@ export default function Blogs() {
                                 <div className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full bg-secondary flex items-center justify-center text-xs sm:text-xs md:text-sm font-semibold">
                                   {blog.author.charAt(0).toUpperCase()}
                                 </div>
-                                <span className="text-xs sm:text-xs md:text-sm text-muted-foreground">
+                                <span className="text-[12px] sm:text-[13px] md:text-[14px] text-muted-foreground">
                                   {blog.author}
                                 </span>
                               </div>
@@ -260,51 +196,13 @@ export default function Blogs() {
               )}
 
               {/* Pagination - Only show if blogs exist */}
-              {totalPages > 1 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-2 mt-12"
-                >
-                  <button
-                    onClick={() =>
-                      setCurrentPage((prev) => Math.max(prev - 1, 1))
-                    }
-                    disabled={currentPage === 1}
-                    className="w-full sm:w-auto px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-xs md:text-sm font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-gray-100 text-brand-black hover:bg-brand-orange hover:text-white"
-                  >
-                    Previous
-                  </button>
-
-                  <div className="flex gap-1.5 sm:gap-2 overflow-x-auto max-w-full pb-2 sm:pb-0">
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                      (page) => (
-                        <button
-                          key={page}
-                          onClick={() => setCurrentPage(page)}
-                          className={`min-w-[32px] sm:min-w-[36px] md:min-w-[40px] h-8 sm:h-9 md:h-10 rounded-lg font-medium text-xs sm:text-xs md:text-sm transition-all flex-shrink-0 ${
-                            currentPage === page
-                              ? "bg-brand-orange text-white shadow-lg"
-                              : "bg-gray-100 text-brand-black hover:bg-gray-200"
-                          }`}
-                        >
-                          {page}
-                        </button>
-                      ),
-                    )}
-                  </div>
-
-                  <button
-                    onClick={() =>
-                      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                    }
-                    disabled={currentPage === totalPages}
-                    className="w-full sm:w-auto px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-xs md:text-sm font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-gray-100 text-brand-black hover:bg-brand-orange hover:text-white"
-                  >
-                    Next
-                  </button>
-                </motion.div>
-              )}
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+                <PaginationControls
+                  totalPages={totalPages}
+                  currentPage={currentPage}
+                  onPageChange={setCurrentPage}
+                />
+              </motion.div>
             </Container>
           </section>
         </>
@@ -312,35 +210,12 @@ export default function Blogs() {
 
       {/* Blog Detail Modal */}
       {selectedBlog && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4"
-          onClick={() => setSelectedBlog(null)}
-        >
-          <motion.div
-            initial={{ scale: 0.9, y: 20 }}
-            animate={{ scale: 1, y: 0 }}
-            exit={{ scale: 0.9, y: 20 }}
-            className="bg-white rounded-xl sm:rounded-2xl shadow-2xl max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Header */}
-            <div className="sticky top-0 bg-white border-b border-gray-200 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between z-10">
-              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground pr-4">
-                {selectedBlog.title}
-              </h2>
-              <button
-                onClick={() => setSelectedBlog(null)}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors flex-shrink-0"
-              >
-                <X className="w-5 h-5 sm:w-6 sm:h-6" />
-              </button>
-            </div>
-
-            {/* Content */}
-            <div className="p-4 sm:p-6">
+      <DetailModalShell
+        isOpen={Boolean(selectedBlog)}
+        onClose={() => setSelectedBlog(null)}
+        title={selectedBlog?.title}
+        maxWidthClass="max-w-4xl"
+      >
               {selectedBlog.featured_image && (
                 <div className="mb-4 sm:mb-6 rounded-lg sm:rounded-xl overflow-hidden">
                   <img
@@ -385,9 +260,7 @@ export default function Blogs() {
                   __html: renderMarkdown(selectedBlog.content || ""),
                 }}
               />
-            </div>
-          </motion.div>
-        </motion.div>
+      </DetailModalShell>
       )}
     </div>
   );

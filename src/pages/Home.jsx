@@ -117,14 +117,14 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="text-left mb-6 sm:mb-6 md:mb-6 xl:mb-0 xxl:mb-6 mt-0 pt-0"
           >
-            <div className="flex flex-row items-start gap-3 md:gap-4">
+            <div className="flex flex-col md:flex-row items-start gap-3 md:gap-4">
               <div className="w-full sm:flex-1 flex flex-col items-start text-left sm:w-auto">
                 <h1 className="animated-gradient-text font-semibold leading-[1.25] tracking-tight mb-2 sm:mb-3 md:mb-4 lg:mb-6 text-[28px] sm:text-[32px] md:text-[40px] lg:text-[50px]">
                   Get In Touch
                 </h1>
               </div>
               <div className="w-full sm:flex-[1.5] flex flex-col items-start text-left mt-3 sm:mt-0 sm:w-auto">
-                <p className="text-justify text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-white">
+                <p className="text-left md:text-justify text-[14px] sm:text-[15px] md:text-[17px] lg:text-[20px] font-semibold text-white leading-relaxed">
                   From hardware design to edge AI deployment, we deliver
                   complete engineering solutions that bring intelligent products
                   to life.
@@ -211,7 +211,7 @@ export default function Home() {
             >
               <div>
                 <h2
-                  className="text-[18px] sm:text-[20px] md:text-[20px] lg:text-[32px] xl:text-[20px] xxl:text-[32px] font-bold text-white mb-4 sm:mb-5 md:mb-1 lg:mb-8 xl:mb-1 xxl:mb-8 text-center md:text-left"
+                  className="text-[20px] sm:text-[22px] md:text-[24px] lg:text-[32px] xl:text-[32px] xxl:text-[34px] font-bold text-white mb-4 sm:mb-5 md:mb-1 lg:mb-8 xl:mb-1 xxl:mb-8 text-center md:text-left"
                   style={{ color: "#ffffff" }}
                 >
                   Send a Message
@@ -230,7 +230,7 @@ export default function Home() {
                   >
                     <label
                       htmlFor="name"
-                      className="block text-xs sm:text-sm md:text-base lg:text-lg xl:text-sm xxl:text-lg font-semibold text-white mb-2 md:mb-0.5 lg:mb-2 xl:mb-0.5 xxl:mb-2"
+                      className="block text-[13px] sm:text-[14px] md:text-[15px] lg:text-[16px] xl:text-[16px] xxl:text-[18px] font-semibold text-white mb-2 md:mb-0.5 lg:mb-2 xl:mb-0.5 xxl:mb-2"
                     >
                       Full Name *
                     </label>
@@ -243,7 +243,7 @@ export default function Home() {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder=""
-                      className="w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2 xl:py-1 xxl:py-2 border-2 border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 bg-gray-900 text-white shadow-sm hover:shadow-md text-[13px] sm:text-sm md:text-base xl:text-sm xxl:text-base placeholder-gray-500"
+                      className="w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2 xl:py-2 xxl:py-2 border-2 border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 bg-gray-900 text-white shadow-sm hover:shadow-md text-[14px] sm:text-[14px] md:text-[15px] xl:text-[15px] xxl:text-[16px] placeholder-gray-500"
                     />
                   </motion.div>
                   {/* Email */}
@@ -255,7 +255,7 @@ export default function Home() {
                   >
                     <label
                       htmlFor="email"
-                      className="block text-xs sm:text-sm md:text-base lg:text-lg xl:text-sm xxl:text-lg font-semibold text-white mb-2 md:mb-0.5 lg:mb-2 xl:mb-0.5 xxl:mb-2"
+                      className="block text-[13px] sm:text-[14px] md:text-[15px] lg:text-[16px] xl:text-[16px] xxl:text-[18px] font-semibold text-white mb-2 md:mb-0.5 lg:mb-2 xl:mb-0.5 xxl:mb-2"
                     >
                       Email Address *
                     </label>
@@ -268,7 +268,7 @@ export default function Home() {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder=""
-                      className="w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2 xl:py-1 xxl:py-2 border-2 border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 bg-gray-900 text-white shadow-sm hover:shadow-md text-[13px] sm:text-sm md:text-base xl:text-sm xxl:text-base placeholder-gray-500"
+                      className="w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2 xl:py-2 xxl:py-2 border-2 border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 bg-gray-900 text-white shadow-sm hover:shadow-md text-[14px] sm:text-[14px] md:text-[15px] xl:text-[15px] xxl:text-[16px] placeholder-gray-500"
                     />
                   </motion.div>
                   {/* Phone */}
@@ -280,7 +280,7 @@ export default function Home() {
                   >
                     <label
                       htmlFor="phone"
-                      className="block text-xs sm:text-sm md:text-base lg:text-lg xl:text-sm xxl:text-lg font-semibold text-white mb-2 md:mb-0.5 lg:mb-2 xl:mb-0.5 xxl:mb-2"
+                      className="block text-[13px] sm:text-[14px] md:text-[15px] lg:text-[16px] xl:text-[16px] xxl:text-[18px] font-semibold text-white mb-2 md:mb-0.5 lg:mb-2 xl:mb-0.5 xxl:mb-2"
                     >
                       Phone Number
                     </label>
@@ -292,7 +292,7 @@ export default function Home() {
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder=""
-                      className="w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2 xl:py-1 xxl:py-2 border-2 border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 bg-gray-900 text-white shadow-sm hover:shadow-md text-[13px] sm:text-sm md:text-base xl:text-sm xxl:text-base placeholder-gray-500"
+                      className="w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2 xl:py-2 xxl:py-2 border-2 border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 bg-gray-900 text-white shadow-sm hover:shadow-md text-[14px] sm:text-[14px] md:text-[15px] xl:text-[15px] xxl:text-[16px] placeholder-gray-500"
                     />
                   </motion.div>
                   {/* Message */}
@@ -304,7 +304,7 @@ export default function Home() {
                   >
                     <label
                       htmlFor="message"
-                      className="block text-xs sm:text-sm md:text-base lg:text-lg xl:text-sm xxl:text-lg font-semibold text-white mb-2 md:mb-0.5 lg:mb-2 xl:mb-0.5 xxl:mb-2"
+                      className="block text-[13px] sm:text-[14px] md:text-[15px] lg:text-[16px] xl:text-[16px] xxl:text-[18px] font-semibold text-white mb-2 md:mb-0.5 lg:mb-2 xl:mb-0.5 xxl:mb-2"
                     >
                       Message *
                     </label>
@@ -316,7 +316,7 @@ export default function Home() {
                       value={formData.message}
                       onChange={handleChange}
                       placeholder=""
-                      className="w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2 xl:py-1 xxl:py-2 border-2 border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 bg-gray-900 text-white shadow-sm hover:shadow-md resize-none text-[13px] sm:text-sm md:text-base xl:text-sm xxl:text-base placeholder-gray-500"
+                      className="w-full px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2 xl:py-2 xxl:py-2 border-2 border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 bg-gray-900 text-white shadow-sm hover:shadow-md resize-none text-[14px] sm:text-[14px] md:text-[15px] xl:text-[15px] xxl:text-[16px] placeholder-gray-500"
                     />
                   </motion.div>
                   {/* Submit Button */}
@@ -330,7 +330,7 @@ export default function Home() {
                     disabled={loading}
                     className="group w-full bg-orange-500 hover:bg-white border border-orange-500 hover:shadow-lg font-bold rounded-full py-2.5 md:py-2 lg:py-3.5 px-8 transition-all duration-300 disabled:opacity-70 cursor-pointer"
                   >
-                    <span className="text-[12px] sm:text-xs md:text-sm lg:text-base text-white group-hover:text-orange-500 transition-colors duration-300">
+                    <span className="text-[13px] sm:text-[14px] md:text-[15px] lg:text-base text-white group-hover:text-orange-500 transition-colors duration-300">
                       {loading ? "Sending..." : "Send Message"}
                     </span>
                   </motion.button>

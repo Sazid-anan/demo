@@ -28,6 +28,7 @@ import Footer from "./components/layout/Footer";
 import BackToTop from "./components/common/BackToTop";
 import ScrollToTop from "./components/common/ScrollToTop";
 import StickyContactBar from "./components/common/StickyContactBar";
+import RouteMeta from "./components/common/RouteMeta";
 
 // Loading component
 const PageLoader = () => (
@@ -94,6 +95,7 @@ function App() {
   return (
     <>
       <Router>
+        <RouteMeta />
         <ScrollToTop />
         <Routes>
           {/* Admin Routes */}
