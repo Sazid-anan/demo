@@ -129,7 +129,7 @@ export default function CapabilitiesSection({ homePage }) {
 
         <div className="mb-0 sm:mb-5 md:mb-7">
           <Card className="relative w-full max-w-[1150px] lg:max-w-[1450px] xl:max-w-[1600px] mx-auto px-0.5 sm:px-1 md:px-2.5 lg:px-3 py-1.5 sm:py-2 md:py-3.5 lg:py-4 bg-white border-2 border-orange-200/60 shadow-lg shadow-orange-100/50">
-            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-8 gap-1 sm:gap-1.5 md:gap-3 lg:gap-2.5">
+            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-1 sm:gap-1.5 md:gap-3 lg:gap-2.5">
               {capabilities.map((capability, index) => (
                 <motion.div
                   key={index}
