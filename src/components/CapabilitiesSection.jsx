@@ -129,7 +129,7 @@ export default function CapabilitiesSection({ homePage }) {
 
         <div className="mb-0 sm:mb-5 md:mb-7">
           <Card className="relative w-full max-w-[1150px] lg:max-w-[1450px] xl:max-w-[1600px] mx-auto px-0.5 sm:px-1 md:px-2.5 lg:px-3 py-1.5 sm:py-2 md:py-3.5 lg:py-4 bg-white border-2 border-orange-200/60 shadow-lg shadow-orange-100/50">
-            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-1 sm:gap-1.5 md:gap-3 lg:gap-2.5">
+            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-1 sm:gap-1.5 md:gap-3 lg:gap-2.5 auto-rows-fr">
               {capabilities.map((capability, index) => (
                 <motion.div
                   key={index}
@@ -140,9 +140,9 @@ export default function CapabilitiesSection({ homePage }) {
                   whileHover={{ y: -4, scale: 1.05 }}
                   style={{ willChange: "transform, opacity" }}
                 >
-                  <Card className="relative aspect-square w-full flex flex-col items-center justify-center gap-1.5 sm:gap-2 md:gap-2.5 p-2 sm:p-3 md:p-3.5 hover:shadow-lg transition-all duration-300 bg-white border border-gray-200 hover:border-orange-500/50 hover:shadow-orange-100/50">
-                    <capability.icon className="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-12 lg:w-12 text-orange-500" />
-                    <h3 className="text-center text-xs sm:text-sm md:text-base lg:text-sm font-semibold text-foreground leading-tight">
+                  <Card className="relative aspect-square w-full h-full flex flex-col items-center justify-center gap-1.5 sm:gap-2 md:gap-2.5 p-2 sm:p-3 md:p-3.5 hover:shadow-lg transition-all duration-300 bg-white border border-gray-200 hover:border-orange-500/50 hover:shadow-orange-100/50 overflow-hidden">
+                    <capability.icon className="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-12 lg:w-12 text-orange-500 flex-shrink-0" />
+                    <h3 className="text-center text-xs sm:text-sm md:text-base lg:text-sm font-semibold text-foreground leading-tight line-clamp-2">
                       {capability.title}
                     </h3>
                   </Card>
