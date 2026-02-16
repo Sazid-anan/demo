@@ -1,0 +1,3438 @@
+/**
+ * RESPONSIVE STYLES
+ * All media queries and responsive breakpoint styles
+ */
+
+/* ===== MOBILE-FIRST BREAKPOINT REFERENCE ===== */
+/* Mobile (Base): 0 - 480px - Default styles, vertical stacking, 44px touch targets */
+/* Tablet/iPad: 481px - 768px - 2-column grids, hamburger menu */
+/* 720p Laptop: 769px - 1280px - 3-column grids, max-width 1100px */
+/* 1080p Desktop: >1281px - 4-column grids, max-width 1440px, high-res images */
+/* ===== MOBILE OPTIMIZATION - PERFORMANCE & UX ===== */
+/* Performance improvements for mobile devices without affecting desktop */
+
+/* Mobile devices only (<480px) */
+@media (max-width: 480px) {
+  /* Increase touch target size to 48px minimum for better mobile UX */
+  button,
+  a[role="button"],
+  input[type="button"],
+  input[type="submit"],
+  .btn-responsive {
+    min-height: 3rem; /* 48px - optimal for touch */
+    padding: 0.75rem 1rem !important;
+  }
+
+  /* Improve interactive element spacing */
+  button + button,
+  a + a {
+    margin-left: 0.5rem;
+  }
+
+  /* Optimize sidebar/sticky contact bar on mobile */
+  .fixed.right-0\.5,
+  .fixed.right-1,
+  .fixed.right-4 {
+    right: 0.125rem !important; /* Closer to edge on mobile */
+  }
+
+  /* Better spacing on contact bar icons */
+  .fixed[class*="right"] .gap-0\.5,
+  .fixed[class*="right"] .gap-1 {
+    gap: 0.5rem !important; /* Tighter spacing on mobile */
+  }
+
+  /* Make contact bar icons smaller on mobile - target padding directly */
+  .fixed[class*="right"] svg {
+    width: 0.75rem !important;
+    height: 0.75rem !important;
+  }
+
+  .fixed[class*="right"] a > div {
+    padding: 0.25rem !important; /* Smaller padding on mobile */
+  }
+
+  /* Reduce z-index to prevent overlay issues */
+  .fixed[class*="right"] {
+    z-index: 30 !important;
+  }
+
+  /* Reduce motion on mobile for better performance */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Disable decorative animations on mobile */
+  [class*="motion-"],
+  [class*="animate-"] {
+    animation-duration: 1s !important; /* Faster animations on mobile */
+  }
+
+  /* Simplify shadows on mobile for performance */
+  .shadow-xl,
+  .shadow-2xl {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+  }
+
+  .shadow-lg {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  /* Optimize text selection on mobile */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important; /* Prevent auto-zoom on iOS */
+  }
+
+  /* Better contrast for small screens */
+  a {
+    outline: none;
+  }
+
+  a:focus {
+    outline: 2px solid #f37106;
+    outline-offset: 2px;
+  }
+
+  /* Prevent image re-sizing on rotation */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Disable GPU acceleration for simpler animations on older mobile devices */
+  @supports (backdrop-filter: blur(10px)) {
+    .backdrop-blur-sm {
+      backdrop-filter: blur(4px) !important; /* Less blur on mobile */
+    }
+
+    .backdrop-blur-md {
+      backdrop-filter: blur(6px) !important;
+    }
+  }
+
+  /* Optimize scrolling performance */
+  section,
+  .section-padding-y,
+  [class*="overflow-"] {
+    -webkit-overflow-scrolling: touch;
+    will-change: auto;
+  }
+
+  /* Reduce padding on small containers on mobile */
+  [class*="px-6"],
+  [class*="px-8"] {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Better spacing for readability on mobile */
+  p {
+    line-height: 1.7 !important;
+    margin-bottom: 1rem !important;
+  }
+
+  h1,
+  h2,
+  h3 {
+    margin-bottom: 0.75rem !important;
+  }
+
+  /* Ensure buttons are easily tappable */
+  a[href],
+  button,
+  input,
+  select,
+  textarea {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* Optimize tap feedback on mobile */
+  button,
+  a[role="button"] {
+    transition:
+      background-color 0.2s,
+      border-color 0.2s;
+  }
+
+  button:active,
+  a[role="button"]:active {
+    opacity: 0.9;
+  }
+
+  /* Improve form input accessibility on mobile */
+  input::placeholder {
+    opacity: 0.7;
+  }
+
+  /* Lazy load images on mobile for better performance */
+  img[loading="lazy"] {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  /* Better vertical rhythm on mobile */
+  h1 + p,
+  h2 + p,
+  h3 + p {
+    margin-top: 0.5rem !important;
+  }
+}
+
+/* Tablet optimization (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  /* Slightly increase touch targets on tablets */
+  button,
+  a[role="button"] {
+    min-height: 2.75rem !important; /* 44px */
+  }
+
+  /* Optimize spacing for tablets */
+  [class*="px-"] {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+
+  /* Better gap on tablets */
+  [class*="gap-"] {
+    gap: clamp(1rem, 2vw, 1.5rem) !important;
+  }
+
+  /* Reduce blur effects slightly on tablets */
+  .backdrop-blur-md {
+    backdrop-filter: blur(8px) !important;
+  }
+}
+
+/* Performance: Disable heavy animations on low-power devices */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Dark mode performance optimization */
+@media (prefers-color-scheme: dark) {
+  @supports (backdrop-filter: blur(10px)) {
+    .glass-orange,
+    .glass-orange-outline {
+      backdrop-filter: blur(8px) !important;
+    }
+  }
+}
+
+/* Print optimization - hide unnecessary elements */
+@media print {
+  .fixed,
+  [class*="sticky"],
+  button:not(.print-btn) {
+    display: none !important;
+  }
+
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+}
+/* ===== COMPREHENSIVE MOBILE OPTIMIZATION (NO DESKTOP CHANGES) ===== */
+
+/* MOBILE GRID LAYOUTS - Collapse multi-column to single column on mobile */
+@media (max-width: 768px) {
+  /* 4-column to 1-column grid */
+  .grid-responsive-4,
+  .grid-auto-fit,
+  [class*="grid-cols-4"] {
+    grid-template-columns: 1fr !important;
+    gap: clamp(1rem, 4vw, 1.5rem) !important;
+  }
+
+  /* 3-column to 1-column grid */
+  .grid-responsive-3,
+  [class*="grid-cols-3"] {
+    grid-template-columns: 1fr !important;
+    gap: clamp(1rem, 3vw, 1.25rem) !important;
+  }
+
+  /* 2-column to 1-column grid */
+  .grid-responsive-2,
+  [class*="grid-cols-2"] {
+    grid-template-columns: 1fr !important;
+    gap: clamp(0.75rem, 3vw, 1rem) !important;
+  }
+
+  /* ===== SECTION PADDING OPTIMIZATION ===== */
+  /* Reduce padding on all sections for mobile compactness */
+  .section-padding-y {
+    padding-top: clamp(1.5rem, 4vw, 2.5rem) !important;
+    padding-bottom: clamp(1.5rem, 4vw, 2.5rem) !important;
+  }
+
+  .section-padding-y-compact {
+    padding-top: clamp(1rem, 3vw, 1.5rem) !important;
+    padding-bottom: clamp(1rem, 3vw, 1.5rem) !important;
+  }
+
+  /* ===== CONTAINER/WRAPPER OPTIMIZATION ===== */
+  .container,
+  .container-fluid,
+  [class*="mx-auto"] {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Optimize max-width containers */
+  .max-w-7xl,
+  .max-w-6xl,
+  .max-w-5xl,
+  .max-w-4xl,
+  [class*="max-w"] {
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* ===== HEADER/NAVBAR OPTIMIZATION ===== */
+  header,
+  .topbanner,
+  nav {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  /* Compact header spacing */
+  header nav,
+  .navbar {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+
+  /* Mobile menu optimization */
+  .mobile-menu {
+    width: 100vw !important;
+  }
+
+  /* ===== TYPOGRAPHY OPTIMIZATION ===== */
+  /* All headings get mobile-friendly sizing */
+  h1 {
+    font-size: clamp(1.5rem, 5vw, 2rem) !important;
+    line-height: 1.3 !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  h2 {
+    font-size: clamp(1.25rem, 4vw, 1.75rem) !important;
+    line-height: 1.35 !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  h3 {
+    font-size: clamp(1rem, 3vw, 1.25rem) !important;
+    line-height: 1.4 !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  h4,
+  h5,
+  h6 {
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem) !important;
+    line-height: 1.4 !important;
+  }
+
+  p {
+    font-size: clamp(0.85rem, 2vw, 1rem) !important;
+    line-height: 1.6 !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  /* Minimum text sizes - never below 12px for readability */
+  .text-xs {
+    font-size: 0.75rem !important; /* 12px minimum */
+  }
+
+  .text-sm {
+    font-size: 0.875rem !important; /* 14px */
+  }
+
+  .text-base {
+    font-size: 1rem !important; /* 16px */
+  }
+
+  .text-lg {
+    font-size: 1.125rem !important; /* 18px */
+  }
+
+  .text-xl {
+    font-size: 1.25rem !important; /* 20px */
+  }
+
+  /* ===== IMAGE OPTIMIZATION ===== */
+  img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* Optimize image containers */
+  [class*="overflow-hidden"] img {
+    width: 100%;
+    display: block;
+  }
+
+  /* Picture elements for responsive images */
+  picture img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* ===== CARD & COMPONENT OPTIMIZATION ===== */
+  /* Reduce card padding on mobile - targeted rules only */
+  [class*="rounded-"] {
+    border-radius: clamp(0.375rem, 2vw, 0.75rem) !important;
+  }
+
+  /* Only apply padding to actual card components, not all bg- classes */
+  .card {
+    padding: clamp(0.75rem, 3vw, 1.5rem) !important;
+  }
+
+  /* ===== FLEX LAYOUT OPTIMIZATION ===== */
+  /* NOTE: Removed aggressive flex-row override that broke layouts */
+  /* Let Tailwind's responsive utilities handle flex direction */
+
+  .flex-between,
+  .flex-center {
+    /* Allow horizontal layout on wider mobile screens */
+    gap: 1rem !important;
+  }
+
+  /* ===== BUTTON OPTIMIZATION ===== */
+  button,
+  [role="button"],
+  .btn {
+    width: auto;
+    padding: 0.75rem 1.25rem !important;
+    font-size: clamp(0.8rem, 2vw, 0.95rem) !important;
+    min-height: 2.75rem !important; /* 44px touch target */
+    border-radius: 0.5rem !important;
+  }
+
+  /* Button groups on mobile */
+  button + button {
+    margin-top: 0.5rem !important;
+    margin-left: 0 !important;
+  }
+
+  .button-group {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+
+  /* ===== FORM OPTIMIZATION ===== */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important; /* Prevent iOS zoom */
+    padding: 0.75rem !important;
+    border-radius: 0.375rem !important;
+    width: 100%;
+  }
+
+  /* Form group spacing */
+  [class*="form"] > * {
+    margin-bottom: 1rem !important;
+  }
+
+  /* ===== SPACING UTILITIES ===== */
+  /* NOTE: Removed aggressive global spacing overrides - let Tailwind handle responsive spacing */
+
+  /* ===== POSITIONING OPTIMIZATION ===== */
+  /* NOTE: Removed global .fixed width override that broke sticky contact bar */
+
+  /* ===== HERO/BANNER OPTIMIZATION ===== */
+  .hero-topbanner-content,
+  .hero-content {
+    padding-top: clamp(1rem, 3vw, 1.5rem) !important;
+    padding-bottom: clamp(1rem, 3vw, 1.5rem) !important;
+  }
+
+  /* ===== SECTION SPECIFIC OPTIMIZATION ===== */
+
+  /* Capabilities Section */
+  .capabilities-section,
+  .capabilities-content {
+    gap: clamp(1rem, 3vw, 1.25rem) !important;
+  }
+
+  /* Phase Section */
+  .phases-section {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Footer optimization */
+  footer {
+    padding: clamp(0.6rem, 1.8vw, 1rem) 0.75rem !important;
+  }
+
+  footer [class*="grid"] {
+    grid-template-columns: 1fr !important;
+    gap: 0.85rem !important;
+  }
+
+  /* ===== ANIMATION PERFORMANCE ===== */
+  /* Reduce animation duration on mobile for smooth scrolling */
+  [class*="motion-"],
+  [class*="animate-"] {
+    animation-duration: 0.75s !important;
+  }
+  /* ===== TEXT ALIGNMENT ===== */
+  /* Center text on mobile for better readability */
+  .text-justify {
+    text-align: left !important;
+  }
+
+  /* ===== UTILITY OVERRIDES FOR MOBILE COMPACTNESS ===== */
+  .gap-1 {
+    gap: 0.25rem !important;
+  }
+  .gap-2 {
+    gap: 0.5rem !important;
+  }
+  .gap-3 {
+    gap: 0.75rem !important;
+  }
+  .gap-4 {
+    gap: 1rem !important;
+  }
+  .gap-6 {
+    gap: 1.25rem !important;
+  }
+  .gap-8 {
+    gap: 1.5rem !important;
+  }
+
+  .p-2 {
+    padding: 0.5rem !important;
+  }
+  .p-3 {
+    padding: 0.75rem !important;
+  }
+  .p-4 {
+    padding: 1rem !important;
+  }
+  .p-5 {
+    padding: 1.25rem !important;
+  }
+  .p-6 {
+    padding: 1.5rem !important;
+  }
+  .p-8 {
+    padding: 2rem !important;
+  }
+
+  .m-2 {
+    margin: 0.5rem !important;
+  }
+  .m-3 {
+    margin: 0.75rem !important;
+  }
+  .m-4 {
+    margin: 1rem !important;
+  }
+  .mb-4 {
+    margin-bottom: 1rem !important;
+  }
+  .mt-4 {
+    margin-top: 1rem !important;
+  }
+
+  /* ===== SCROLLBAR OPTIMIZATION ===== */
+  /* Hide scrollbar on mobile for cleaner look */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+  }
+
+  /* ===== TABLE OPTIMIZATION ===== */
+  table {
+    font-size: 0.85rem !important;
+  }
+
+  th,
+  td {
+    padding: 0.5rem !important;
+  }
+
+  /* Stack table on mobile */
+  @media (max-width: 480px) {
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+      display: block !important;
+    }
+
+    th {
+      display: none !important;
+    }
+
+    tr {
+      border: 1px solid #ddd;
+      margin-bottom: 0.5rem;
+    }
+
+    td {
+      display: block;
+      text-align: right;
+      padding-left: 50%;
+      position: relative;
+    }
+
+    td:before {
+      content: attr(data-label);
+      position: absolute;
+      left: 0;
+      width: 50%;
+      padding-right: 1rem;
+      text-align: left;
+    }
+  }
+}
+
+/* EXTRA SMALL DEVICES (<380px) */
+@media (max-width: 380px) {
+  html {
+    font-size: 14px;
+  }
+
+  h1 {
+    font-size: 1.25rem !important;
+  }
+
+  h2 {
+    font-size: 1.1rem !important;
+  }
+
+  h3 {
+    font-size: 1rem !important;
+  }
+
+  button,
+  [role="button"] {
+    padding: 0.65rem 1rem !important;
+    font-size: 0.75rem !important;
+  }
+
+  /* Stack everything tightly on very small screens */
+  .container,
+  [class*="mx-auto"] {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  /* Hide less important content on tiny screens */
+  .hide-xs {
+    display: none !important;
+  }
+}
+
+/* LANDSCAPE MODE OPTIMIZATION */
+@media (max-height: 500px) and (orientation: landscape) {
+  /* Reduce vertical padding in landscape mode */
+  [class*="py-"],
+  .section-padding-y {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+
+  h1 {
+    font-size: 1.25rem !important;
+  }
+
+  h2 {
+    font-size: 1.1rem !important;
+  }
+
+  p {
+    font-size: 0.85rem !important;
+  }
+
+  button {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.75rem !important;
+  }
+
+  /* Chevron Timeline Optimizations */
+  .gap-6 {
+    gap: 1rem !important;
+  }
+
+  /* Horizontal scroll indicator for mobile chevron timeline */
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+
+  .overflow-x-auto > * {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+}
+
+/* Phase Section Arrows */
+.phase-arrow {
+  width: 40px;
+  height: 48px;
+  color: #ff8c42;
+  opacity: 0.9;
+  filter: drop-shadow(0 2px 6px rgba(255, 140, 66, 0.45));
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+/* Responsive arrows for tablets and 720p */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .phase-arrow {
+    width: 28px !important;
+    height: 32px !important;
+  }
+}
+
+/* Desktop arrows - keep original size */
+@media (min-width: 1024px) {
+  .phase-arrow {
+    width: 40px !important;
+    height: 48px !important;
+  }
+}
+
+/* ===== IPAD PRO & LANDSCAPE OPTIMIZATION (1024px - 1366px) ===== */
+/* Fine-tune capability boxes and overall layout for iPad Pro */
+@media (min-width: 1024px) and (max-width: 1366px) {
+  /* Capability boxes container */
+  .capabilities-content div[class*="border-orange-200"] {
+    padding: 0.75rem !important;
+    max-width: 100% !important;
+    border-radius: 0.75rem !important;
+  }
+
+  /* Individual capability cards - reduce size for iPad Pro */
+  .capabilities-content
+    .grid[class*="grid-cols-8"]
+    div[class*="border-gray-200"] {
+    padding: 0.75rem !important;
+    border-radius: 0.6rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 7rem !important;
+    aspect-ratio: 1/1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+  }
+
+  /* Icons in capability cards - significantly reduce for iPad Pro */
+  .capabilities-content
+    .grid[class*="grid-cols-8"]
+    div[class*="border-gray-200"]
+    svg,
+  .capabilities-content .aspect-square svg {
+    width: 2rem !important;
+    height: 2rem !important;
+  }
+
+  /* Capability card titles - further reduce font */
+  .capabilities-content
+    .grid[class*="grid-cols-8"]
+    div[class*="border-gray-200"]
+    h3,
+  .capabilities-content .aspect-square h3 {
+    font-size: 0.7rem !important;
+    line-height: 1.1 !important;
+    margin: 0 !important;
+    word-break: break-word !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important;
+    line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+    max-width: 100% !important;
+  }
+
+  /* Grid layout for iPad Pro - 8 columns to fit in 2 rows */
+  .capabilities-content .grid[class*="grid-cols-2"][class*="grid-cols-4"] {
+    grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Override lg:grid-cols-8 specifically for iPad Pro */
+  .capabilities-content .grid[class*="grid-cols-8"] {
+    grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Adjust capabilities section header */
+  .capabilities-content h1.capabilities-gradient-text {
+    font-size: 1.6rem !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0.35rem !important;
+  }
+
+  /* Fix header alignment - left and right text same level */
+  .capabilities-content > div:first-child .flex.flex-row {
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+  }
+
+  /* Remove top margin from right-side text to align with heading */
+  .capabilities-content > div:first-child .flex.flex-row > div:last-child {
+    margin-top: 0 !important;
+  }
+
+  /* Make capability section paragraph same size as hero section */
+  .capabilities-content > div:first-child p {
+    font-size: 0.75rem !important;
+    line-height: 1.45 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Improve spacing between sections on iPad Pro */
+  section {
+    padding-top: 25px !important;
+    padding-bottom: 25px !important;
+  }
+
+  /* Better container padding for iPad Pro */
+  .content-maxwidth,
+  [class*="max-w-"] {
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+  }
+
+  /* Sticky contact bar positioning on iPad Pro */
+  .sticky-contact-bar {
+    right: 0.75rem !important;
+  }
+
+  /* Product grid optimization for iPad Pro */
+  .grid[class*="grid-cols-1"][class*="grid-cols-2"][class*="grid-cols-3"] {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 1.2rem !important;
+  }
+
+  /* Button sizing for iPad Pro */
+  button,
+  a[role="button"] {
+    min-height: 2.7rem !important;
+    padding: 0.6rem 1.2rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  /* Better touch targets for iPad */
+  input,
+  textarea,
+  select {
+    min-height: 2.7rem !important;
+    padding: 0.7rem 0.95rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  /* Reduce gap in capability grid */
+  .capabilities-content > div:last-child {
+    gap: 0.65rem !important;
+  }
+
+  /* Fix Phases section heading and description alignment */
+  section.bg-black .content-maxwidth .animated-gradient-text {
+    font-size: 1.9rem !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0.4rem !important;
+  }
+
+  /* Align heading and description at same level in phases section */
+  section.bg-black .content-maxwidth > div > div {
+    align-items: flex-start !important;
+    gap: 1rem !important;
+  }
+
+  section.bg-black .content-maxwidth > div > div > div:last-child p,
+  section.bg-black .content-maxwidth > div > div > div.sm\:flex-\[1\.5\] p,
+  section.bg-black p[class*="text-justify"][class*="lg:text-\[20px\]"],
+  section.bg-black div[class*="flex-\[1.5\]"] p {
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Make image slider section description same size as phases section */
+  .image-slider-content .flex-\[1\.5\] p,
+  .image-slider-content div[class*="md:flex-\[1.5\]"] p,
+  .image-slider-content p[class*="text-justify"][class*="lg:text-\[20px\]"],
+  .image-slider-content p.text-justify.font-semibold {
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+/* ===== IPAD PORTRAIT OPTIMIZATION (768px - 1023px) ===== */
+/* Optimize for iPad in portrait mode and 720p displays */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Capability cards container */
+  .capabilities-content .card.border-2[class*="border-orange"] {
+    padding: 0.35rem 0.15rem !important;
+    border-radius: 0.9rem !important;
+    max-width: 100% !important;
+  }
+
+  /* Motion wrapper around cards - remove any spacing */
+  .capabilities-content .grid > div {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Individual capability cards */
+  .capabilities-content .card.border.border-gray-200 {
+    padding: 0.3rem !important;
+    border-radius: 0.5rem !important;
+    height: auto !important;
+    min-height: 5.5rem !important;
+    min-width: 5.5rem !important;
+    margin: 0 !important;
+    gap: 0rem !important;
+  }
+
+  /* Icons in capability cards for iPad/720p */
+  .capabilities-content .card.border.border-gray-200 svg,
+  .capabilities-content .aspect-square svg {
+    width: 1.3rem !important;
+    height: 1.3rem !important;
+  }
+
+  /* Capability card titles */
+  .capabilities-content .card.border.border-gray-200 h3,
+  .capabilities-content .aspect-square h3 {
+    font-size: 0.6rem !important;
+    line-height: 1.15 !important;
+  }
+
+  /* Grid layout - 8 columns for all items in fewer rows */
+  .capabilities-content .grid[class*="grid-cols-2"][class*="grid-cols-4"] {
+    grid-template-columns: repeat(8, minmax(5rem, 1fr)) !important;
+    gap: 0.15rem !important;
+  }
+
+  /* Override lg:grid-cols-8 for iPad/720p */
+  .capabilities-content .grid[class*="grid-cols-8"] {
+    grid-template-columns: repeat(8, minmax(5rem, 1fr)) !important;
+    gap: 0.15rem !important;
+  }
+
+  /* Adjust header for iPad/720p */
+  .capabilities-content h1.capabilities-gradient-text {
+    font-size: 1.6rem !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0.35rem !important;
+  }
+
+  .capabilities-content [class*="flex-"] p {
+    font-size: 0.75rem !important;
+  }
+}
+/* ===== TABLET & 720P OPTIMIZATIONS (768px - 1023px) ===== */
+/* Fine-tune layout and spacing for small tablets and 720P displays */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Hero/Topbanner Section - Responsive for tablets */
+  .topbanner {
+    padding-top: 25px;
+    padding-bottom: 25px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .topbanner h1:not(.animated-gradient-text):not([class*="text-"]) {
+    font-size: 2.5rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .topbanner p {
+    font-size: 0.95rem !important;
+    line-height: 1.55 !important;
+  }
+
+  .topbanner button {
+    padding: 0.65rem 1.25rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  .topbanner .flex-row {
+    gap: 1.5rem !important;
+  }
+
+  /* Capabilities Section - Adjust grid and spacing */
+  .capabilities-content .flex-row {
+    gap: 1.25rem !important;
+  }
+
+  /* Image Slider Section - Adjust layout */
+  .image-slider-content .flex-row {
+    gap: 1.25rem !important;
+  }
+
+  /* General content spacing adjustments */
+  .content-maxwidth {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Reduce card padding for better fit */
+  .capabilities-content .grid > div {
+    padding: 0.5rem !important;
+  }
+
+  /* Adjust container max-width for tablets */
+  .hero-topbanner-content {
+    max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Contact Section - Let's Innovate With Danvion */
+  #contact .animated-gradient-text,
+  #contact .animated-gradient-text-orange {
+    font-size: 2.5rem !important;
+    line-height: 1.1 !important;
+  }
+
+  #contact h2[style*="clamp"] {
+    font-size: 2.5rem !important;
+  }
+
+  /* Contact form styling */
+  #contact .grid.md\:grid-cols-2 {
+    gap: 2rem !important;
+  }
+
+  #contact .grid.md\:grid-cols-2 > div:first-child {
+    overflow: hidden !important;
+    max-width: 100% !important;
+  }
+
+  #contact .grid.md\:grid-cols-2 > div:first-child > div {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  #contact .grid.md\:grid-cols-2 > div:first-child h2 {
+    max-width: 100% !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* Footer - 4 columns for tablet */
+  footer .grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 0.75rem !important;
+  }
+
+  footer h3,
+  footer h4 {
+    font-size: 0.7rem !important;
+  }
+
+  footer p,
+  footer a,
+  footer nav {
+    font-size: 0.65rem !important;
+  }
+}
+
+/* ===== MOBILE COMPACT POLISH LAYER (FINAL OVERRIDE) ===== */
+/* Reference direction: clean/tight mobile rhythm used in modern SaaS sites */
+@media (max-width: 767px) {
+  html {
+    font-size: 15px !important;
+  }
+
+  body {
+    line-height: 1.45 !important;
+  }
+
+  /* Keep fixed widgets compact without affecting full-page modals */
+  .fixed:not(.inset-0) {
+    width: auto !important;
+    max-width: none !important;
+  }
+
+  header .max-w-\[1280px\] {
+    padding-left: 0.45rem !important;
+    padding-right: 0.45rem !important;
+  }
+
+  header .h-16 {
+    height: 3.05rem !important;
+  }
+
+  header img[alt="Danvion Logo"] {
+    width: 1.72rem !important;
+    height: 1.72rem !important;
+  }
+
+  header .font-bold.text-brand-black {
+    font-size: 0.8rem !important;
+    letter-spacing: 0.01em;
+    line-height: 1 !important;
+  }
+
+  header a.flex.items-center {
+    gap: 0.42rem !important;
+    min-height: 1.85rem !important;
+  }
+
+  header button[aria-label*="menu"] {
+    width: 2.05rem !important;
+    min-width: 2.05rem !important;
+    height: 2.05rem !important;
+    min-height: 2.05rem !important;
+    padding: 0.24rem !important;
+    gap: 0.2rem !important;
+    border-radius: 0.62rem !important;
+    background: rgba(255, 111, 0, 0.05) !important;
+    border: 1px solid rgba(255, 111, 0, 0.18) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  header button[aria-label*="menu"] span {
+    display: block !important;
+    width: 1.02rem !important;
+    height: 0.12rem !important;
+    min-height: 0.12rem !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 2px !important;
+    background: #ff6f00 !important;
+    transform-origin: center !important;
+    transition:
+      transform 0.22s ease,
+      opacity 0.18s ease !important;
+  }
+
+  header button[aria-label*="menu"] span.opacity-0 {
+    opacity: 0 !important;
+  }
+
+  header button[aria-label*="menu"] span.rotate-45.translate-y-3 {
+    transform: translateY(0.24rem) rotate(45deg) !important;
+  }
+
+  header button[aria-label*="menu"] span.-rotate-45.-translate-y-3 {
+    transform: translateY(-0.24rem) rotate(-45deg) !important;
+  }
+
+  #mobile-nav {
+    width: min(76vw, 280px) !important;
+    display: block !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    z-index: 9999 !important;
+  }
+
+  #mobile-nav nav {
+    padding: 0.7rem !important;
+  }
+
+  #mobile-nav nav > a > div,
+  #mobile-nav nav > div {
+    padding: 0.62rem 0.75rem !important;
+    border-radius: 0.7rem !important;
+    font-size: 0.75rem !important;
+  }
+
+  .topbanner {
+    padding-top: 25px !important;
+    padding-bottom: 25px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .topbanner > .hero-topbanner-content {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  .topbanner .hero-topbanner-content > div {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  .topbanner h1:not(.animated-gradient-text):not([class*="text-"]),
+  .topbanner .animated-gradient-text {
+    font-size: clamp(1.95rem, 8vw, 2.38rem) !important;
+    line-height: 1.12 !important;
+    letter-spacing: -0.02em !important;
+    margin-bottom: 0.18rem !important;
+  }
+
+  .topbanner p {
+    font-size: 1.02rem !important;
+    line-height: 1.52 !important;
+    text-align: left !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Mobile button only - specific selector for button below description */
+  .topbanner > div > button {
+    width: auto !important;
+    max-width: none !important;
+    padding: 0.35rem 0.6rem !important;
+    font-size: 0.55rem !important;
+    border-radius: 9999px !important;
+    min-height: auto !important;
+    white-space: nowrap !important;
+    text-align: left !important;
+    justify-content: flex-start !important;
+    gap: 0.25rem !important;
+  }
+
+  .topbanner > div > button svg {
+    width: 0.55rem !important;
+    height: 0.55rem !important;
+    flex-shrink: 0 !important;
+  }
+
+  .topbanner > div > button span {
+    white-space: nowrap !important;
+    line-height: 1 !important;
+    text-align: left !important;
+  }
+
+  /* HeroText mobile: organize as clean single-column flow */
+  .topbanner .hero-topbanner-content > div > div.flex.flex-wrap {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.22rem !important;
+    align-items: start !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  .topbanner .hero-topbanner-content > div > div.flex.flex-wrap.mt-1,
+  .topbanner .hero-topbanner-content > div > div.flex.flex-wrap.sm\:mt-2 {
+    margin-top: 0 !important;
+  }
+
+  .topbanner .hero-topbanner-content > div > div.flex.flex-wrap > div {
+    width: 100% !important;
+    flex-basis: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .topbanner
+    .hero-topbanner-content
+    > div
+    > div.flex.flex-wrap
+    > div:first-child {
+    max-width: 21.5rem !important;
+  }
+
+  .topbanner
+    .hero-topbanner-content
+    > div
+    > div.flex.flex-wrap
+    > div:first-child
+    button {
+    margin-top: 0.12rem !important;
+  }
+
+  .topbanner
+    .hero-topbanner-content
+    > div
+    > div.flex.flex-wrap
+    > div:last-child {
+    margin-top: 0 !important;
+    padding-right: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .topbanner
+    .hero-topbanner-content
+    > div
+    > div.flex.flex-wrap
+    > div:last-child
+    p {
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
+    text-wrap: pretty;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  section {
+    padding-top: 25px !important;
+    padding-bottom: 25px !important;
+  }
+
+  .content-maxwidth,
+  .hero-topbanner-content,
+  .capabilities-content,
+  .image-slider-content {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  h1 {
+    font-size: clamp(1.56rem, 5.2vw, 1.95rem) !important;
+    line-height: 1.22 !important;
+    margin-bottom: 0.62rem !important;
+  }
+
+  h2 {
+    font-size: clamp(1.22rem, 4.2vw, 1.58rem) !important;
+    line-height: 1.28 !important;
+    margin-bottom: 0.55rem !important;
+  }
+
+  h3 {
+    font-size: clamp(1.02rem, 3.1vw, 1.2rem) !important;
+    line-height: 1.3 !important;
+  }
+
+  p {
+    font-size: 0.98rem !important;
+    line-height: 1.58 !important;
+    margin-bottom: 0.66rem !important;
+  }
+
+  .card,
+  .rounded-2xl,
+  .rounded-xl,
+  [class*="shadow"] {
+    border-radius: 0.85rem !important;
+  }
+
+  .card,
+  .bg-white.border-2,
+  .bg-white.rounded-2xl,
+  .bg-white.rounded-xl {
+    padding: 0.8rem !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  .grid.grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-3,
+  .grid.grid-cols-1.sm\:grid-cols-2,
+  .grid.grid-cols-2.sm\:grid-cols-4 {
+    gap: 0.72rem !important;
+  }
+
+  .h-48,
+  .h-40,
+  .h-52 {
+    height: 10.2rem !important;
+  }
+
+  input,
+  textarea,
+  select {
+    border-radius: 0.62rem !important;
+    padding: 0.64rem 0.7rem !important;
+  }
+
+  textarea {
+    min-height: 6.6rem !important;
+  }
+
+  button,
+  [role="button"],
+  .btn {
+    min-height: 2.6rem !important;
+    padding: 0.68rem 0.95rem !important;
+    font-size: 0.86rem !important;
+    border-radius: 0.68rem !important;
+  }
+
+  footer {
+    padding: 0.5rem 0.65rem 0.5rem !important;
+  }
+
+  footer p,
+  footer a,
+  footer span {
+    font-size: 0.78rem !important;
+    line-height: 1.4 !important;
+  }
+
+  .sticky-contact-bar {
+    right: 0 !important;
+    gap: 0 !important;
+    padding-right: 0.5rem !important;
+  }
+
+  .sticky-contact-bar .sticky-contact-bar__button {
+    width: 3.2rem !important;
+    height: 3.2rem !important;
+    border-radius: 0.8rem !important;
+    box-shadow:
+      0 8px 24px rgba(255, 106, 0, 0.35),
+      inset 0 1px 2px rgba(255, 255, 255, 0.2) !important;
+  }
+
+  .sticky-contact-bar .sticky-contact-bar__icon {
+    width: 1.3rem !important;
+    height: 1.3rem !important;
+  }
+}
+
+/* Sticky contact bar: isolated styles so global mobile utilities do not break it */
+.sticky-contact-bar__button {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ff6a00 0%, #ff7a1a 100%);
+  border: 1.5px solid rgba(255, 140, 0, 0.4);
+  box-shadow:
+    0 8px 24px rgba(255, 106, 0, 0.35),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.sticky-contact-bar__button:hover {
+  box-shadow:
+    0 12px 32px rgba(255, 106, 0, 0.45),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+.sticky-contact-bar__icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  color: #ffffff;
+}
+
+@media (max-width: 767px) {
+  .sticky-contact-bar {
+    right: 0 !important;
+    width: auto !important;
+    gap: 0 !important;
+    z-index: 60 !important;
+    padding-right: 0.4rem !important;
+  }
+
+  .sticky-contact-bar .sticky-contact-bar__item {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .sticky-contact-bar .sticky-contact-bar__button {
+    width: 2.8rem !important;
+    height: 2.8rem !important;
+    border-radius: 0.7rem !important;
+    border: 1.5px solid rgba(255, 140, 0, 0.4) !important;
+    background: linear-gradient(135deg, #ff6a00 0%, #ff7a1a 100%) !important;
+    box-shadow:
+      0 6px 16px rgba(255, 106, 0, 0.35),
+      inset 0 1px 2px rgba(255, 255, 255, 0.15) !important;
+    padding: 0 !important;
+  }
+
+  .sticky-contact-bar .sticky-contact-bar__icon {
+    width: 1.1rem !important;
+    height: 1.1rem !important;
+    color: #ffffff !important;
+  }
+}
+
+@media (max-width: 767px) {
+  /* Development phases: compact 3-column mobile layout (6 cards = 2 rows) */
+  .content-maxwidth.w-full > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 0.9rem !important;
+    margin-top: 1rem !important;
+    margin-bottom: 2rem !important;
+    overflow: visible !important;
+  }
+
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    > .relative {
+    overflow: visible !important;
+  }
+
+  .content-maxwidth.w-full > .mb-6.sm\:mb-7.md\:mb-8.lg\:mb-10 {
+    margin-bottom: 1.05rem !important;
+  }
+
+  .content-maxwidth.w-full > .mb-6.sm\:mb-7.md\:mb-8.lg\:mb-10 > .flex {
+    gap: 1.2rem !important;
+  }
+
+  .content-maxwidth.w-full > .mb-6.sm\:mb-7.md\:mb-8.lg\:mb-10 h1 {
+    font-size: clamp(1.55rem, 6.3vw, 1.95rem) !important;
+    margin-bottom: 0.55rem !important;
+    line-height: 1.14 !important;
+  }
+
+  .content-maxwidth.w-full > .mb-6.sm\:mb-7.md\:mb-8.lg\:mb-10 p {
+    font-size: 0.78rem !important;
+    line-height: 1.35 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    .group.h-full
+    > div {
+    min-height: 142px !important;
+    padding: 0.42rem !important;
+    border-radius: 0.62rem !important;
+  }
+
+  /* Icon container sizing for mobile */
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    .group.h-full
+    > div
+    > div[class*="rounded"] {
+    width: 1.8rem !important;
+    height: 1.8rem !important;
+    min-width: 1.8rem !important;
+    min-height: 1.8rem !important;
+    max-width: 1.8rem !important;
+    max-height: 1.8rem !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Number badge sizing for mobile */
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    .group.h-full
+    > div
+    > div[class*="absolute"][class*="top"] {
+    width: 1.4rem !important;
+    height: 1.4rem !important;
+    font-size: 0.5rem !important;
+  }
+
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    h3 {
+    font-size: 0.62rem !important;
+    line-height: 1.18 !important;
+  }
+
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    p {
+    font-size: 0.52rem !important;
+    line-height: 1.18 !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    svg {
+    width: 0.9rem !important;
+    height: 0.9rem !important;
+    min-width: 0.9rem !important;
+    min-height: 0.9rem !important;
+    max-width: 0.9rem !important;
+    max-height: 0.9rem !important;
+  }
+
+  /* Keep 3-column mobile flow (6 cards => 2 rows) and show snake arrows */
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    > .relative
+    > [class*="md:hidden"][class*="-bottom-14"] {
+    display: none !important;
+  }
+
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    > .relative
+    > [class*="md:block"][class*="lg:hidden"] {
+    display: none !important;
+  }
+
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    > .relative
+    > [class*="lg:block"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 30 !important;
+  }
+
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    > .relative
+    > [class*="lg:block"][class*="-right-10"] {
+    right: -0.45rem !important;
+    width: 0.9rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    > .relative
+    > [class*="lg:block"][class*="-left-10"] {
+    left: -0.45rem !important;
+    width: 0.9rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    > .relative
+    > [class*="lg:block"][class*="-bottom-11"] {
+    bottom: -0.45rem !important;
+    height: 0.9rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    .phase-arrow {
+    display: inline-block !important;
+    width: 1.32rem !important;
+    height: 1.52rem !important;
+    color: #ff8c42 !important;
+    opacity: 0.9 !important;
+    filter: drop-shadow(0 2px 6px rgba(255, 140, 66, 0.5)) !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+  }
+
+  /* Phase color divider: show as thin full-width colored line */
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    .group.h-full
+    .space-y-1
+    > div.rounded-full {
+    width: 100% !important;
+    height: 1px !important;
+    min-height: 1px !important;
+    max-height: 1px !important;
+    border-radius: 0 !important;
+    opacity: 0.6 !important;
+    padding: 0 !important;
+    margin-top: 0.15rem !important;
+    margin-bottom: 0.15rem !important;
+    transform: none !important;
+  }
+
+  /* Ensure colored divider line is full width on mobile */
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    .group.h-full
+    > div
+    > .space-y-1
+    > div[class*="rounded-full"],
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    .group
+    div[class*="h-0.5"],
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    .group
+    div[class*="h-1"] {
+    width: 100% !important;
+    height: 1px !important;
+    min-height: 1px !important;
+    max-height: 1px !important;
+    border-radius: 0 !important;
+    opacity: 0.6 !important;
+  }
+
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    h3 {
+    font-size: 0.62rem !important;
+    line-height: 1.18 !important;
+  }
+}
+
+@media (max-width: 767px) {
+  /* Capabilities section: compact mobile layout */
+  .capabilities-content {
+    margin-top: 0 !important;
+  }
+
+  section:has(.capabilities-content) {
+    padding-top: 0 !important;
+    padding-bottom: 0.08rem !important;
+    margin-top: -0.78rem !important;
+    margin-bottom: 0 !important;
+  }
+
+  section:has(.capabilities-content) .capabilities-content > div:first-child {
+    padding-top: 0 !important;
+    margin-top: -0.34rem !important;
+  }
+
+  .capabilities-content {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .capabilities-content > div:first-child {
+    margin-bottom: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .capabilities-content h1.capabilities-gradient-text {
+    font-size: clamp(1.45rem, 5.9vw, 1.8rem) !important;
+    line-height: 1.14 !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  .capabilities-content .flex-\[1\.5\] {
+    margin-top: 0.04rem !important;
+  }
+
+  .capabilities-content .flex-\[1\.5\] p {
+    font-size: 0.82rem !important;
+    line-height: 1.45 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .capabilities-content .mb-4.sm\:mb-6.md\:mb-8 {
+    margin-top: -1.38rem !important;
+    margin-bottom: 0 !important;
+  }
+
+  .capabilities-content .relative.w-full.max-w-\[640px\] {
+    max-width: 100% !important;
+    padding: 0.45rem !important;
+    border-radius: 0.75rem !important;
+    margin-bottom: 0 !important;
+  }
+
+  .capabilities-content .grid.grid-cols-2.sm\:grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.42rem !important;
+  }
+
+  .capabilities-content .aspect-square.w-full.max-w-\[150px\] {
+    max-width: 100% !important;
+    min-height: 5.1rem !important;
+    aspect-ratio: auto !important;
+    border-radius: 0.62rem !important;
+    padding: 0.45rem !important;
+    gap: 0.28rem !important;
+  }
+
+  .capabilities-content .aspect-square.w-full.max-w-\[150px\] svg {
+    width: 1.15rem !important;
+    height: 1.15rem !important;
+  }
+
+  .capabilities-content .aspect-square.w-full.max-w-\[150px\] h3 {
+    font-size: 0.68rem !important;
+    line-height: 1.2 !important;
+    margin: 0 !important;
+  }
+}
+
+@media (max-width: 767px) {
+  /* Designed products slider: compact mobile rhythm */
+  section:has(.image-slider-content) {
+    padding-top: 0.35rem !important;
+    padding-bottom: 0.5rem !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .image-slider-content {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .image-slider-content > .text-left.mb-8.sm\:mb-10.md\:mb-12.lg\:mb-16 {
+    margin-bottom: 0.75rem !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  .image-slider-content
+    > .text-left.mb-8.sm\:mb-10.md\:mb-12.lg\:mb-16
+    > .flex {
+    gap: 0.85rem !important;
+  }
+
+  .image-slider-content h1.capabilities-gradient-text {
+    font-size: clamp(1.85rem, 6.3vw, 2.35rem) !important;
+    line-height: 1.12 !important;
+    margin-bottom: 0.35rem !important;
+  }
+
+  .image-slider-content .flex-\[1\.5\] {
+    margin-top: 0 !important;
+  }
+
+  .image-slider-content .flex-\[1\.5\] p {
+    font-size: 0.78rem !important;
+    line-height: 1.42 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .image-slider-content
+    .overflow-hidden.relative.rounded-xl.md\:rounded-2xl.group {
+    border-radius: 0.72rem !important;
+  }
+
+  .image-slider-content .animate-image-marquee {
+    gap: 0.75rem !important;
+    animation-duration: 52000ms !important;
+  }
+
+  .image-slider-content
+    .shrink-0.w-\[160px\].h-\[100px\].sm\:w-\[220px\].sm\:h-\[140px\].md\:w-\[280px\].md\:h-\[180px\].lg\:w-\[360px\].lg\:h-\[240px\] {
+    width: 168px !important;
+    height: 104px !important;
+    border-radius: 0.62rem !important;
+    padding: 0 !important;
+    display: block !important;
+    overflow: hidden !important;
+    line-height: 0 !important;
+  }
+
+  .image-slider-content
+    .shrink-0.w-\[160px\].h-\[100px\].sm\:w-\[220px\].sm\:h-\[140px\].md\:w-\[280px\].md\:h-\[180px\].lg\:w-\[360px\].lg\:h-\[240px\]
+    > img {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    display: block !important;
+  }
+}
+
+/* Phase section fix for tablet/720p widths without changing component code */
+@media (min-width: 768px) and (max-width: 1023px) {
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .mb-4.sm\:mb-5.md\:mb-6.lg\:mb-7
+    > .flex {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .mb-4.sm\:mb-5.md\:mb-6.lg\:mb-7
+    > .flex
+    > div:first-child {
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .mb-4.sm\:mb-5.md\:mb-6.lg\:mb-7
+    > .flex
+    > div:last-child {
+    flex: 1.5 1 0% !important;
+    min-width: 0 !important;
+    margin-top: 0.35rem !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .mb-4.sm\:mb-5.md\:mb-6.lg\:mb-7
+    h1.animated-gradient-text {
+    font-size: clamp(1.85rem, 3.5vw, 2.35rem) !important;
+    line-height: 1.15 !important;
+    background: linear-gradient(
+      90deg,
+      #ffb66f 0%,
+      #ff7a12 50%,
+      #ffd6a7 100%
+    ) !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .mb-4.sm\:mb-5.md\:mb-6.lg\:mb-7
+    p {
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
+    margin: 0 !important;
+  }
+}
+
+/* Strong tablet-width fix for Phases section and sticky contact overlap */
+@media (min-width: 768px) and (max-width: 1100px) {
+  section.w-full.bg-black.font-sans .content-maxwidth.w-full > div:first-child {
+    margin-bottom: 0.9rem !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > div:first-child
+    > .flex {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: flex-start !important;
+    gap: 0.9rem !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > div:first-child
+    > .flex
+    > div:first-child {
+    flex: 1 1 0% !important;
+    min-width: 0 !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > div:first-child
+    > .flex
+    > div:last-child {
+    flex: 1.45 1 0% !important;
+    min-width: 0 !important;
+    margin-top: 0.2rem !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > div:first-child
+    h1.animated-gradient-text {
+    font-size: clamp(1.75rem, 3.5vw, 2.45rem) !important;
+    line-height: 1.12 !important;
+    margin-bottom: 0.35rem !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > div:first-child
+    p {
+    font-size: 0.95rem !important;
+    line-height: 1.45 !important;
+    margin: 0 !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 1.05rem !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    .group.h-full
+    > div {
+    min-height: 210px !important;
+    padding: 0.8rem !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    h3 {
+    font-size: 1.15rem !important;
+    line-height: 1.22 !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    p {
+    font-size: 0.82rem !important;
+    line-height: 1.38 !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    > .relative
+    > [class*="md:block"][class*="lg:hidden"][class*="top-1/2"] {
+    top: 58% !important;
+    transform: translateY(-50%) !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    > .relative
+    > [class*="md:block"][class*="lg:hidden"][class*="-right-10"] {
+    right: -0.72rem !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    > .relative
+    > [class*="md:block"][class*="lg:hidden"][class*="-left-10"] {
+    left: -0.72rem !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    > .relative
+    > [class*="md:block"][class*="lg:hidden"][class*="-bottom-10"] {
+    bottom: -0.82rem !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    .phase-arrow {
+    width: 25px !important;
+    height: 25px !important;
+  }
+
+  /* Use desktop (3-column snake) arrows in this width range */
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    > .relative
+    > [class*="md:block"][class*="lg:hidden"] {
+    display: none !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    > .relative
+    > [class*="lg:block"] {
+    display: block !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    > .relative
+    > [class*="lg:block"][class*="-right-10"] {
+    right: -1.5rem !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    > .relative
+    > [class*="lg:block"][class*="-left-10"] {
+    left: -1.3rem !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    > .relative
+    > [class*="lg:block"][class*="-bottom-11"] {
+    bottom: -1.25rem !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    > .relative
+    > [class*="lg:block"] {
+    z-index: 26 !important;
+  }
+}
+
+@media (max-width: 767px) {
+  /* Final mobile spacing trim: phases -> designed products -> contact */
+  section.w-full.bg-black.font-sans {
+    padding-top: 0.2rem !important;
+    padding-bottom: 0.25rem !important;
+    margin-bottom: 0 !important;
+  }
+
+  .content-maxwidth.w-full > .mb-6.sm\:mb-7.md\:mb-8.lg\:mb-10 {
+    margin-bottom: 0.45rem !important;
+  }
+
+  .content-maxwidth.w-full > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
+    margin-top: 0.55rem !important;
+    margin-bottom: 0.4rem !important;
+    gap: 0.72rem !important;
+  }
+
+  section:has(.image-slider-content) {
+    padding-top: 0.15rem !important;
+    padding-bottom: 0.2rem !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .image-slider-content > .text-left.mb-8.sm\:mb-10.md\:mb-12.lg\:mb-16 {
+    margin-bottom: 0.38rem !important;
+  }
+
+  #contact {
+    padding-top: 0.35rem !important;
+    padding-bottom: 1rem !important;
+    margin-top: 0 !important;
+  }
+
+  #contact .text-left.mb-6.sm\:mb-6.md\:mb-6.mt-0.pt-0 {
+    margin-bottom: 0.75rem !important;
+  }
+
+  #contact .text-left.mb-6.sm\:mb-6.md\:mb-6.mt-0.pt-0 > .flex {
+    gap: 0.9rem !important;
+  }
+
+  #contact .text-left.mb-6.sm\:mb-6.md\:mb-6.mt-0.pt-0 h1 {
+    margin-bottom: 0.35rem !important;
+    line-height: 1.12 !important;
+  }
+
+  #contact .text-left.mb-6.sm\:mb-6.md\:mb-6.mt-0.pt-0 .flex-\[1\.5\] {
+    margin-top: 0 !important;
+  }
+
+  #contact .text-left.mb-6.sm\:mb-6.md\:mb-6.mt-0.pt-0 .flex-\[1\.5\] p {
+    margin-bottom: 0 !important;
+    font-size: 0.78rem !important;
+    line-height: 1.38 !important;
+  }
+}
+
+/* Global section padding: keep top/bottom symmetric across all sections */
+:root {
+  --section-pad: 25px;
+  --container-pad: 1rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --container-pad: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --container-pad: 2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  section.bg-black
+    .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    h3 {
+    font-size: clamp(1rem, 0.9rem + 0.4vw, 1.125rem) !important;
+    line-height: 1.2 !important;
+  }
+
+  section.bg-black
+    .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    p {
+    font-size: 0.875rem !important;
+    line-height: 1.55 !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --container-pad: 2.5rem;
+  }
+}
+
+/* Refine padding for 1200px - 1400px viewports */
+@media (min-width: 1200px) and (max-width: 1400px) {
+  :root {
+    --container-pad: 2.5rem;
+  }
+
+  /* Standardize all section headings to match "Our Designed Products" size */
+  .capabilities-gradient-text,
+  .animated-gradient-text,
+  h1.capabilities-gradient-text,
+  h1.animated-gradient-text,
+  .topbanner h1,
+  #contact h1,
+  .content-maxwidth h1,
+  .image-slider-content h1 {
+    font-size: 2rem !important;
+    line-height: 1.2 !important;
+  }
+
+  /* Phase Cards - Vertical layout with proper overflow handling */
+  section.bg-black .relative.group.h-full > div.relative.h-full,
+  section.bg-black div.relative.h-full[class*="min-h-"],
+  section.bg-black div[class*="min-h-\\[205px\\]"],
+  section.bg-black div[class*="min-h-\\[225px\\]"],
+  section.bg-black div[class*="min-h-\\[240px\\]"],
+  section.bg-black .group div.relative.h-full {
+    min-height: 200px !important;
+    padding: 0.85rem 1rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.75rem !important;
+    overflow: hidden !important;
+  }
+
+  /* Phase card - Icon container */
+  section.bg-black .group div.relative.h-full > div:first-child {
+    flex-shrink: 0 !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  /* Phase card - Content wrapper */
+  section.bg-black .group div.relative.h-full .space-y-1 {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.35rem !important;
+    overflow: hidden !important;
+  }
+
+  /* Phase card title */
+  section.bg-black .group div.relative.h-full h3 {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Phase card description */
+  section.bg-black .group div.relative.h-full p {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    line-height: 1.45 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 4 !important;
+    line-clamp: 4 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  /* Phase card number badge - reposition for horizontal layout */
+  section.bg-black div[class*="rounded-full"][class*="top-3"] {
+    top: 0.5rem !important;
+    right: 0.5rem !important;
+  }
+}
+
+/* ===== LARGE DESKTOP CAPABILITIES ENHANCEMENT (1200px+) ===== */
+@media (min-width: 1200px) {
+  /* Make capability boxes larger */
+  .capabilities-content .card.border.border-gray-200,
+  .capabilities-content .aspect-square {
+    min-height: 9rem !important;
+    padding: 1.25rem !important;
+  }
+
+  /* Larger icons */
+  .capabilities-content .card.border.border-gray-200 svg,
+  .capabilities-content .aspect-square svg {
+    width: 2.8rem !important;
+    height: 2.8rem !important;
+  }
+
+  /* Larger fonts */
+  .capabilities-content .card.border.border-gray-200 h3,
+  .capabilities-content .aspect-square h3 {
+    font-size: 1rem !important;
+    line-height: 1.3 !important;
+    margin-top: 0.6rem !important;
+  }
+
+  /* Grid gap */
+  .capabilities-content .grid[class*="grid-cols-8"] {
+    gap: 1rem !important;
+  }
+
+  /* Container padding */
+  .capabilities-content div[class*="border-orange-200"] {
+    padding: 1.25rem !important;
+  }
+}
+
+section {
+  padding-top: var(--section-pad) !important;
+  padding-bottom: var(--section-pad) !important;
+}
+
+.topbanner {
+  padding-top: 25px !important;
+  padding-bottom: 25px !important;
+}
+
+section:has(.image-slider-content) {
+  padding-top: var(--section-pad) !important;
+  padding-bottom: var(--section-pad) !important;
+}
+
+#contact {
+  padding-top: var(--section-pad) !important;
+  padding-bottom: var(--section-pad) !important;
+}
+
+/* Prevent contact section text overflow */
+#contact .grid > div:first-child {
+  overflow: hidden !important;
+  max-width: 100% !important;
+}
+
+#contact .grid > div:first-child > div {
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
+#contact .grid > div:first-child h2 {
+  max-width: 100% !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+}
+
+/* Global container gutters: keep left/right spacing consistent */
+.content-maxwidth,
+.hero-topbanner-content,
+.capabilities-content,
+.image-slider-content,
+#contact > .max-w-\[1280px\] {
+  padding-left: var(--container-pad) !important;
+  padding-right: var(--container-pad) !important;
+}
+
+.phase-connector-svg {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.phase-flow-arrow {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+  color: #ff8c42 !important;
+  opacity: 0.95 !important;
+  filter: drop-shadow(0 2px 6px rgba(255, 140, 66, 0.45)) !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  animation: pulse-arrow 2s ease-in-out infinite;
+  transition: all 0.3s ease;
+}
+
+/* Override arrow size for tablet and desktop views */
+@media (min-width: 768px) {
+  .phase-flow-arrow {
+    width: 1.75rem !important;
+    height: 1.75rem !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .phase-flow-arrow {
+    width: 2rem !important;
+    height: 2rem !important;
+  }
+}
+
+/* ===== CAPABILITY CARDS ENHANCEMENT ===== */
+
+/* Main capabilities container card */
+.capabilities-content .card.border-2.border-orange-200\/60 {
+  border: 2px solid rgba(255, 152, 0, 0.25) !important;
+  box-shadow:
+    0 8px 24px rgba(255, 152, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 248, 240, 0.6) 100%
+  ) !important;
+  border-radius: 1rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.capabilities-content .card.border-2.border-orange-200\/60:hover {
+  box-shadow: 0 12px 32px rgba(255, 152, 0, 0.18) !important;
+  border-color: rgba(255, 152, 0, 0.35) !important;
+}
+
+/* Individual capability cards */
+.capabilities-content .card.border.border-gray-200 {
+  border: 1.5px solid rgba(200, 200, 200, 0.6) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 250, 245, 0.8) 100%
+  ) !important;
+  border-radius: 0.9rem !important;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  padding: 1rem !important;
+}
+
+.capabilities-content .card.border.border-gray-200:hover {
+  border-color: rgba(255, 107, 0, 0.5) !important;
+  box-shadow:
+    0 8px 20px rgba(255, 107, 0, 0.2),
+    0 2px 8px rgba(255, 107, 0, 0.1) !important;
+  transform: translateY(-3px) !important;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 245, 235, 1) 100%
+  ) !important;
+}
+
+/* Icon styling */
+.capabilities-content .card svg {
+  filter: drop-shadow(0 2px 4px rgba(255, 107, 0, 0.15)) !important;
+  transition: all 0.3s ease !important;
+}
+
+.capabilities-content .card:hover svg {
+  filter: drop-shadow(0 4px 8px rgba(255, 107, 0, 0.25)) !important;
+}
+
+/* Heading styling in capability cards */
+.capabilities-content .card h3 {
+  color: #1a1a1a !important;
+  letter-spacing: 0.3px !important;
+  word-break: break-word !important;
+  line-height: 1.3 !important;
+}
+
+/* Tablet optimization for capability cards */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .capabilities-content .card.border-2.border-orange-200\/60 {
+    padding: 1.25rem !important;
+  }
+
+  .capabilities-content .card.border.border-gray-200 {
+    padding: 1rem !important;
+  }
+}
+
+/* Mobile optimization for capability cards */
+@media (max-width: 767px) {
+  .capabilities-content .card.border-2.border-orange-200\/60 {
+    padding: 0.75rem !important;
+    border-radius: 0.75rem !important;
+    gap: 0.5rem !important;
+  }
+
+  .capabilities-content .card.border.border-gray-200 {
+    border-radius: 0.75rem !important;
+    padding: 0.8rem !important;
+    gap: 0.5rem !important;
+  }
+
+  .capabilities-content .card.border.border-gray-200 h3 {
+    font-size: 0.75rem !important;
+  }
+}
+
+/* Ultra-small phones */
+@media (max-width: 359px) {
+  .capabilities-content .card.border-2.border-orange-200\/60 {
+    padding: 0.5rem !important;
+  }
+
+  .capabilities-content .card.border.border-gray-200 {
+    padding: 0.6rem !important;
+  }
+}
+
+/* iPad Pro 12.9" & Landscape (1024px - 1366px) */
+/* 720p Display (769px - 1023px) - Enhanced */
+@media (min-width: 769px) and (max-width: 1023px) {
+  body {
+    font-size: clamp(0.95rem, 0.92rem + 0.15vw, 1.02rem);
+  }
+
+  /* Hero section tweaks */
+  h1 {
+    font-size: clamp(1.6rem, 4.5vw, 2rem) !important;
+    line-height: 1.25 !important;
+  }
+
+  h2 {
+    font-size: clamp(1.3rem, 3.5vw, 1.7rem) !important;
+  }
+
+  /* Better container width for 720p */
+  .content-maxwidth,
+  .max-w-\[1280px\] {
+    max-width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: clamp(0.75rem, 2vw, 1.25rem) !important;
+    padding-right: clamp(0.75rem, 2vw, 1.25rem) !important;
+  }
+
+  /* Sticky contact bar positioning on 720p */
+  .sticky-contact-bar {
+    right: 0.5rem !important;
+  }
+
+  /* Product grid for 720p */
+  .grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.5rem !important;
+  }
+
+  /* Section padding reduction */
+  section {
+    padding-top: 25px !important;
+    padding-bottom: 25px !important;
+  }
+
+  /* Better button sizing */
+  button,
+  a[role="button"] {
+    min-height: 2.75rem !important;
+    padding: 0.6rem 1.2rem !important;
+    font-size: 0.9rem !important;
+  }
+}
+
+/* iPad Portrait (481px - 768px) - Enhanced */
+@media (min-width: 600px) and (max-width: 768px) {
+  html {
+    font-size: 16px !important;
+  }
+
+  body {
+    font-size: clamp(0.95rem, 0.93rem + 0.1vw, 1rem);
+    line-height: 1.55 !important;
+  }
+
+  h1 {
+    font-size: clamp(1.5rem, 5vw, 1.95rem) !important;
+  }
+
+  h2 {
+    font-size: clamp(1.2rem, 3.5vw, 1.6rem) !important;
+  }
+
+  h3 {
+    font-size: clamp(1rem, 2.5vw, 1.3rem) !important;
+  }
+
+  /* Container optimization for tablet */
+  .content-maxwidth,
+  .max-w-\[1280px\] {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Section spacing */
+  section {
+    padding-top: 25px !important;
+    padding-bottom: 25px !important;
+  }
+
+  /* Better grid for tablet */
+  .grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.2rem !important;
+  }
+
+  /* Contact bar fine-tuning */
+  .sticky-contact-bar {
+    right: 0.35rem !important;
+  }
+
+  .sticky-contact-bar__button {
+    width: 3rem !important;
+    height: 3rem !important;
+  }
+
+  /* Better touch targets on iPad */
+  button,
+  a[role="button"],
+  input,
+  textarea {
+    min-height: 2.75rem !important;
+  }
+
+  /* Footer optimization */
+  footer {
+    padding: 1.5rem 1rem !important;
+  }
+
+  footer p,
+  footer a {
+    font-size: 0.9rem !important;
+  }
+}
+
+/* Mobile Enhanced (320px - 480px) */
+@media (max-width: 480px) {
+  html {
+    font-size: 15px !important;
+  }
+
+  body {
+    font-size: clamp(0.9rem, 2vw, 0.95rem);
+    line-height: 1.5 !important;
+  }
+
+  h1 {
+    font-size: clamp(1.4rem, 6vw, 1.8rem) !important;
+    line-height: 1.2 !important;
+  }
+
+  h2 {
+    font-size: clamp(1.1rem, 4vw, 1.4rem) !important;
+  }
+
+  h3 {
+    font-size: clamp(0.95rem, 3vw, 1.2rem) !important;
+  }
+
+  /* Improved touch targets */
+  button,
+  a[role="button"],
+  input[type="button"],
+  input[type="submit"],
+  .btn-responsive {
+    min-height: 2.8rem !important;
+    padding: 0.65rem 1rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  /* Better spacing between elements */
+  button + button {
+    margin-left: 0.5rem;
+  }
+
+  /* Container padding for small phones */
+  .content-maxwidth,
+  .container {
+    padding-left: 0.9rem !important;
+    padding-right: 0.9rem !important;
+  }
+
+  /* Contact form optimization */
+  .contact-form input,
+  .contact-form textarea {
+    padding: 0.65rem 0.9rem !important;
+    font-size: 1rem !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Reduce section margins */
+  section {
+    padding-top: 25px !important;
+    padding-bottom: 25px !important;
+  }
+
+  /* Better footer on mobile */
+  footer {
+    padding: 1rem 0.9rem !important;
+  }
+
+  footer p,
+  footer a,
+  footer span {
+    font-size: 0.85rem !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Grid single column on mobile */
+  .grid-cols-2,
+  .grid-cols-3 {
+    grid-template-columns: 1fr !important;
+    gap: 0.9rem !important;
+  }
+
+  /* Sticky header optimization */
+  header {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+
+  header .h-16 {
+    height: 3rem !important;
+  }
+
+  /* Mobile menu width optimization */
+  #mobile-nav {
+    width: min(78vw, 300px) !important;
+  }
+
+  /* Sticky contact bar mobile */
+  .sticky-contact-bar {
+    right: 0.2rem !important;
+    gap: 0.1rem !important;
+  }
+
+  .sticky-contact-bar__button {
+    width: 2.7rem !important;
+    height: 2.7rem !important;
+    border-radius: 0.65rem !important;
+  }
+
+  .sticky-contact-bar__icon {
+    width: 1rem !important;
+    height: 1rem !important;
+  }
+}
+
+/* ===== iPHONE 14 PRO MAX OPTIMIZATION (390px - 430px) ===== */
+/* Beautiful mobile experience for iPhone 14 Pro Max and similar devices */
+@media (min-width: 390px) and (max-width: 440px) {
+  /* Base typography */
+  html {
+    font-size: 16px !important;
+  }
+
+  body {
+    line-height: 1.5 !important;
+  }
+
+  /* ===== HERO SECTION ===== */
+  .topbanner {
+    padding-top: 25px !important;
+    padding-bottom: 25px !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .topbanner h1.animated-gradient-text {
+    font-size: 1.5rem !important;
+    line-height: 1.25 !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .topbanner p {
+    font-size: 0.8rem !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Hide desktop button */
+  .topbanner > div > div > div > button {
+    display: none !important;
+  }
+
+  /* Mobile button - same style as main site */
+  .topbanner > div > button {
+    display: flex !important;
+  }
+
+  /* ===== HEADER ===== */
+  header .max-w-\[1280px\] {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  header .h-16 {
+    height: 3.25rem !important;
+  }
+
+  header img[alt="Danvion Logo"] {
+    width: 2rem !important;
+    height: 2rem !important;
+  }
+
+  header .font-bold.text-brand-black {
+    font-size: 0.9rem !important;
+    letter-spacing: 0.02em !important;
+  }
+
+  header button[aria-label*="menu"] {
+    width: 2.25rem !important;
+    height: 2.25rem !important;
+    border-radius: 0.5rem !important;
+  }
+
+  /* ===== CAPABILITIES SECTION ===== */
+  section:has(.capabilities-content) {
+    padding-top: 0.75rem !important;
+    padding-bottom: 1rem !important;
+    padding-left: 0.25rem !important;
+    padding-right: 0.25rem !important;
+  }
+
+  .capabilities-content {
+    padding-left: 0.25rem !important;
+    padding-right: 0.25rem !important;
+  }
+
+  .capabilities-content h1.capabilities-gradient-text {
+    font-size: 1.4rem !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0.5rem !important;
+    padding-left: 0.5rem !important;
+  }
+
+  .capabilities-content .flex-\[1\.5\] p {
+    font-size: 0.75rem !important;
+    line-height: 1.45 !important;
+    margin-bottom: 0 !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+
+  /* Reduce gap between title/description and the card */
+  .capabilities-content > .mb-0 {
+    margin-bottom: 0 !important;
+  }
+
+  .capabilities-content .mb-0.sm\:mb-3.md\:mb-1.lg\:mb-5 {
+    margin-bottom: 0 !important;
+  }
+
+  /* Capabilities card container - wider */
+  .capabilities-content .relative.w-full {
+    padding: 0.15rem !important;
+    border-radius: 0.4rem !important;
+    margin-top: -0.1rem !important;
+    max-width: 100% !important;
+  }
+
+  .capabilities-content .mb-0.sm\:mb-5.md\:mb-1 {
+    margin-bottom: 0 !important;
+  }
+
+  /* Capabilities grid - 4 columns for 4 rows on iPhone */
+  .capabilities-content .grid.grid-cols-2.sm\:grid-cols-4.lg\:grid-cols-8 {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 0.15rem !important;
+  }
+
+  /* Individual capability boxes - fill the grid cells */
+  .capabilities-content .aspect-square.w-full {
+    max-width: 100% !important;
+    width: 100% !important;
+    min-height: auto !important;
+    max-height: none !important;
+    aspect-ratio: 1 !important;
+    border-radius: 0.3rem !important;
+    padding: 0.15rem !important;
+    gap: 0.1rem !important;
+  }
+
+  .capabilities-content .aspect-square svg {
+    width: 1.2rem !important;
+    height: 1.2rem !important;
+  }
+
+  .capabilities-content .aspect-square h3 {
+    font-size: 0.5rem !important;
+    line-height: 1.15 !important;
+  }
+
+  /* ===== DEVELOPMENT PHASES SECTION ===== */
+  section:has(.content-maxwidth.w-full) {
+    padding-top: 0.75rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  .content-maxwidth.w-full {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+
+  .content-maxwidth.w-full > .mb-6.sm\:mb-7.md\:mb-8.lg\:mb-10 h1 {
+    font-size: 1.25rem !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0.35rem !important;
+  }
+
+  .content-maxwidth.w-full > .mb-6.sm\:mb-7.md\:mb-8.lg\:mb-10 p {
+    font-size: 0.7rem !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Phase cards grid - 2 columns for iPhone 14 Pro Max */
+  .content-maxwidth.w-full > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.4rem !important;
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  /* Phase card styling - website style */
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    .group.h-full
+    > div {
+    min-height: 115px !important;
+    padding: 0.5rem !important;
+    border-radius: 0.75rem !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  }
+
+  /* Phase icon container */
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    .group.h-full
+    > div
+    > div[class*="rounded"]:not([class*="absolute"]) {
+    width: 1.6rem !important;
+    height: 1.6rem !important;
+    min-width: 1.6rem !important;
+    min-height: 1.6rem !important;
+    border-radius: 0.35rem !important;
+    margin-bottom: 0.3rem !important;
+  }
+
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    .group.h-full
+    > div
+    > div[class*="rounded"]:not([class*="absolute"])
+    svg {
+    width: 0.85rem !important;
+    height: 0.85rem !important;
+  }
+
+  /* Phase number badge */
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    .group.h-full
+    > div
+    > div[class*="absolute"][class*="top"] {
+    width: 1.15rem !important;
+    height: 1.15rem !important;
+    font-size: 0.45rem !important;
+    top: 0.4rem !important;
+    right: 0.4rem !important;
+  }
+
+  /* Phase card title */
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    h3 {
+    font-size: 0.6rem !important;
+    line-height: 1.15 !important;
+    margin-bottom: 0.1rem !important;
+    font-weight: 600 !important;
+  }
+
+  /* Phase card description */
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    p {
+    font-size: 0.42rem !important;
+    line-height: 1.3 !important;
+    margin-top: 0.1rem !important;
+    opacity: 0.9 !important;
+  }
+
+  /* Underline decoration */
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    .h-0\.5 {
+    height: 1.5px !important;
+    width: 1rem !important;
+    margin-top: 0.1rem !important;
+    margin-bottom: 0.15rem !important;
+  }
+
+  /* Hide arrows on iPhone for cleaner look */
+  .phase-flow-arrow {
+    display: none !important;
+  }
+
+  /* ===== IMAGE SLIDER SECTION ===== */
+  section:has(.image-slider-content) {
+    padding-top: 0.5rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  .image-slider-content {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  .image-slider-content > .text-left.mb-8.sm\:mb-10.md\:mb-12.lg\:mb-16 {
+    margin-bottom: 0.75rem !important;
+  }
+
+  .image-slider-content h1.capabilities-gradient-text {
+    font-size: 1.35rem !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0.35rem !important;
+  }
+
+  .image-slider-content .flex-\[1\.5\] p {
+    font-size: 0.75rem !important;
+    line-height: 1.4 !important;
+  }
+
+  .image-slider-content
+    .overflow-hidden.relative.rounded-xl.md\:rounded-2xl.group {
+    border-radius: 0.6rem !important;
+  }
+
+  .image-slider-content .animate-image-marquee {
+    gap: 0.6rem !important;
+  }
+
+  /* Slider navigation dots */
+  .image-slider-content .flex.justify-center.gap-2 {
+    gap: 0.4rem !important;
+    margin-top: 0.6rem !important;
+  }
+
+  .image-slider-content .flex.justify-center.gap-2 button {
+    width: 0.5rem !important;
+    height: 0.5rem !important;
+    min-height: 0.5rem !important;
+    padding: 0 !important;
+  }
+
+  /* ===== CONTACT SECTION ===== */
+  #contact {
+    padding-top: 0.75rem !important;
+    padding-bottom: 1rem !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+
+  #contact > .max-w-\[1280px\] {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+
+  /* Contact header */
+  #contact .text-left.mb-6 {
+    margin-bottom: 0.5rem !important;
+  }
+
+  #contact .flex.flex-row.items-start {
+    flex-direction: column !important;
+    gap: 0.25rem !important;
+  }
+
+  #contact h1.animated-gradient-text {
+    font-size: 1.2rem !important;
+    margin-bottom: 0.2rem !important;
+    line-height: 1.2 !important;
+  }
+
+  #contact .flex-\[1\.5\] p {
+    font-size: 0.55rem !important;
+    line-height: 1.35 !important;
+  }
+
+  /* Grid layout - stack on mobile */
+  #contact .grid.md\:grid-cols-2 {
+    grid-template-columns: 1fr !important;
+    gap: 0.75rem !important;
+  }
+
+  /* Left column - Let's Innovate text */
+  #contact .grid.md\:grid-cols-2 > div:first-child {
+    overflow: hidden !important;
+    max-width: 100% !important;
+  }
+
+  #contact .grid.md\:grid-cols-2 > div:first-child > div {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  #contact .grid.md\:grid-cols-2 > div:first-child h2 {
+    font-size: clamp(1rem, 3.5vw, 1.5rem) !important;
+    line-height: 0.95 !important;
+    max-width: 100% !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  #contact .grid.md\:grid-cols-2 > div:first-child h2 span {
+    margin-bottom: 0.15rem !important;
+  }
+
+  /* Right column - Form */
+  #contact h2:not(.animated-gradient-text):not([class*="font-bold"]) {
+    font-size: 0.9rem !important;
+    margin-bottom: 0.5rem !important;
+    text-align: center !important;
+  }
+
+  #contact form {
+    gap: 0.4rem !important;
+  }
+
+  #contact form .space-y-5,
+  #contact form .space-y-6 {
+    gap: 0.4rem !important;
+  }
+
+  #contact form > div {
+    margin-top: 0.35rem !important;
+  }
+
+  #contact label {
+    font-size: 0.55rem !important;
+    margin-bottom: 0.2rem !important;
+  }
+
+  #contact input,
+  #contact textarea {
+    padding: 0.45rem 0.6rem !important;
+    font-size: 0.6rem !important;
+    border-radius: 0.4rem !important;
+    border-width: 1px !important;
+  }
+
+  #contact textarea {
+    min-height: 60px !important;
+  }
+
+  #contact button[type="submit"] {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.6rem !important;
+    border-radius: 9999px !important;
+    min-height: auto !important;
+    margin-top: 0.4rem !important;
+  }
+
+  #contact button[type="submit"] span {
+    font-size: 0.6rem !important;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    padding: 0.5rem 0.35rem !important;
+    margin-top: 0.5rem !important;
+  }
+
+  footer .content-maxwidth {
+    padding-left: 0.35rem !important;
+    padding-right: 0.35rem !important;
+  }
+
+  footer .h-px {
+    margin-bottom: 0.4rem !important;
+  }
+
+  footer .grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  footer h3 {
+    font-size: 0.55rem !important;
+    margin-bottom: 0.2rem !important;
+  }
+
+  footer h4 {
+    font-size: 0.5rem !important;
+    margin-bottom: 0.2rem !important;
+  }
+
+  footer .h-1 {
+    height: 2px !important;
+    width: 1rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  footer p,
+  footer a,
+  footer span {
+    font-size: 0.45rem !important;
+    line-height: 1.3 !important;
+  }
+
+  footer p.text-body-xs {
+    display: none !important;
+  }
+
+  footer .flex.items-center.gap-1\.5 {
+    gap: 0.35rem !important;
+  }
+
+  footer .p-2,
+  footer .sm\:p-2\.5 {
+    padding: 0.25rem !important;
+  }
+
+  footer svg {
+    width: 0.7rem !important;
+    height: 0.7rem !important;
+  }
+
+  footer nav {
+    gap: 0.2rem !important;
+  }
+
+  footer nav a {
+    font-size: 0.45rem !important;
+  }
+
+  /* Contact info section in footer */
+  footer .flex.flex-col.gap-1\.5 {
+    gap: 0.25rem !important;
+  }
+
+  footer .flex.items-start.gap-2 {
+    gap: 0.25rem !important;
+  }
+
+  footer .flex.items-start.gap-2 svg {
+    width: 0.5rem !important;
+    height: 0.5rem !important;
+    margin-top: 0.1rem !important;
+  }
+
+  footer .flex.items-start.gap-2 p {
+    font-size: 0.4rem !important;
+    line-height: 1.2 !important;
+  }
+
+  /* Footer bottom section */
+  footer .border-t,
+  footer .h-px + div {
+    padding-top: 0.4rem !important;
+    margin-top: 0 !important;
+  }
+
+  footer .py-1 {
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
+  }
+
+  footer .flex.flex-col.gap-2 {
+    gap: 0.2rem !important;
+  }
+
+  footer .flex.items-center.justify-center.gap-2 {
+    gap: 0.4rem !important;
+  }
+
+  footer .w-0\.5.h-0\.5 {
+    width: 2px !important;
+    height: 2px !important;
+  }
+
+  /* ===== STICKY CONTACT BAR ===== */
+  .sticky-contact-bar {
+    right: 0.35rem !important;
+    gap: 0.15rem !important;
+  }
+
+  .sticky-contact-bar__button {
+    width: 2.6rem !important;
+    height: 2.6rem !important;
+    border-radius: 0.6rem !important;
+  }
+
+  .sticky-contact-bar__icon {
+    width: 1rem !important;
+    height: 1rem !important;
+  }
+
+  /* ===== MOBILE NAV ===== */
+  #mobile-nav {
+    width: min(80vw, 320px) !important;
+  }
+
+  #mobile-nav nav {
+    padding: 0.75rem !important;
+  }
+
+  #mobile-nav nav > a > div,
+  #mobile-nav nav > div {
+    padding: 0.7rem 0.9rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  /* ===== BACK TO TOP BUTTON ===== */
+  .fixed.bottom-4.right-4 button,
+  button[aria-label="Back to top"] {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    border-radius: 0.5rem !important;
+  }
+
+  /* General spacing improvements */
+  .hero-topbanner-content {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  /* Improve gap between sections */
+  section + section {
+    margin-top: 0 !important;
+  }
+}
+
+/* Ultra-small phones (< 360px) */
+@media (max-width: 359px) {
+  html {
+    font-size: 14px !important;
+  }
+
+  /* Stack everything on ultra-small screens */
+  .flex-row {
+    flex-direction: column !important;
+  }
+
+  /* Tighter spacing */
+  button {
+    padding: 0.5rem 0.8rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Reduce padding on containers */
+  .content-maxwidth,
+  .container,
+  section {
+    padding-left: 0.65rem !important;
+    padding-right: 0.65rem !important;
+  }
+
+  section {
+    padding-top: 25px !important;
+    padding-bottom: 25px !important;
+  }
+
+  .sticky-contact-bar__button {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+  }
+}
+
+/* Global paragraph sizing - keep all paragraphs consistent */
+p {
+  font-size: 20px !important;
+  font-family: "Inter", sans-serif !important;
+}
+
+p[class*="text-"][class*="text-"] {
+  font-size: 20px !important;
+  font-family: "Inter", sans-serif !important;
+}
+
+/* Footer typography override - force 16px everywhere */
+footer.footer-uniform-text {
+  font-size: 14px !important;
+  font-family: "Inter", sans-serif !important;
+  padding-bottom: 0.2rem !important;
+}
+
+footer.footer-uniform-text [class*="text-"] {
+  font-size: 14px !important;
+  font-family: "Inter", sans-serif !important;
+}
+
+footer.footer-uniform-text p,
+footer.footer-uniform-text a,
+footer.footer-uniform-text span,
+footer.footer-uniform-text h1,
+footer.footer-uniform-text h2,
+footer.footer-uniform-text h3,
+footer.footer-uniform-text h4,
+footer.footer-uniform-text h5,
+footer.footer-uniform-text h6 {
+  font-size: 12px !important;
+  line-height: 1.2 !important;
+}
+
+footer.footer-uniform-text .content-maxwidth {
+  padding-top: 0.2rem !important;
+  padding-bottom: 0.2rem !important;
+}
+
+footer.footer-uniform-text .grid {
+  gap: 0.6rem !important;
+  margin-bottom: 0.2rem !important;
+}
+
+footer.footer-uniform-text .h-px {
+  margin-bottom: 0.2rem !important;
+}
+
+footer.footer-uniform-text .h-px + div {
+  padding-top: 0.2rem !important;
+}
