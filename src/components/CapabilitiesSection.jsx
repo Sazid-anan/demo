@@ -119,7 +119,7 @@ export default function CapabilitiesSection({ homePage }) {
               </p>
             </div> */}
             <div className="w-full sm:flex-[1.5] flex flex-col items-start text-left mt-0 sm:mt-4 sm:w-auto">
-              <p className="text-justify text-xs sm:text-base md:text-lg lg:text-xl font-semibold text-black">
+              <p className="text-justify text-[10px] sm:text-base md:text-lg lg:text-xl font-semibold text-black">
                 From hardware design to edge AI deployment, we deliver complete
                 engineering solutions that bring intelligent products to life.
               </p>
