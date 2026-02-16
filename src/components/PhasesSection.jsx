@@ -341,7 +341,7 @@ const PhaseSection = () => {
         {/* Phase Cards Grid with Snake Pattern and Better Responsive Spacing */}
         <div
           ref={gridRef}
-          className="relative grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-5 md:gap-6 lg:gap-8"
+          className="relative grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-5 md:gap-6 lg:gap-8"
         >
           {/* Dynamic Arrow Connectors */}
           {connectors.map((connector) => {
