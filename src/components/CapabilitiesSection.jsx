@@ -158,7 +158,7 @@ export default function CapabilitiesSection({ homePage }) {
                 >
                   <Card className="relative w-full h-full flex flex-col items-center justify-center gap-0.5 sm:gap-2 md:gap-1.5 p-1.5 sm:p-3 md:p-2.5 hover:shadow-lg transition-all duration-300 bg-white border border-gray-200 hover:border-orange-500/50 hover:shadow-orange-100/50 overflow-hidden">
                     <capability.icon className="h-4 w-4 sm:h-9 sm:w-9 md:h-8 md:w-8 lg:h-11 lg:w-11 text-orange-500 flex-shrink-0" />
-                    <h3 className="text-center text-[4px] sm:text-sm md:text-[6px] lg:text-sm font-semibold text-foreground leading-tight px-0.5">
+                    <h3 className="text-center text-[3px] sm:text-sm md:text-[6px] lg:text-sm font-semibold text-foreground leading-tight px-0.5">
                       {capability.title}
                     </h3>
                   </Card>
