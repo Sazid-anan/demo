@@ -7,6 +7,11 @@ import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { renderMarkdown } from "../utils/markdown";
 import { Package } from "lucide-react";
+import { useResponsive } from "../hooks/useResponsive";
+import SEO from "../components/SEO";
+import { SkeletonCard } from "../components/Skeleton";
+import { analyticsService } from "../services/analyticsService";
+import { SITE_CONTENT } from "../config/content";
 
 /**
  * Products Page
@@ -14,12 +19,13 @@ import { Package } from "lucide-react";
  */
 export default function Products() {
   const dispatch = useDispatch();
-  const { products } = useSelector((state) => state.content);
+  const { products, loading } = useSelector((state) => state.content);
+  const { isMobile, isTablet } = useResponsive();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [dismissedProductId, setDismissedProductId] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 9;
+  const productsPerPage = isMobile ? 6 : isTablet ? 8 : 9; // Responsive items per page
   const location = useLocation();
 
   useEffect(() => {
@@ -34,9 +40,7 @@ export default function Products() {
   // Get unique categories from products
   const categories = useMemo(() => {
     if (!products || products.length === 0) return [];
-    return Array.from(
-      new Set(products.map((p) => p.category).filter((c) => c)),
-    ).sort();
+    return Array.from(new Set(products.map((p) => p.category).filter((c) => c))).sort();
   }, [products]);
 
   const autoSelectedProduct = useMemo(() => {
@@ -46,14 +50,11 @@ export default function Products() {
 
   const activeProduct =
     selectedProduct ||
-    (productId && String(productId) === String(dismissedProductId)
-      ? null
-      : autoSelectedProduct);
+    (productId && String(productId) === String(dismissedProductId) ? null : autoSelectedProduct);
 
   const normalizedDescription = activeProduct?.description?.trim() || "";
   const normalizedDetails = activeProduct?.details?.trim() || "";
-  const hasDetails =
-    normalizedDetails && normalizedDetails !== normalizedDescription;
+  const hasDetails = normalizedDetails && normalizedDetails !== normalizedDescription;
 
   const buildContactLink = (productName, intent) => {
     const base = "/contact";
@@ -94,26 +95,44 @@ export default function Products() {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Products & Solutions | Edge AI & Embedded Systems | Danvion"
+        description="Explore Danvion's innovative Edge AI products and solutions. Custom hardware design, embedded systems, and intelligent IoT devices for business transformation."
+        keywords="Edge AI products, embedded systems, IoT solutions, machine learning devices, smart hardware, custom AI solutions"
+        url="/products"
+        image="https://danvion.com/og-products.png"
+      />
+      <SEO
+        title="Products & Solutions | Edge AI & Embedded Systems | Danvion"
+        description="Explore Danvion's innovative Edge AI products and solutions. Custom hardware design, embedded systems, and intelligent IoT devices for business transformation."
+        keywords="Edge AI products, embedded systems, IoT solutions, machine learning devices, smart hardware, custom AI solutions"
+        url="/products"
+        image="https://danvion.com/og-products.png"
+      />
       {/* Hero Section */}
-      <div className="py-8 sm:py-10 md:py-12">
+      <div className="py-8 sm:py-10 md:py-12 bg-white">
         <Container className="content-maxwidth">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="mb-6 sm:mb-7 md:mb-8 lg:mb-10"
+            className="mb-4 sm:mb-6 md:mb-8 lg:mb-10"
           >
-            <div className="flex flex-row items-start gap-3 md:gap-4">
-              <div className="w-full sm:flex-1 flex flex-col items-start text-left sm:w-auto">
-                <h1 className="capabilities-gradient-text font-semibold leading-[1.25] tracking-tight mb-2 sm:mb-3 md:mb-4 lg:mb-6 text-[18px] sm:text-[24px] md:text-[32px] lg:text-[50px]">
+            <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-8">
+              <div className="w-full lg:flex-1 flex flex-col items-start text-left">
+                <h1
+                  className="heading-orange text-orange-500 font-semibold leading-[1.25] tracking-tight mb-6 sm:mb-6 md:mb-6 lg:mb-6 text-[18px] sm:text-[24px] md:text-[32px] lg:text-[50px]"
+                  style={{ color: "#f97316" }}
+                >
                   Our Products
                 </h1>
               </div>
-              <div className="w-full sm:flex-[1.5] flex flex-col items-start text-left mt-4 sm:mt-0 sm:w-auto">
-                <p className="text-justify text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-black">
-                  From hardware design to edge AI deployment, we deliver
-                  complete engineering solutions that bring intelligent products
-                  to life.
+              <div className="w-full lg:flex-[1.5] flex flex-col items-start text-left lg:ml-11">
+                <p
+                  className="text-[23px] font-medium text-gray-800 leading-relaxed"
+                  style={{ textAlign: "justify" }}
+                >
+                  {SITE_CONTENT.sharedDescriptions.engineeringSolutions}
                 </p>
               </div>
             </div>
@@ -133,12 +152,10 @@ export default function Products() {
             <div className="mb-6 inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-100">
               <Package className="w-10 h-10 text-gray-400" />
             </div>
-            <h2 className="text-h3 font-bold text-brand-black mb-4">
-              Coming Soon
-            </h2>
+            <h2 className="text-h3 font-bold text-brand-black mb-4">Coming Soon</h2>
             <p className="text-gray-600 text-xs sm:text-sm md:text-base lg:text-lg mb-8 leading-relaxed">
-              We're working on some amazing products that will transform your
-              business. Check back soon for exciting announcements!
+              We're working on some amazing products that will transform your business. Check back
+              soon for exciting announcements!
             </p>
             <Link to="/">
               <Button className="mt-4">Back to Home</Button>
@@ -147,173 +164,188 @@ export default function Products() {
         </Container>
       ) : (
         <Container className="py-12 sm:py-16 md:py-20">
-          {/* Category Filter */}
-          {categories.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="mb-6 sm:mb-7 md:mb-8 flex flex-wrap items-center gap-2 sm:gap-3"
-            >
-              <span className="font-medium text-brand-black text-xs sm:text-xs md:text-sm uppercase tracking-wide">
-                Filter by Category:
-              </span>
-              <button
-                onClick={() => setSelectedCategory("")}
-                className={`px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-full font-medium transition-all text-xs sm:text-xs md:text-sm ${
-                  selectedCategory === ""
-                    ? "bg-brand-orange text-brand-black shadow-lg"
-                    : "bg-gray-100 text-brand-black hover:bg-gray-200"
-                }`}
-              >
-                All Products
-              </button>
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-full font-medium transition-all text-xs sm:text-xs md:text-sm orange-pop-hover ${
-                    selectedCategory === cat
-                      ? "bg-brand-orange text-brand-black shadow-lg"
-                      : "bg-gray-100 text-brand-black hover:bg-gray-200"
-                  }`}
+          {/* Loading State - Show Skeletons */}
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+              {Array.from({ length: isMobile ? 6 : isTablet ? 8 : 9 }).map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05, duration: 0.4 }}
+                  className="bg-white rounded-2xl overflow-hidden shadow-lg border-2 border-gray-200"
                 >
-                  {cat}
-                </button>
+                  <SkeletonCard />
+                </motion.div>
               ))}
-            </motion.div>
-          )}
-
-          {displayProducts.length === 0 &&
-          filteredProducts.length === 0 &&
-          !hasNoProducts ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-8 sm:py-12 px-4 text-gray-600"
-            >
-              <p className="text-xs sm:text-xs md:text-sm lg:text-base">
-                No products found in this category. Try selecting a different
-                one.
-              </p>
-            </motion.div>
-          ) : null}
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-            {displayProducts.map((product, i) => (
-              <motion.div
-                key={product.id}
-                custom={i}
-                variants={contentVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                whileHover={{ y: -10, scale: 1.02 }}
-                onClick={() => {
-                  setSelectedProduct(product);
-                  setDismissedProductId(null);
-                }}
-                className="bg-white rounded-2xl overflow-hidden shadow-lg cursor-pointer relative group border-2 border-gray-200 orange-pop-hover"
-                style={{ willChange: "transform" }}
-              >
-                {/* Glass effect overlay on hover - simplified for mobile */}
-                <span className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/40 to-gray-100/60 opacity-0 md:group-hover:opacity-100 md:backdrop-blur-[1px] border border-white/60 md:shadow-2xl transition-opacity duration-300 z-10 pointer-events-none"></span>
-
-                {/* Product Image */}
-                <div className="relative overflow-hidden h-48 sm:h-52 md:h-56">
-                  <img
-                    src={product.image_url}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
-
-                {/* Product Info */}
-                <div className="p-4 sm:p-5 md:p-6 relative z-20">
-                  <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-brand-black mb-2">
-                    {product.name}
-                  </h3>
-                  <p className="text-gray-600 text-xs sm:text-xs md:text-sm lg:text-base mb-3 sm:mb-4 line-clamp-2">
-                    {product.description}
-                  </p>
-
-                  <div className="flex flex-col xs:flex-row gap-2 sm:gap-3">
-                    <Button
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedProduct(product);
-                        setDismissedProductId(null);
-                      }}
-                      className="flex-1"
-                    >
-                      Learn More
-                    </Button>
-                    <Link
-                      to={buildContactLink(product.name, "inquiry")}
-                      className="flex-1"
-                    >
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="w-full"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        Inquire
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Pagination - Only show if actual products exist */}
-          {totalPages > 1 && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-2 mt-8 sm:mt-12"
-            >
-              <button
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                disabled={currentPage === 1}
-                className="w-full sm:w-auto px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-xs sm:text-xs md:text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-gray-100 text-brand-black hover:bg-brand-orange hover:text-white"
-              >
-                Previous
-              </button>
-
-              <div className="flex gap-1.5 sm:gap-2 overflow-x-auto max-w-full pb-2 sm:pb-0">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (page) => (
+            </div>
+          ) : (
+            <>
+              {/* Category Filter */}
+              {categories.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="mb-6 sm:mb-7 md:mb-8 flex flex-wrap items-center gap-2 sm:gap-3"
+                >
+                  <span className="font-medium text-brand-black text-xs sm:text-xs md:text-sm uppercase tracking-wide">
+                    Filter by Category:
+                  </span>
+                  <button
+                    onClick={() => setSelectedCategory("")}
+                    className={`px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-full font-medium transition-all text-xs sm:text-xs md:text-sm ${
+                      selectedCategory === ""
+                        ? "bg-brand-orange text-brand-black shadow-lg"
+                        : "bg-gray-100 text-brand-black hover:bg-gray-200"
+                    }`}
+                  >
+                    All Products
+                  </button>
+                  {categories.map((cat) => (
                     <button
-                      key={page}
-                      onClick={() => setCurrentPage(page)}
-                      className={`min-w-[32px] sm:min-w-[36px] md:min-w-[40px] h-8 sm:h-9 md:h-10 rounded-lg font-medium text-xs sm:text-xs md:text-sm transition-all flex-shrink-0 ${
-                        currentPage === page
-                          ? "bg-brand-orange text-white shadow-lg"
+                      key={cat}
+                      onClick={() => setSelectedCategory(cat)}
+                      className={`px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-full font-medium transition-all text-xs sm:text-xs md:text-sm orange-pop-hover ${
+                        selectedCategory === cat
+                          ? "bg-brand-orange text-brand-black shadow-lg"
                           : "bg-gray-100 text-brand-black hover:bg-gray-200"
                       }`}
                     >
-                      {page}
+                      {cat}
                     </button>
-                  ),
-                )}
+                  ))}
+                </motion.div>
+              )}
+
+              {displayProducts.length === 0 && filteredProducts.length === 0 && !hasNoProducts ? (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-center py-8 sm:py-12 px-4 text-gray-600"
+                >
+                  <p className="text-xs sm:text-xs md:text-sm lg:text-base">
+                    No products found in this category. Try selecting a different one.
+                  </p>
+                </motion.div>
+              ) : null}
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+                {displayProducts.map((product, i) => (
+                  <motion.div
+                    key={product.id}
+                    custom={i}
+                    variants={contentVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    whileHover={{ y: -10, scale: 1.02 }}
+                    onClick={() => {
+                      setSelectedProduct(product);
+                      setDismissedProductId(null);
+                      analyticsService.trackProductInteraction(product.id, product.name, "click");
+                    }}
+                    className="bg-white rounded-2xl overflow-hidden shadow-lg cursor-pointer relative group border-2 border-gray-200 orange-pop-hover"
+                    style={{ willChange: "transform" }}
+                  >
+                    {/* Glass effect overlay on hover - simplified for mobile */}
+                    <span className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/40 to-gray-100/60 opacity-0 md:group-hover:opacity-100 md:backdrop-blur-[1px] border border-white/60 md:shadow-2xl transition-opacity duration-300 z-10 pointer-events-none"></span>
+
+                    {/* Product Image */}
+                    <div className="relative overflow-hidden h-48 sm:h-52 md:h-56">
+                      <img
+                        src={product.image_url}
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+
+                    {/* Product Info */}
+                    <div className="p-4 sm:p-5 md:p-6 relative z-20">
+                      <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-brand-black mb-2">
+                        {product.name}
+                      </h3>
+                      <p className="text-gray-600 text-xs sm:text-xs md:text-sm lg:text-base mb-3 sm:mb-4 line-clamp-2">
+                        {product.description}
+                      </p>
+
+                      <div className="flex flex-col xs:flex-row gap-2 sm:gap-3">
+                        <Button
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedProduct(product);
+                            setDismissedProductId(null);
+                            analyticsService.trackProductInteraction(
+                              product.id,
+                              product.name,
+                              "learn_more",
+                            );
+                          }}
+                          className="flex-1"
+                        >
+                          Learn More
+                        </Button>
+                        <Link to={buildContactLink(product.name, "inquiry")} className="flex-1">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="w-full"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            Inquire
+                          </Button>
+                        </Link>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
 
-              <button
-                onClick={() =>
-                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                }
-                disabled={currentPage === totalPages}
-                className="w-full sm:w-auto px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-xs sm:text-xs md:text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-gray-100 text-brand-black hover:bg-brand-orange hover:text-white"
-              >
-                Next
-              </button>
-            </motion.div>
+              {/* Pagination - Only show if actual products exist */}
+              {totalPages > 1 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-2 mt-8 sm:mt-12"
+                >
+                  <button
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="w-full sm:w-auto px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-xs sm:text-xs md:text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-gray-100 text-brand-black hover:bg-brand-orange hover:text-white"
+                  >
+                    Previous
+                  </button>
+
+                  <div className="flex gap-1.5 sm:gap-2 overflow-x-auto max-w-full pb-2 sm:pb-0">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                      <button
+                        key={page}
+                        onClick={() => setCurrentPage(page)}
+                        className={`min-w-[32px] sm:min-w-[36px] md:min-w-[40px] h-8 sm:h-9 md:h-10 rounded-lg font-medium text-xs sm:text-xs md:text-sm transition-all flex-shrink-0 ${
+                          currentPage === page
+                            ? "bg-brand-orange text-white shadow-lg"
+                            : "bg-gray-100 text-brand-black hover:bg-gray-200"
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    ))}
+                  </div>
+
+                  <button
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className="w-full sm:w-auto px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-xs sm:text-xs md:text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-gray-100 text-brand-black hover:bg-brand-orange hover:text-white"
+                  >
+                    Next
+                  </button>
+                </motion.div>
+              )}
+            </>
           )}
         </Container>
       )}
@@ -372,9 +404,7 @@ export default function Products() {
 
               {hasDetails && (
                 <div className="mb-4 sm:mb-6">
-                  <h3 className="text-base sm:text-lg font-bold text-brand-black mb-2">
-                    Details
-                  </h3>
+                  <h3 className="text-base sm:text-lg font-bold text-brand-black mb-2">Details</h3>
                   <div
                     className="markdown-content text-xs sm:text-sm md:text-base"
                     dangerouslySetInnerHTML={{
@@ -400,25 +430,22 @@ export default function Products() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                <Link
-                  to={buildContactLink(activeProduct?.name, "demo")}
-                  className="flex-1"
-                >
+                <Link to={buildContactLink(activeProduct?.name, "demo")} className="flex-1">
                   <Button
                     size="lg"
                     className="w-full"
                     onClick={() => {
                       setSelectedProduct(null);
                       if (productId) setDismissedProductId(productId);
+                      analyticsService.trackConversion("demo_request", 1, {
+                        product: activeProduct?.name,
+                      });
                     }}
                   >
                     Request Demo
                   </Button>
                 </Link>
-                <Link
-                  to={buildContactLink(activeProduct?.name, "inquiry")}
-                  className="flex-1"
-                >
+                <Link to={buildContactLink(activeProduct?.name, "inquiry")} className="flex-1">
                   <Button
                     size="lg"
                     variant="outline"
@@ -426,6 +453,9 @@ export default function Products() {
                     onClick={() => {
                       setSelectedProduct(null);
                       if (productId) setDismissedProductId(productId);
+                      analyticsService.trackConversion("inquiry_request", 1, {
+                        product: activeProduct?.name,
+                      });
                     }}
                   >
                     Send Inquiry

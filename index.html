@@ -3,17 +3,119 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/logo.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
-      http-equiv="Cache-Control"
-      content="no-cache, no-store, must-revalidate"
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5, user-scalable=yes"
     />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>Danvion Ltd.</title>
+
+    <!-- Security Headers (Note: X-Frame-Options only works as HTTP header, set in firebase.json) -->
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+
+    <!-- SEO Meta Tags -->
+    <meta
+      name="description"
+      content="Danvion - Leading provider of Edge AI solutions, embedded systems, and complete product development services from concept to production."
+    />
+    <meta
+      name="keywords"
+      content="Edge AI, AI solutions, embedded systems, product development, IoT, machine learning"
+    />
+    <meta name="author" content="Danvion Ltd." />
+    <meta name="theme-color" content="#000000" />
+
+    <!-- PWA Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Danvion" />
+
+    <!-- Open Graph Tags -->
+    <meta property="og:site_name" content="Danvion" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Verification Tags -->
+    <meta name="google-site-verification" content="" />
+    <meta name="msvalidate.01" content="" />
+
+    <!-- Performance optimizations -->
+    <!-- DNS prefetch for Firebase -->
+    <link rel="dns-prefetch" href="https://firebaseapp.com" />
+    <link rel="dns-prefetch" href="https://googleapis.com" />
+    <!-- Preconnect to Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Prefetch sitemap and robots -->
+    <link rel="prefetch" href="/sitemap.xml" />
+
+    <!-- Google Analytics 4 (Measurement ID will be added from env) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=__GA_ID__"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      // Get measurement ID from window config (set in main.jsx)
+      if (window.__VITE_GA_MEASUREMENT_ID__) {
+        gtag("config", window.__VITE_GA_MEASUREMENT_ID__, {
+          page_path: window.location.pathname,
+        });
+      }
+    </script>
+
+    <title>Danvion - Edge AI Solutions & Product Development</title>
+
+    <!-- Source code protection -->
+    <script>
+      // Disable right-click context menu (prevents easy "View Source" access)
+      document.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        return false;
+      });
+
+      // Disable common keyboard shortcuts for DevTools
+      document.addEventListener("keydown", (e) => {
+        // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+        if (
+          e.key === "F12" ||
+          (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J" || e.key === "C")) ||
+          (e.ctrlKey && e.key === "u")
+        ) {
+          e.preventDefault();
+          return false;
+        }
+      });
+
+      // Disable text selection (optional - can be restrictive for UX)
+      // Uncomment the lines below if you want to prevent text selection
+      // document.addEventListener("selectstart", (e) => {
+      //   e.preventDefault();
+      //   return false;
+      // });
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+
+    <!-- Service Worker registration for caching (disabled in dev mode) -->
+    <script>
+      if (
+        "serviceWorker" in navigator &&
+        !window.location.hash.includes("no-sw") &&
+        window.location.hostname !== "localhost" &&
+        !window.location.hostname.includes("127.0.0.1")
+      ) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("/sw.js").catch(() => {
+            // Silently fail if service worker registration fails
+          });
+        });
+      }
+    </script>
   </body>
 </html>

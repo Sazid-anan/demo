@@ -3,6 +3,39 @@
  * All media queries and responsive breakpoint styles
  */
 
+/* ===== TOUCH OPTIMIZATION - UNIVERSAL STYLES ===== */
+/* Applied to all devices for better touch interaction */
+
+/* Enable smooth tap feedback and prevent delay */
+button,
+a[role="button"],
+input[type="button"],
+input[type="submit"],
+input[type="checkbox"],
+input[type="radio"],
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Links are tappable but allow text selection in content */
+a[href]:not(.btn):not([role="button"]) {
+  -webkit-tap-highlight-color: rgba(243, 113, 6, 0.1);
+}
+
+/* Improve form input tap experience */
+input,
+textarea,
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-size: 16px; /* Prevents iOS auto-zoom */
+}
+
 /* ===== MOBILE-FIRST BREAKPOINT REFERENCE ===== */
 /* Mobile (Base): 0 - 480px - Default styles, vertical stacking, 44px touch targets */
 /* Tablet/iPad: 481px - 768px - 2-column grids, hamburger menu */
@@ -127,14 +160,28 @@
   /* Reduce padding on small containers on mobile */
   [class*="px-6"],
   [class*="px-8"] {
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
   }
 
   /* Better spacing for readability on mobile */
   p {
     line-height: 1.7 !important;
-    margin-bottom: 1rem !important;
+    margin-bottom: 0.5rem !important;
+    font-size: 0.9375rem !important;
+    text-align: justify !important;
+  }
+
+  /* Override Tailwind text-sm, text-base for mobile */
+  p.text-sm,
+  p.text-base,
+  p.text-lg,
+  p.text-xl,
+  p[class*="text-sm"],
+  p[class*="text-base"],
+  p[class*="text-justify"] {
+    font-size: 0.9375rem !important;
+    text-align: justify !important;
   }
 
   h1,
@@ -153,17 +200,35 @@
     user-select: none;
   }
 
-  /* Optimize tap feedback on mobile */
+  /* Optimize tap feedback on mobile with active states */
   button,
-  a[role="button"] {
+  a[role="button"],
+  input[type="button"],
+  input[type="submit"],
+  .btn-responsive {
     transition:
-      background-color 0.2s,
-      border-color 0.2s;
+      background-color 0.15s ease-out,
+      border-color 0.15s ease-out,
+      transform 0.1s ease-out,
+      box-shadow 0.15s ease-out;
   }
 
   button:active,
-  a[role="button"]:active {
-    opacity: 0.9;
+  a[role="button"]:active,
+  input[type="button"]:active,
+  input[type="submit"]:active,
+  .btn-responsive:active {
+    transform: scale(0.98);
+    opacity: 0.95;
+  }
+
+  button:focus,
+  a[role="button"]:focus,
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: 2px solid #f37106;
+    outline-offset: 2px;
   }
 
   /* Improve form input accessibility on mobile */
@@ -218,6 +283,19 @@
   .backdrop-blur-md {
     backdrop-filter: blur(8px) !important;
   }
+
+  /* ===== 540x720 VIEW - REDUCE CARD SIZE ===== */
+  /* Reduce capabilities card width for 540x720 view */
+  .capabilities-content .grid[class*="grid-cols"] {
+    padding: 0 1rem !important;
+    max-width: 100% !important;
+  }
+
+  .capabilities-content .relative.w-full {
+    max-width: 85% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
 }
 
 /* Performance: Disable heavy animations on low-power devices */
@@ -255,6 +333,47 @@
     line-height: 1.5;
   }
 }
+
+/* ===== TOUCH DEVICE OPTIMIZATION - DISABLE HOVER EFFECTS ===== */
+/* On touch devices (no hovering capability), remove hover states */
+@media (hover: none) and (pointer: coarse) {
+  /* Hide hover overlays on product cards */
+  .orange-pop-hover::before,
+  .orange-pop-hover:hover::before,
+  button.orange-pop-hover:hover::before,
+  a.orange-pop-hover:hover::before {
+    opacity: 0 !important;
+    pointer-events: none;
+  }
+
+  /* Disable glass mor hover effects */
+  .glass-orange:hover::before,
+  .glass-orange-outline:hover::before {
+    opacity: 0 !important;
+    transform: none !important;
+  }
+
+  .glass-orange:hover,
+  .glass-orange-outline:hover {
+    box-shadow: none;
+    background: var(--original-bg);
+  }
+
+  /* Disable hover state backgrounds */
+  [class*="hover:opacity"],
+  [class*="hover:bg"],
+  [class*="md:hover"] {
+    opacity: auto;
+    background-color: auto !important;
+  }
+
+  /* Keep active states but disable hover */
+  button:not(:active),
+  a[role="button"]:not(:active) {
+    filter: none;
+  }
+}
+
 /* ===== COMPREHENSIVE MOBILE OPTIMIZATION (NO DESKTOP CHANGES) ===== */
 
 /* MOBILE GRID LAYOUTS - Collapse multi-column to single column on mobile */
@@ -297,8 +416,8 @@
   .container,
   .container-fluid,
   [class*="mx-auto"] {
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
   }
 
   /* Optimize max-width containers */
@@ -306,7 +425,9 @@
   .max-w-6xl,
   .max-w-5xl,
   .max-w-4xl,
-  [class*="max-w"] {
+  .max-w-\[1280px\],
+  .content-maxwidth,
+  .container {
     max-width: 100% !important;
     margin-left: auto !important;
     margin-right: auto !important;
@@ -314,14 +435,20 @@
 
   /* ===== HEADER/NAVBAR OPTIMIZATION ===== */
   header,
-  .topbanner,
-  nav {
-    padding-left: 0.75rem !important;
-    padding-right: 0.75rem !important;
+  .topbanner {
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+    border-radius: 0 !important;
+  }
+
+  header > div,
+  header > div > div {
+    border-radius: 0 !important;
   }
 
   /* Compact header spacing */
   header nav,
+  .topbanner nav,
   .navbar {
     padding-top: 0.5rem !important;
     padding-bottom: 0.5rem !important;
@@ -360,9 +487,10 @@
   }
 
   p {
-    font-size: clamp(0.85rem, 2vw, 1rem) !important;
+    font-size: 0.9375rem !important;
     line-height: 1.6 !important;
     margin-bottom: 0.75rem !important;
+    text-align: justify !important;
   }
 
   /* Minimum text sizes - never below 12px for readability */
@@ -407,7 +535,7 @@
 
   /* ===== CARD & COMPONENT OPTIMIZATION ===== */
   /* Reduce card padding on mobile - targeted rules only */
-  [class*="rounded-"] {
+  [class*="rounded-"]:not(.rounded-none) {
     border-radius: clamp(0.375rem, 2vw, 0.75rem) !important;
   }
 
@@ -485,15 +613,31 @@
     gap: clamp(1rem, 3vw, 1.25rem) !important;
   }
 
+  /* Ensure single column layout on mobile - 7 rows */
+  .capabilities-content .grid[class*="grid-cols-1"] {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto;
+    gap: 0.75rem !important;
+  }
+
+  /* Limit text on mobile view only */
+  .capabilities-content .aspect-square h3 {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+  }
+
   /* Phase Section */
   .phases-section {
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
   }
 
   /* Footer optimization */
   footer {
-    padding: clamp(0.6rem, 1.8vw, 1rem) 0.75rem !important;
+    padding: clamp(0.6rem, 1.8vw, 1rem) 1.25rem !important;
   }
 
   footer [class*="grid"] {
@@ -635,19 +779,19 @@
 /* EXTRA SMALL DEVICES (<380px) */
 @media (max-width: 380px) {
   html {
-    font-size: 14px;
+    font-size: 15px;
   }
 
   h1 {
-    font-size: 1.25rem !important;
+    font-size: 1.4rem !important;
   }
 
   h2 {
-    font-size: 1.1rem !important;
+    font-size: 1.2rem !important;
   }
 
   h3 {
-    font-size: 1rem !important;
+    font-size: 1.05rem !important;
   }
 
   button,
@@ -659,13 +803,38 @@
   /* Stack everything tightly on very small screens */
   .container,
   [class*="mx-auto"] {
-    padding-left: 0.75rem !important;
-    padding-right: 0.75rem !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
   }
 
   /* Hide less important content on tiny screens */
   .hide-xs {
     display: none !important;
+  }
+
+  /* iPhone SE / Small screens - Keep 2-column square card layout */
+  .capabilities-content .aspect-square {
+    flex-direction: column !important;
+    gap: 0.4rem !important;
+    min-height: 0 !important;
+    padding: 0.65rem !important;
+    aspect-ratio: 1/1 !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .capabilities-content .aspect-square svg {
+    width: 1.3rem !important;
+    height: 1.3rem !important;
+    flex-shrink: 0 !important;
+  }
+
+  .capabilities-content .aspect-square h3 {
+    font-size: 0.62rem !important;
+    line-height: 1.2 !important;
+    text-align: center !important;
+    margin: 0 !important;
+    word-break: break-word !important;
   }
 }
 
@@ -687,7 +856,20 @@
   }
 
   p {
-    font-size: 0.85rem !important;
+    font-size: 0.9375rem !important;
+    text-align: justify !important;
+  }
+
+  /* Override Tailwind text classes for landscape */
+  p.text-sm,
+  p.text-base,
+  p.text-lg,
+  p.text-xl,
+  p[class*="text-sm"],
+  p[class*="text-base"],
+  p[class*="text-justify"] {
+    font-size: 0.9375rem !important;
+    text-align: justify !important;
   }
 
   button {
@@ -742,73 +924,103 @@
   }
 }
 
+/* ===== TABLET OPTIMIZATION (640px - 1024px) ===== */
+@media (min-width: 640px) and (max-width: 1023px) {
+  /* Tablet capabilities - 2 columns */
+  .capabilities-content .grid[class*="grid-cols-2"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 1rem !important;
+  }
+
+  /* Consistent card sizing for tablets */
+  .capabilities-content .aspect-square {
+    min-height: 10rem !important;
+    max-width: none !important;
+  }
+
+  /* Show full text on 720p view */
+  .capabilities-content .aspect-square h3 {
+    font-size: 0.875rem !important;
+    line-height: 1.35 !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    display: block !important;
+    word-wrap: break-word !important;
+    white-space: normal !important;
+  }
+
+  .capabilities-content .aspect-square svg {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+  }
+}
+
 /* ===== IPAD PRO & LANDSCAPE OPTIMIZATION (1024px - 1366px) ===== */
 /* Fine-tune capability boxes and overall layout for iPad Pro */
 @media (min-width: 1024px) and (max-width: 1366px) {
   /* Capability boxes container */
   .capabilities-content div[class*="border-orange-200"] {
-    padding: 0.75rem !important;
+    padding: 1rem 0.875rem !important;
     max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
     border-radius: 0.75rem !important;
   }
 
   /* Individual capability cards - reduce size for iPad Pro */
-  .capabilities-content
-    .grid[class*="grid-cols-8"]
-    div[class*="border-gray-200"] {
-    padding: 0.75rem !important;
+  .capabilities-content .grid[class*="grid-cols-8"] div[class*="border-gray-200"],
+  .capabilities-content .aspect-square {
+    padding: 0.875rem !important;
     border-radius: 0.6rem !important;
     width: 100% !important;
     max-width: 100% !important;
     height: auto !important;
-    min-height: 7rem !important;
+    min-height: 8.5rem !important;
     aspect-ratio: 1/1 !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    overflow: hidden !important;
+    overflow: visible !important;
   }
 
-  /* Icons in capability cards - significantly reduce for iPad Pro */
-  .capabilities-content
-    .grid[class*="grid-cols-8"]
-    div[class*="border-gray-200"]
-    svg,
+  /* Icons in capability cards - optimized size for iPad Pro */
+  .capabilities-content .grid[class*="grid-cols-8"] div[class*="border-gray-200"] svg,
   .capabilities-content .aspect-square svg {
-    width: 2rem !important;
-    height: 2rem !important;
+    width: 2.25rem !important;
+    height: 2.25rem !important;
+    flex-shrink: 0 !important;
   }
 
-  /* Capability card titles - further reduce font */
-  .capabilities-content
-    .grid[class*="grid-cols-8"]
-    div[class*="border-gray-200"]
-    h3,
+  /* Capability card titles - optimized font */
+  .capabilities-content .grid[class*="grid-cols-8"] div[class*="border-gray-200"] h3,
   .capabilities-content .aspect-square h3 {
-    font-size: 0.7rem !important;
-    line-height: 1.1 !important;
+    font-size: 0.75rem !important;
+    line-height: 1.25 !important;
     margin: 0 !important;
+    margin-top: 0.375rem !important;
     word-break: break-word !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    display: -webkit-box !important;
-    -webkit-line-clamp: 3 !important;
-    line-clamp: 3 !important;
-    -webkit-box-orient: vertical !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    display: block !important;
     max-width: 100% !important;
+    padding: 0 0.25rem !important;
+    text-align: center !important;
+    white-space: normal !important;
   }
 
-  /* Grid layout for iPad Pro - 8 columns to fit in 2 rows */
+  /* Grid layout for iPad Pro - 7 columns to fit all capability boxes */
   .capabilities-content .grid[class*="grid-cols-2"][class*="grid-cols-4"] {
-    grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
-    gap: 0.5rem !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    gap: 0.75rem !important;
+    justify-items: stretch !important;
   }
 
-  /* Override lg:grid-cols-8 specifically for iPad Pro */
-  .capabilities-content .grid[class*="grid-cols-8"] {
-    grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
-    gap: 0.5rem !important;
+  /* Override lg:grid-cols-7 specifically for iPad Pro */
+  .capabilities-content .grid[class*="grid-cols-7"] {
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    gap: 0.75rem !important;
+    justify-items: stretch !important;
   }
 
   /* Adjust capabilities section header */
@@ -816,6 +1028,7 @@
     font-size: 1.6rem !important;
     line-height: 1.2 !important;
     margin-bottom: 0.35rem !important;
+    text-align: left !important;
   }
 
   /* Fix header alignment - left and right text same level */
@@ -831,10 +1044,11 @@
 
   /* Make capability section paragraph same size as hero section */
   .capabilities-content > div:first-child p {
-    font-size: 0.75rem !important;
+    font-size: 0.9375rem !important;
     line-height: 1.45 !important;
     margin: 0 !important;
     padding: 0 !important;
+    text-align: justify !important;
   }
 
   /* Improve spacing between sections on iPad Pro */
@@ -900,10 +1114,11 @@
   section.bg-black .content-maxwidth > div > div > div.sm\:flex-\[1\.5\] p,
   section.bg-black p[class*="text-justify"][class*="lg:text-\[20px\]"],
   section.bg-black div[class*="flex-\[1.5\]"] p {
-    font-size: 0.9rem !important;
+    font-size: 0.9375rem !important;
     line-height: 1.5 !important;
     margin: 0 !important;
     padding: 0 !important;
+    text-align: justify !important;
   }
 
   /* Make image slider section description same size as phases section */
@@ -911,10 +1126,19 @@
   .image-slider-content div[class*="md:flex-\[1.5\]"] p,
   .image-slider-content p[class*="text-justify"][class*="lg:text-\[20px\]"],
   .image-slider-content p.text-justify.font-semibold {
-    font-size: 0.9rem !important;
+    font-size: 0.9375rem !important;
     line-height: 1.5 !important;
     margin: 0 !important;
     padding: 0 !important;
+    text-align: justify !important;
+  }
+
+  /* iPad Pro: specific section headings */
+  .topbanner h1.animated-gradient-text,
+  .image-slider-content h1.capabilities-gradient-text,
+  .capabilities-content h1.capabilities-gradient-text {
+    font-size: 40px !important;
+    line-height: 1.2 !important;
   }
 }
 
@@ -923,7 +1147,7 @@
 @media (min-width: 768px) and (max-width: 1023px) {
   /* Capability cards container */
   .capabilities-content .card.border-2[class*="border-orange"] {
-    padding: 0.35rem 0.15rem !important;
+    padding: 0.875rem !important;
     border-radius: 0.9rem !important;
     max-width: 100% !important;
   }
@@ -935,40 +1159,53 @@
   }
 
   /* Individual capability cards */
-  .capabilities-content .card.border.border-gray-200 {
-    padding: 0.3rem !important;
+  .capabilities-content .card.border.border-gray-200,
+  .capabilities-content .aspect-square {
+    padding: 0.625rem !important;
     border-radius: 0.5rem !important;
     height: auto !important;
-    min-height: 5.5rem !important;
-    min-width: 5.5rem !important;
+    min-height: 7rem !important;
+    min-width: auto !important;
     margin: 0 !important;
-    gap: 0rem !important;
+    gap: 0.375rem !important;
+  }
+
+  /* iPad mini: add left/right breathing room around the grid */
+  .capabilities-content .grid[class*="grid-cols"] {
+    padding-left: 0.25rem !important;
+    padding-right: 0.25rem !important;
   }
 
   /* Icons in capability cards for iPad/720p */
   .capabilities-content .card.border.border-gray-200 svg,
   .capabilities-content .aspect-square svg {
-    width: 1.3rem !important;
-    height: 1.3rem !important;
+    width: 1.75rem !important;
+    height: 1.75rem !important;
+    flex-shrink: 0 !important;
   }
 
   /* Capability card titles */
   .capabilities-content .card.border.border-gray-200 h3,
   .capabilities-content .aspect-square h3 {
-    font-size: 0.6rem !important;
-    line-height: 1.15 !important;
+    font-size: 0.7rem !important;
+    line-height: 1.25 !important;
+    padding: 0 0.25rem !important;
+    text-align: center !important;
   }
 
-  /* Grid layout - 8 columns for all items in fewer rows */
+  /* Grid layout - 7 columns to fit all capability boxes */
   .capabilities-content .grid[class*="grid-cols-2"][class*="grid-cols-4"] {
-    grid-template-columns: repeat(8, minmax(5rem, 1fr)) !important;
-    gap: 0.15rem !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    gap: 0.75rem !important;
+    justify-items: stretch !important;
   }
 
-  /* Override lg:grid-cols-8 for iPad/720p */
+  /* Override lg:grid-cols-7 for iPad/720p */
+  .capabilities-content .grid[class*="grid-cols-7"],
   .capabilities-content .grid[class*="grid-cols-8"] {
-    grid-template-columns: repeat(8, minmax(5rem, 1fr)) !important;
-    gap: 0.15rem !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    gap: 0.75rem !important;
+    justify-items: stretch !important;
   }
 
   /* Adjust header for iPad/720p */
@@ -976,12 +1213,29 @@
     font-size: 1.6rem !important;
     line-height: 1.2 !important;
     margin-bottom: 0.35rem !important;
+    text-align: left !important;
   }
 
   .capabilities-content [class*="flex-"] p {
-    font-size: 0.75rem !important;
+    font-size: 0.9375rem !important;
+    text-align: justify !important;
+  }
+
+  /* Image Slider Marquee - Ensure consistent gap for iPad portrait */
+  .image-slider-content .animate-image-marquee {
+    gap: 1.5rem !important;
   }
 }
+
+/* ===== IPAD MINI OPTIMIZATION (744px - 833px) ===== */
+/* Specific optimization for iPad mini 7.9" portrait (767x858) */
+@media (min-width: 744px) and (max-width: 833px) {
+  .capabilities-content .grid[class*="grid-cols"] {
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    gap: 0.4rem !important;
+  }
+}
+
 /* ===== TABLET & 720P OPTIMIZATIONS (768px - 1023px) ===== */
 /* Fine-tune layout and spacing for small tablets and 720P displays */
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -999,8 +1253,9 @@
   }
 
   .topbanner p {
-    font-size: 0.95rem !important;
+    font-size: 1.375rem !important;
     line-height: 1.55 !important;
+    text-align: justify !important;
   }
 
   .topbanner button {
@@ -1020,6 +1275,12 @@
   /* Image Slider Section - Adjust layout */
   .image-slider-content .flex-row {
     gap: 1.25rem !important;
+  }
+
+  /* Image Slider Marquee - Ensure consistent gap spacing for tablet */
+  .image-slider-content .animate-image-marquee {
+    gap: 1.5rem !important;
+    animation-duration: 35000ms !important;
   }
 
   /* General content spacing adjustments */
@@ -1080,13 +1341,14 @@
 
   footer h3,
   footer h4 {
-    font-size: 0.7rem !important;
+    font-size: 12px !important;
   }
 
   footer p,
   footer a,
   footer nav {
-    font-size: 0.65rem !important;
+    font-size: 0.9375rem !important;
+    text-align: justify !important;
   }
 }
 
@@ -1195,7 +1457,7 @@
 
   .topbanner {
     padding-top: 25px !important;
-    padding-bottom: 25px !important;
+    padding-bottom: 0 !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
@@ -1223,6 +1485,7 @@
     line-height: 1.52 !important;
     text-align: left !important;
     margin-bottom: 0 !important;
+    text-align: justify !important;
   }
 
   /* Mobile button only - specific selector for button below description */
@@ -1272,44 +1535,27 @@
     min-width: 0 !important;
   }
 
-  .topbanner
-    .hero-topbanner-content
-    > div
-    > div.flex.flex-wrap
-    > div:first-child {
+  .topbanner .hero-topbanner-content > div > div.flex.flex-wrap > div:first-child {
     max-width: 21.5rem !important;
   }
 
-  .topbanner
-    .hero-topbanner-content
-    > div
-    > div.flex.flex-wrap
-    > div:first-child
-    button {
+  .topbanner .hero-topbanner-content > div > div.flex.flex-wrap > div:first-child button {
     margin-top: 0.12rem !important;
   }
 
-  .topbanner
-    .hero-topbanner-content
-    > div
-    > div.flex.flex-wrap
-    > div:last-child {
+  .topbanner .hero-topbanner-content > div > div.flex.flex-wrap > div:last-child {
     margin-top: 0 !important;
     padding-right: 0 !important;
     max-width: 100% !important;
   }
 
-  .topbanner
-    .hero-topbanner-content
-    > div
-    > div.flex.flex-wrap
-    > div:last-child
-    p {
-    font-size: 0.9rem !important;
+  .topbanner .hero-topbanner-content > div > div.flex.flex-wrap > div:last-child p {
+    font-size: 0.9375rem !important;
     line-height: 1.5 !important;
     text-wrap: pretty;
     margin: 0 !important;
     padding: 0 !important;
+    text-align: justify !important;
   }
 
   section {
@@ -1343,16 +1589,36 @@
   }
 
   p {
-    font-size: 0.98rem !important;
+    font-size: 0.9375rem !important;
     line-height: 1.58 !important;
-    margin-bottom: 0.66rem !important;
+    margin-bottom: 0.25rem !important;
+    text-align: justify !important;
   }
 
-  .card,
-  .rounded-2xl,
-  .rounded-xl,
-  [class*="shadow"] {
+  /* Override Tailwind text classes */
+  p.text-sm,
+  p.text-base,
+  p.text-lg,
+  p.text-xl,
+  p[class*="text-sm"],
+  p[class*="text-base"],
+  p[class*="text-justify"] {
+    font-size: 0.9375rem !important;
+    text-align: justify !important;
+  }
+
+  .card:not(header):not(section.bg-orange-500),
+  .rounded-2xl:not(header):not(section.bg-orange-500),
+  .rounded-xl:not(header):not(section.bg-orange-500),
+  [class*="shadow"]:not(header):not(section.bg-orange-500) {
     border-radius: 0.85rem !important;
+  }
+
+  /* Sharp corners for mobile header and hero banner */
+  header,
+  motion.header,
+  section.bg-orange-500 {
+    border-radius: 0 !important;
   }
 
   .card,
@@ -1402,8 +1668,8 @@
   footer p,
   footer a,
   footer span {
-    font-size: 0.78rem !important;
-    line-height: 1.4 !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
   }
 
   .sticky-contact-bar {
@@ -1413,25 +1679,25 @@
   }
 
   .sticky-contact-bar .sticky-contact-bar__button {
-    width: 3.2rem !important;
-    height: 3.2rem !important;
-    border-radius: 0.8rem !important;
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    border-radius: 0.6rem !important;
     box-shadow:
       0 8px 24px rgba(255, 106, 0, 0.35),
       inset 0 1px 2px rgba(255, 255, 255, 0.2) !important;
   }
 
   .sticky-contact-bar .sticky-contact-bar__icon {
-    width: 1.3rem !important;
-    height: 1.3rem !important;
+    width: 1rem !important;
+    height: 1rem !important;
   }
 }
 
 /* Sticky contact bar: isolated styles so global mobile utilities do not break it */
 .sticky-contact-bar__button {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 0.75rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.6rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1450,8 +1716,8 @@
 }
 
 .sticky-contact-bar__icon {
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 1rem;
+  height: 1rem;
   color: #ffffff;
 }
 
@@ -1470,9 +1736,9 @@
   }
 
   .sticky-contact-bar .sticky-contact-bar__button {
-    width: 2.8rem !important;
-    height: 2.8rem !important;
-    border-radius: 0.7rem !important;
+    width: 2.3rem !important;
+    height: 2.3rem !important;
+    border-radius: 0.6rem !important;
     border: 1.5px solid rgba(255, 140, 0, 0.4) !important;
     background: linear-gradient(135deg, #ff6a00 0%, #ff7a1a 100%) !important;
     box-shadow:
@@ -1482,230 +1748,133 @@
   }
 
   .sticky-contact-bar .sticky-contact-bar__icon {
-    width: 1.1rem !important;
-    height: 1.1rem !important;
+    width: 0.95rem !important;
+    height: 0.95rem !important;
     color: #ffffff !important;
   }
 }
 
 @media (max-width: 767px) {
-  /* Development phases: compact 3-column mobile layout (6 cards = 2 rows) */
-  .content-maxwidth.w-full > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: 0.9rem !important;
-    margin-top: 1rem !important;
+  /* Development phases: single-column mobile layout for better readability - HIGHEST PRIORITY */
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .relative.grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+    margin-top: 1.5rem !important;
     margin-bottom: 2rem !important;
     overflow: visible !important;
   }
 
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .relative.grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
     > .relative {
     overflow: visible !important;
   }
 
-  .content-maxwidth.w-full > .mb-6.sm\:mb-7.md\:mb-8.lg\:mb-10 {
-    margin-bottom: 1.05rem !important;
+  /* Phases section header styling */
+  section.w-full.bg-black.font-sans .content-maxwidth.w-full > div.mb-8 {
+    margin-bottom: 1.5rem !important;
   }
 
-  .content-maxwidth.w-full > .mb-6.sm\:mb-7.md\:mb-8.lg\:mb-10 > .flex {
-    gap: 1.2rem !important;
+  section.w-full.bg-black.font-sans .content-maxwidth.w-full > div[class*="mb-"] > .flex {
+    gap: 1.5rem !important;
   }
 
-  .content-maxwidth.w-full > .mb-6.sm\:mb-7.md\:mb-8.lg\:mb-10 h1 {
-    font-size: clamp(1.55rem, 6.3vw, 1.95rem) !important;
-    margin-bottom: 0.55rem !important;
-    line-height: 1.14 !important;
+  section.w-full.bg-black.font-sans .content-maxwidth.w-full .animated-gradient-text {
+    font-size: clamp(1.75rem, 7vw, 2.25rem) !important;
+    margin-bottom: 0.75rem !important;
+    line-height: 1.2 !important;
   }
 
-  .content-maxwidth.w-full > .mb-6.sm\:mb-7.md\:mb-8.lg\:mb-10 p {
-    font-size: 0.78rem !important;
-    line-height: 1.35 !important;
+  section.w-full.bg-black.font-sans .content-maxwidth.w-full > div[class*="mb-"] p {
+    font-size: 1rem !important;
+    line-height: 1.5 !important;
     margin-bottom: 0 !important;
+    text-align: justify !important;
   }
 
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    .group.h-full
-    > div {
-    min-height: 142px !important;
-    padding: 0.42rem !important;
-    border-radius: 0.62rem !important;
+  /* Phase card container */
+  section.w-full.bg-black.font-sans .content-maxwidth.w-full .group.h-full.w-full > div.relative {
+    min-height: 180px !important;
+    padding: 1rem !important;
+    border-radius: 1rem !important;
   }
 
   /* Icon container sizing for mobile */
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    .group.h-full
-    > div
-    > div[class*="rounded"] {
-    width: 1.8rem !important;
-    height: 1.8rem !important;
-    min-width: 1.8rem !important;
-    min-height: 1.8rem !important;
-    max-width: 1.8rem !important;
-    max-height: 1.8rem !important;
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    .group.h-full.w-full
+    > div.relative
+    > div[class*="w-12"] {
+    width: 3rem !important;
+    height: 3rem !important;
+    min-width: 3rem !important;
+    min-height: 3rem !important;
+    max-width: 3rem !important;
+    max-height: 3rem !important;
     flex-shrink: 0 !important;
   }
 
   /* Number badge sizing for mobile */
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    .group.h-full
-    > div
-    > div[class*="absolute"][class*="top"] {
-    width: 1.4rem !important;
-    height: 1.4rem !important;
-    font-size: 0.5rem !important;
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    .group.h-full.w-full
+    > div.relative
+    > div.absolute[class*="top-3"] {
+    width: 2rem !important;
+    height: 2rem !important;
+    font-size: 0.75rem !important;
+    top: 1rem !important;
+    right: 1rem !important;
   }
 
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    h3 {
-    font-size: 0.62rem !important;
-    line-height: 1.18 !important;
+  /* Phase card title */
+  section.w-full.bg-black.font-sans .content-maxwidth.w-full .group.h-full.w-full h3 {
+    font-size: 1.125rem !important;
+    line-height: 1.3 !important;
+    font-weight: 700 !important;
   }
 
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    p {
-    font-size: 0.52rem !important;
-    line-height: 1.18 !important;
+  /* Phase card description */
+  section.w-full.bg-black.font-sans .content-maxwidth.w-full .group.h-full.w-full p {
+    font-size: 0.9375rem !important;
+    line-height: 1.5 !important;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    text-align: justify !important;
   }
 
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    svg {
-    width: 0.9rem !important;
-    height: 0.9rem !important;
-    min-width: 0.9rem !important;
-    min-height: 0.9rem !important;
-    max-width: 0.9rem !important;
-    max-height: 0.9rem !important;
+  /* Phase card icons */
+  section.w-full.bg-black.font-sans .content-maxwidth.w-full .group.h-full.w-full svg {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+    min-width: 1.5rem !important;
+    min-height: 1.5rem !important;
+    max-width: 1.5rem !important;
+    max-height: 1.5rem !important;
   }
 
-  /* Keep 3-column mobile flow (6 cards => 2 rows) and show snake arrows */
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    > .relative
-    > [class*="md:hidden"][class*="-bottom-14"] {
+  /* Hide arrow connectors on mobile */
+  section.w-full.bg-black.font-sans .phase-flow-arrow {
     display: none !important;
   }
 
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    > .relative
-    > [class*="md:block"][class*="lg:hidden"] {
-    display: none !important;
-  }
-
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    > .relative
-    > [class*="lg:block"] {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    z-index: 30 !important;
-  }
-
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    > .relative
-    > [class*="lg:block"][class*="-right-10"] {
-    right: -0.45rem !important;
-    width: 0.9rem !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    > .relative
-    > [class*="lg:block"][class*="-left-10"] {
-    left: -0.45rem !important;
-    width: 0.9rem !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    > .relative
-    > [class*="lg:block"][class*="-bottom-11"] {
-    bottom: -0.45rem !important;
-    height: 0.9rem !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    .phase-arrow {
-    display: inline-block !important;
-    width: 1.32rem !important;
-    height: 1.52rem !important;
-    color: #ff8c42 !important;
-    opacity: 0.9 !important;
-    filter: drop-shadow(0 2px 6px rgba(255, 140, 66, 0.5)) !important;
-    stroke-linecap: round !important;
-    stroke-linejoin: round !important;
-  }
-
-  /* Phase color divider: show as thin full-width colored line */
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    .group.h-full
-    .space-y-1
-    > div.rounded-full {
-    width: 100% !important;
-    height: 1px !important;
-    min-height: 1px !important;
-    max-height: 1px !important;
-    border-radius: 0 !important;
-    opacity: 0.6 !important;
+  /* Phase color divider: show as medium-width colored line */
+  section.w-full.bg-black.font-sans .content-maxwidth.w-full .group div.h-0\.5 {
+    width: 3rem !important;
+    height: 2px !important;
+    min-height: 2px !important;
+    max-height: 2px !important;
+    border-radius: 2px !important;
+    opacity: 0.8 !important;
     padding: 0 !important;
-    margin-top: 0.15rem !important;
-    margin-bottom: 0.15rem !important;
-    transform: none !important;
-  }
-
-  /* Ensure colored divider line is full width on mobile */
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    .group.h-full
-    > div
-    > .space-y-1
-    > div[class*="rounded-full"],
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    .group
-    div[class*="h-0.5"],
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    .group
-    div[class*="h-1"] {
-    width: 100% !important;
-    height: 1px !important;
-    min-height: 1px !important;
-    max-height: 1px !important;
-    border-radius: 0 !important;
-    opacity: 0.6 !important;
-  }
-
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    h3 {
-    font-size: 0.62rem !important;
-    line-height: 1.18 !important;
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.25rem !important;
   }
 }
 
@@ -1716,9 +1885,9 @@
   }
 
   section:has(.capabilities-content) {
-    padding-top: 0 !important;
+    padding-top: 1.5rem !important;
     padding-bottom: 0.08rem !important;
-    margin-top: -0.78rem !important;
+    margin-top: 0 !important;
     margin-bottom: 0 !important;
   }
 
@@ -1742,6 +1911,7 @@
     font-size: clamp(1.45rem, 5.9vw, 1.8rem) !important;
     line-height: 1.14 !important;
     margin-bottom: 0.25rem !important;
+    text-align: left !important;
   }
 
   .capabilities-content .flex-\[1\.5\] {
@@ -1749,54 +1919,66 @@
   }
 
   .capabilities-content .flex-\[1\.5\] p {
-    font-size: 0.82rem !important;
+    font-size: 0.9375rem !important;
     line-height: 1.45 !important;
+    text-align: justify !important;
     margin-bottom: 0 !important;
   }
 
   .capabilities-content .mb-4.sm\:mb-6.md\:mb-8 {
     margin-top: -1.38rem !important;
-    margin-bottom: 0 !important;
+    margin-bottom: 0.5rem !important;
   }
 
-  .capabilities-content .relative.w-full.max-w-\[640px\] {
-    max-width: 100% !important;
-    padding: 0.45rem !important;
-    border-radius: 0.75rem !important;
+  .capabilities-content > div:last-child > div {
+    max-width: calc(100% - 2rem) !important;
+    padding: 0.75rem 0.5rem !important;
+    border-radius: 0.5rem !important;
     margin-bottom: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 
-  .capabilities-content .grid.grid-cols-2.sm\:grid-cols-4 {
+  .capabilities-content .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 0.42rem !important;
+    gap: 0.5rem !important;
+    padding: 0 0.5rem !important;
   }
 
-  .capabilities-content .aspect-square.w-full.max-w-\[150px\] {
+  .capabilities-content .aspect-square {
     max-width: 100% !important;
-    min-height: 5.1rem !important;
-    aspect-ratio: auto !important;
-    border-radius: 0.62rem !important;
-    padding: 0.45rem !important;
-    gap: 0.28rem !important;
+    min-height: 0 !important;
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 0.75rem !important;
+    padding: 0.65rem !important;
+    gap: 0.5rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
-  .capabilities-content .aspect-square.w-full.max-w-\[150px\] svg {
-    width: 1.15rem !important;
-    height: 1.15rem !important;
+  .capabilities-content .aspect-square svg {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+    flex-shrink: 0 !important;
+    margin-right: 0 !important;
   }
 
-  .capabilities-content .aspect-square.w-full.max-w-\[150px\] h3 {
-    font-size: 0.68rem !important;
-    line-height: 1.2 !important;
+  .capabilities-content .aspect-square h3 {
+    font-size: 0.8rem !important;
+    line-height: 1.3 !important;
     margin: 0 !important;
+    text-align: center !important;
+    flex: 0 !important;
   }
 }
 
 @media (max-width: 767px) {
   /* Designed products slider: compact mobile rhythm */
   section:has(.image-slider-content) {
-    padding-top: 0.35rem !important;
-    padding-bottom: 0.5rem !important;
+    padding-top: 25px !important;
+    padding-bottom: 2rem !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
   }
@@ -1812,9 +1994,7 @@
     padding-top: 0 !important;
   }
 
-  .image-slider-content
-    > .text-left.mb-8.sm\:mb-10.md\:mb-12.lg\:mb-16
-    > .flex {
+  .image-slider-content > .text-left.mb-8.sm\:mb-10.md\:mb-12.lg\:mb-16 > .flex {
     gap: 0.85rem !important;
   }
 
@@ -1829,19 +2009,20 @@
   }
 
   .image-slider-content .flex-\[1\.5\] p {
-    font-size: 0.78rem !important;
+    font-size: 0.9375rem !important;
     line-height: 1.42 !important;
+    text-align: justify !important;
     margin-bottom: 0 !important;
   }
 
-  .image-slider-content
-    .overflow-hidden.relative.rounded-xl.md\:rounded-2xl.group {
+  .image-slider-content .overflow-hidden.relative.rounded-xl.md\:rounded-2xl.group {
     border-radius: 0.72rem !important;
+    padding-bottom: 0.75rem !important;
   }
 
   .image-slider-content .animate-image-marquee {
     gap: 0.75rem !important;
-    animation-duration: 52000ms !important;
+    animation-duration: 35000ms !important;
   }
 
   .image-slider-content
@@ -1907,22 +2088,14 @@
     h1.animated-gradient-text {
     font-size: clamp(1.85rem, 3.5vw, 2.35rem) !important;
     line-height: 1.15 !important;
-    background: linear-gradient(
-      90deg,
-      #ffb66f 0%,
-      #ff7a12 50%,
-      #ffd6a7 100%
-    ) !important;
+    background: linear-gradient(90deg, #ffb66f 0%, #ff7a12 50%, #ffd6a7 100%) !important;
     background-clip: text !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
   }
 
-  section.w-full.bg-black.font-sans
-    .content-maxwidth.w-full
-    > .mb-4.sm\:mb-5.md\:mb-6.lg\:mb-7
-    p {
-    font-size: 0.95rem !important;
+  section.w-full.bg-black.font-sans .content-maxwidth.w-full > .mb-4.sm\:mb-5.md\:mb-6.lg\:mb-7 p {
+    font-size: 1.375rem !important;
     line-height: 1.5 !important;
     margin: 0 !important;
   }
@@ -1934,10 +2107,7 @@
     margin-bottom: 0.9rem !important;
   }
 
-  section.w-full.bg-black.font-sans
-    .content-maxwidth.w-full
-    > div:first-child
-    > .flex {
+  section.w-full.bg-black.font-sans .content-maxwidth.w-full > div:first-child > .flex {
     display: flex !important;
     flex-direction: row !important;
     flex-wrap: nowrap !important;
@@ -1973,11 +2143,8 @@
     margin-bottom: 0.35rem !important;
   }
 
-  section.w-full.bg-black.font-sans
-    .content-maxwidth.w-full
-    > div:first-child
-    p {
-    font-size: 0.95rem !important;
+  section.w-full.bg-black.font-sans .content-maxwidth.w-full > div:first-child p {
+    font-size: 1.375rem !important;
     line-height: 1.45 !important;
     margin: 0 !important;
   }
@@ -2010,8 +2177,9 @@
     .content-maxwidth.w-full
     > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
     p {
-    font-size: 0.82rem !important;
+    font-size: 0.9375rem !important;
     line-height: 1.38 !important;
+    text-align: justify !important;
   }
 
   section.w-full.bg-black.font-sans
@@ -2139,8 +2307,8 @@
   }
 
   section:has(.image-slider-content) {
-    padding-top: 0.15rem !important;
-    padding-bottom: 0.2rem !important;
+    padding-top: 25px !important;
+    padding-bottom: 2.5rem !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
   }
@@ -2174,8 +2342,9 @@
 
   #contact .text-left.mb-6.sm\:mb-6.md\:mb-6.mt-0.pt-0 .flex-\[1\.5\] p {
     margin-bottom: 0 !important;
-    font-size: 0.78rem !important;
+    font-size: 0.9375rem !important;
     line-height: 1.38 !important;
+    text-align: justify !important;
   }
 }
 
@@ -2198,18 +2367,12 @@
 }
 
 @media (min-width: 768px) {
-  section.bg-black
-    .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    h3 {
+  section.bg-black .content-maxwidth.w-full > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 h3 {
     font-size: clamp(1rem, 0.9rem + 0.4vw, 1.125rem) !important;
     line-height: 1.2 !important;
   }
 
-  section.bg-black
-    .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    p {
+  section.bg-black .content-maxwidth.w-full > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 p {
     font-size: 0.875rem !important;
     line-height: 1.55 !important;
   }
@@ -2288,6 +2451,8 @@
     line-clamp: 4 !important;
     -webkit-box-orient: vertical !important;
     overflow: hidden !important;
+    font-size: 0.9375rem !important;
+    text-align: justify !important;
   }
 
   /* Phase card number badge - reposition for horizontal layout */
@@ -2343,7 +2508,7 @@ section {
 }
 
 section:has(.image-slider-content) {
-  padding-top: var(--section-pad) !important;
+  padding-top: 25px !important;
   padding-bottom: var(--section-pad) !important;
 }
 
@@ -2625,8 +2790,8 @@ section:has(.image-slider-content) {
   }
 
   .sticky-contact-bar__button {
-    width: 3rem !important;
-    height: 3rem !important;
+    width: 2.5rem !important;
+    height: 2.5rem !important;
   }
 
   /* Better touch targets on iPad */
@@ -2639,12 +2804,12 @@ section:has(.image-slider-content) {
 
   /* Footer optimization */
   footer {
-    padding: 1.5rem 1rem !important;
+    padding: 1.2rem 1rem !important;
   }
 
   footer p,
   footer a {
-    font-size: 0.9rem !important;
+    font-size: 12px !important;
   }
 }
 
@@ -2670,6 +2835,11 @@ section:has(.image-slider-content) {
 
   h3 {
     font-size: clamp(0.95rem, 3vw, 1.2rem) !important;
+  }
+
+  /* Hide sticky contact bar on mobile */
+  .sticky-contact-bar {
+    display: none !important;
   }
 
   /* Improved touch targets */
@@ -2711,14 +2881,14 @@ section:has(.image-slider-content) {
 
   /* Better footer on mobile */
   footer {
-    padding: 1rem 0.9rem !important;
+    padding: 0.9rem 0.8rem !important;
   }
 
   footer p,
   footer a,
   footer span {
-    font-size: 0.85rem !important;
-    line-height: 1.4 !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
   }
 
   /* Grid single column on mobile */
@@ -2750,14 +2920,14 @@ section:has(.image-slider-content) {
   }
 
   .sticky-contact-bar__button {
-    width: 2.7rem !important;
-    height: 2.7rem !important;
-    border-radius: 0.65rem !important;
+    width: 2.3rem !important;
+    height: 2.3rem !important;
+    border-radius: 0.6rem !important;
   }
 
   .sticky-contact-bar__icon {
-    width: 1rem !important;
-    height: 1rem !important;
+    width: 0.95rem !important;
+    height: 0.95rem !important;
   }
 }
 
@@ -2830,79 +3000,136 @@ section:has(.image-slider-content) {
 
   /* ===== CAPABILITIES SECTION ===== */
   section:has(.capabilities-content) {
-    padding-top: 0.75rem !important;
-    padding-bottom: 1rem !important;
-    padding-left: 0.25rem !important;
-    padding-right: 0.25rem !important;
-  }
-
-  .capabilities-content {
-    padding-left: 0.25rem !important;
-    padding-right: 0.25rem !important;
-  }
-
-  .capabilities-content h1.capabilities-gradient-text {
-    font-size: 1.4rem !important;
-    line-height: 1.2 !important;
-    margin-bottom: 0.5rem !important;
-    padding-left: 0.5rem !important;
-  }
-
-  .capabilities-content .flex-\[1\.5\] p {
-    font-size: 0.75rem !important;
-    line-height: 1.45 !important;
-    margin-bottom: 0 !important;
+    padding-top: 1rem !important;
+    padding-bottom: 1.25rem !important;
     padding-left: 0.5rem !important;
     padding-right: 0.5rem !important;
   }
 
+  .capabilities-content {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+
+  .capabilities-content h1.capabilities-gradient-text {
+    font-size: 1.35rem !important;
+    line-height: 1.25 !important;
+    margin-bottom: 0.4rem !important;
+    padding-left: 0 !important;
+    text-align: left !important;
+  }
+
+  .capabilities-content .flex-\[1\.5\] p {
+    font-size: 0.72rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    text-align: center !important;
+  }
+
+  /* Header flex container - stack vertically on mobile */
+  .capabilities-content > div:first-child .flex.flex-row {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
   /* Reduce gap between title/description and the card */
   .capabilities-content > .mb-0 {
-    margin-bottom: 0 !important;
+    margin-bottom: 0.75rem !important;
   }
 
   .capabilities-content .mb-0.sm\:mb-3.md\:mb-1.lg\:mb-5 {
-    margin-bottom: 0 !important;
+    margin-bottom: 0.75rem !important;
   }
 
-  /* Capabilities card container - wider */
+  /* Capabilities card container - optimized */
   .capabilities-content .relative.w-full {
-    padding: 0.15rem !important;
-    border-radius: 0.4rem !important;
-    margin-top: -0.1rem !important;
-    max-width: 100% !important;
+    padding: 0.5rem !important;
+    border-radius: 0.6rem !important;
+    margin-top: 0 !important;
+    max-width: 95% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 
   .capabilities-content .mb-0.sm\:mb-5.md\:mb-1 {
     margin-bottom: 0 !important;
   }
 
-  /* Capabilities grid - 4 columns for 4 rows on iPhone */
-  .capabilities-content .grid.grid-cols-2.sm\:grid-cols-4.lg\:grid-cols-8 {
-    grid-template-columns: repeat(4, 1fr) !important;
-    gap: 0.15rem !important;
+  /* Capabilities grid - 2 column layout for mobile */
+  .capabilities-content .grid.grid-cols-2.sm\:grid-cols-4.lg\:grid-cols-8,
+  .capabilities-content .grid[class*="grid-cols"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.5rem !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: 0 0.5rem !important;
+    justify-items: stretch !important;
   }
 
-  /* Individual capability boxes - fill the grid cells */
-  .capabilities-content .aspect-square.w-full {
+  .capabilities-content .grid > div {
+    width: 100% !important;
+  }
+
+  .capabilities-content .grid > div > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    align-self: stretch !important;
+  }
+
+  .capabilities-content .grid > div > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    align-self: stretch !important;
+  }
+
+  /* Main container card - reduced padding for mobile */
+  .capabilities-content .relative.w-full.max-w-\[1150px\] {
+    padding: 0.5rem !important;
+    border-radius: 0.6rem !important;
+    max-width: 95% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* Individual capability boxes - square centered design */
+  .capabilities-content .aspect-square.w-full,
+  .capabilities-content .aspect-square {
     max-width: 100% !important;
     width: 100% !important;
-    min-height: auto !important;
+    min-height: 0 !important;
     max-height: none !important;
-    aspect-ratio: 1 !important;
-    border-radius: 0.3rem !important;
-    padding: 0.15rem !important;
-    gap: 0.1rem !important;
+    aspect-ratio: 1/1 !important;
+    border-radius: 0.65rem !important;
+    padding: 0.75rem !important;
+    gap: 0.5rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
   .capabilities-content .aspect-square svg {
-    width: 1.2rem !important;
-    height: 1.2rem !important;
+    width: 1.65rem !important;
+    height: 1.65rem !important;
+    flex-shrink: 0 !important;
   }
 
   .capabilities-content .aspect-square h3 {
-    font-size: 0.5rem !important;
-    line-height: 1.15 !important;
+    font-size: 0.68rem !important;
+    line-height: 1.25 !important;
+    padding: 0 !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    word-break: break-word !important;
   }
 
   /* ===== DEVELOPMENT PHASES SECTION ===== */
@@ -2912,19 +3139,19 @@ section:has(.image-slider-content) {
   }
 
   .content-maxwidth.w-full {
-    padding-left: 0.5rem !important;
-    padding-right: 0.5rem !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
   }
 
   .content-maxwidth.w-full > .mb-6.sm\:mb-7.md\:mb-8.lg\:mb-10 h1 {
-    font-size: 1.25rem !important;
+    font-size: 1.4rem !important;
     line-height: 1.2 !important;
-    margin-bottom: 0.35rem !important;
+    margin-bottom: 0.5rem !important;
   }
 
   .content-maxwidth.w-full > .mb-6.sm\:mb-7.md\:mb-8.lg\:mb-10 p {
-    font-size: 0.7rem !important;
-    line-height: 1.4 !important;
+    font-size: 0.875rem !important;
+    line-height: 1.5 !important;
   }
 
   /* Phase cards grid - 2 columns for iPhone 14 Pro Max */
@@ -2936,10 +3163,7 @@ section:has(.image-slider-content) {
   }
 
   /* Phase card styling - website style */
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    .group.h-full
-    > div {
+  .content-maxwidth.w-full > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 .group.h-full > div {
     min-height: 115px !important;
     padding: 0.5rem !important;
     border-radius: 0.75rem !important;
@@ -2986,9 +3210,7 @@ section:has(.image-slider-content) {
   }
 
   /* Phase card title */
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    h3 {
+  .content-maxwidth.w-full > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 h3 {
     font-size: 0.6rem !important;
     line-height: 1.15 !important;
     margin-bottom: 0.1rem !important;
@@ -2996,9 +3218,7 @@ section:has(.image-slider-content) {
   }
 
   /* Phase card description */
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    p {
+  .content-maxwidth.w-full > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 p {
     font-size: 0.42rem !important;
     line-height: 1.3 !important;
     margin-top: 0.1rem !important;
@@ -3006,9 +3226,7 @@ section:has(.image-slider-content) {
   }
 
   /* Underline decoration */
-  .content-maxwidth.w-full
-    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
-    .h-0\.5 {
+  .content-maxwidth.w-full > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 .h-0\.5 {
     height: 1.5px !important;
     width: 1rem !important;
     margin-top: 0.1rem !important;
@@ -3022,8 +3240,8 @@ section:has(.image-slider-content) {
 
   /* ===== IMAGE SLIDER SECTION ===== */
   section:has(.image-slider-content) {
-    padding-top: 0.5rem !important;
-    padding-bottom: 1rem !important;
+    padding-top: 25px !important;
+    padding-bottom: 2rem !important;
   }
 
   .image-slider-content {
@@ -3046,13 +3264,13 @@ section:has(.image-slider-content) {
     line-height: 1.4 !important;
   }
 
-  .image-slider-content
-    .overflow-hidden.relative.rounded-xl.md\:rounded-2xl.group {
+  .image-slider-content .overflow-hidden.relative.rounded-xl.md\:rounded-2xl.group {
     border-radius: 0.6rem !important;
+    padding-bottom: 1rem !important;
   }
 
   .image-slider-content .animate-image-marquee {
-    gap: 0.6rem !important;
+    gap: 2rem !important;
   }
 
   /* Slider navigation dots */
@@ -3202,12 +3420,12 @@ section:has(.image-slider-content) {
   }
 
   footer h3 {
-    font-size: 0.55rem !important;
+    font-size: 12px !important;
     margin-bottom: 0.2rem !important;
   }
 
   footer h4 {
-    font-size: 0.5rem !important;
+    font-size: 12px !important;
     margin-bottom: 0.2rem !important;
   }
 
@@ -3220,7 +3438,7 @@ section:has(.image-slider-content) {
   footer p,
   footer a,
   footer span {
-    font-size: 0.45rem !important;
+    font-size: 12px !important;
     line-height: 1.3 !important;
   }
 
@@ -3247,7 +3465,7 @@ section:has(.image-slider-content) {
   }
 
   footer nav a {
-    font-size: 0.45rem !important;
+    font-size: 12px !important;
   }
 
   /* Contact info section in footer */
@@ -3266,7 +3484,7 @@ section:has(.image-slider-content) {
   }
 
   footer .flex.items-start.gap-2 p {
-    font-size: 0.4rem !important;
+    font-size: 12px !important;
     line-height: 1.2 !important;
   }
 
@@ -3297,6 +3515,7 @@ section:has(.image-slider-content) {
 
   /* ===== STICKY CONTACT BAR ===== */
   .sticky-contact-bar {
+    display: none !important;
     right: 0.35rem !important;
     gap: 0.15rem !important;
   }
@@ -3368,8 +3587,8 @@ section:has(.image-slider-content) {
   .content-maxwidth,
   .container,
   section {
-    padding-left: 0.65rem !important;
-    padding-right: 0.65rem !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
   }
 
   section {
@@ -3381,9 +3600,50 @@ section:has(.image-slider-content) {
     width: 2.5rem !important;
     height: 2.5rem !important;
   }
+
+  /* Capability boxes optimization for ultra-small screens */
+  .capabilities-content .relative.w-full {
+    padding: 0.5rem !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .capabilities-content .grid[class*="grid-cols"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.45rem !important;
+    padding: 0 0.35rem !important;
+    justify-items: stretch !important;
+  }
+
+  .capabilities-content .grid > div {
+    width: 100% !important;
+  }
+
+  .capabilities-content .aspect-square {
+    padding: 0.5rem !important;
+    gap: 0.35rem !important;
+    aspect-ratio: 1/1 !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .capabilities-content .aspect-square svg {
+    width: 1.35rem !important;
+    height: 1.35rem !important;
+  }
+
+  .capabilities-content .aspect-square h3 {
+    font-size: 0.65rem !important;
+    text-align: center !important;
+    line-height: 1.2 !important;
+  }
 }
 
-/* Global paragraph sizing - keep all paragraphs consistent */
+/* Global paragraph sizing - removed to allow component-specific sizing */
+/* Commented out to prevent override of footer and other component text sizes */
+/* 
 p {
   font-size: 20px !important;
   font-family: "Inter", sans-serif !important;
@@ -3393,16 +3653,17 @@ p[class*="text-"][class*="text-"] {
   font-size: 20px !important;
   font-family: "Inter", sans-serif !important;
 }
+*/
 
-/* Footer typography override - force 16px everywhere */
+/* Footer typography override - force small fonts everywhere */
 footer.footer-uniform-text {
-  font-size: 14px !important;
+  font-size: 12px !important;
   font-family: "Inter", sans-serif !important;
   padding-bottom: 0.2rem !important;
 }
 
 footer.footer-uniform-text [class*="text-"] {
-  font-size: 14px !important;
+  font-size: 12px !important;
   font-family: "Inter", sans-serif !important;
 }
 
@@ -3435,4 +3696,222 @@ footer.footer-uniform-text .h-px {
 
 footer.footer-uniform-text .h-px + div {
   padding-top: 0.2rem !important;
+}
+
+/* Mobile: force section headings to 25px */
+@media (max-width: 767px) {
+  .topbanner h1,
+  .capabilities-content h1.capabilities-gradient-text,
+  .image-slider-content h1.capabilities-gradient-text,
+  section.bg-black .animated-gradient-text.section-heading,
+  #contact h1.animated-gradient-text,
+  #contact .grid.md\:grid-cols-2 > div:first-child h2,
+  #contact h2,
+  .content-maxwidth h1.capabilities-gradient-text,
+  .content-maxwidth h1.animated-gradient-text,
+  .content-maxwidth h2.text-2xl,
+  h2.text-h3 {
+    font-size: 25px !important;
+    line-height: 1.2 !important;
+  }
+}
+
+/* ===== IPAD MINI & AIR: CAPABILITY CARD WIDTH OVERRIDE ===== */
+/* iPad mini: 744px - 833px */
+@media (min-width: 744px) and (max-width: 833px) {
+  .capabilities-content .grid[class*="grid-cols"] {
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    gap: 0.4rem !important;
+  }
+
+  .topbanner {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .capabilities-content .relative.w-full {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .capabilities-content h1.capabilities-gradient-text {
+    font-size: 31.2px !important;
+    line-height: 1.2 !important;
+  }
+
+  section.bg-black .content-maxwidth .animated-gradient-text {
+    font-size: 31.2px !important;
+    line-height: 1.2 !important;
+  }
+
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > div:first-child
+    h1.animated-gradient-text {
+    font-size: 31.2px !important;
+    line-height: 1.2 !important;
+  }
+
+  .capabilities-content .card.border-2.border-orange-200\/60 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+/* iPad Air: 820px - 1180px */
+@media (min-width: 820px) and (max-width: 1180px) {
+  .capabilities-content .grid[class*="grid-cols"] {
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    gap: 0.45rem !important;
+  }
+
+  .topbanner {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
+
+/* ===== CONSISTENT CAPABILITIES CARD SIZING ===== */
+/* Ensure all capability cards have uniform sizing and text handling */
+.capabilities-content .aspect-square {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 7.5rem !important;
+  overflow: hidden !important;
+}
+
+/* Show full text on web view (desktop) and 720p */
+.capabilities-content .aspect-square h3 {
+  overflow: visible !important;
+  text-overflow: clip !important;
+  display: block !important;
+  word-wrap: break-word !important;
+  white-space: normal !important;
+}
+
+.capabilities-content .aspect-square svg {
+  flex-shrink: 0 !important;
+}
+
+/* iPad Pro: heading overrides after 1200-1400 rules */
+@media (min-width: 1024px) and (max-width: 1366px) {
+  .topbanner .hero-topbanner-content h1.animated-gradient-text,
+  .topbanner h1.animated-gradient-text,
+  .image-slider-content h1.capabilities-gradient-text,
+  .capabilities-content h1.capabilities-gradient-text,
+  section.w-full.bg-black.font-sans h1.animated-gradient-text.section-heading {
+    font-size: 40px !important;
+    line-height: 1.2 !important;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1366px) {
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > div:first-child
+    h1.animated-gradient-text.section-heading {
+    font-size: 40px !important;
+    line-height: 1.2 !important;
+  }
+}
+
+@media (width: 912px) and (height: 1368px) {
+  section h1 {
+    font-size: 35px !important;
+    line-height: 1.2 !important;
+  }
+
+  .capabilities-content h1.capabilities-gradient-text,
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > div:first-child
+    h1.animated-gradient-text.section-heading {
+    font-size: 35px !important;
+    line-height: 1.2 !important;
+  }
+
+  /* AGGRESSIVE MOBILE SHARP CORNERS - FINAL OVERRIDE */
+  motion.header,
+  header,
+  section.bg-orange-500,
+  .topbanner,
+  nav,
+  header *,
+  section.bg-orange-500 * {
+    border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+  }
+}
+
+/* ===== FINAL SCOPED MOBILE CAPABILITIES OPTIMIZATION ===== */
+@media (max-width: 767px) {
+  .capabilities-content .capabilities-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: clamp(0.5rem, 2.5vw, 0.75rem) !important;
+    padding: 0 0.5rem !important;
+    align-items: stretch !important;
+  }
+
+  .capabilities-content .capability-cell {
+    min-width: 0 !important;
+  }
+
+  .capabilities-content .capability-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    aspect-ratio: 1 / 1 !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    border-radius: 0.7rem !important;
+    padding: clamp(0.65rem, 2.5vw, 0.9rem) !important;
+    gap: clamp(0.45rem, 1.8vw, 0.65rem) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+  }
+
+  .capabilities-content .capability-icon {
+    width: clamp(1.4rem, 5.5vw, 1.85rem) !important;
+    height: clamp(1.4rem, 5.5vw, 1.85rem) !important;
+    flex-shrink: 0 !important;
+  }
+
+  .capabilities-content .capability-title {
+    font-size: clamp(0.7rem, 2.8vw, 0.9rem) !important;
+    line-height: 1.25 !important;
+    margin: 0 !important;
+    text-align: center !important;
+    max-width: 100% !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+    hyphens: auto !important;
+    font-weight: 600 !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .capabilities-content .capabilities-grid {
+    gap: 0.45rem !important;
+    padding: 0 0.35rem !important;
+  }
+
+  .capabilities-content .capability-card {
+    padding: 0.6rem !important;
+    gap: 0.4rem !important;
+  }
+
+  .capabilities-content .capability-icon {
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+  }
+
+  .capabilities-content .capability-title {
+    font-size: 0.65rem !important;
+    line-height: 1.2 !important;
+  }
 }

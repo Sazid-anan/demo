@@ -1,48 +1,77 @@
-/**
- * Button Component
- * Modern button with multiple variants and sizes
- */
-export default function Button({
+import React from "react";
+import PropTypes from "prop-types";
+import { useResponsive } from "../../hooks/useResponsive";
+
+const Button = React.memo(function Button({
   children,
   variant = "default",
   size = "default",
   className = "",
   ...props
 }) {
+  // useResponsive hook is called for potential future responsive behavior
+  useResponsive();
   const variants = {
-    default: "glass-orange-outline",
-    outline: "glass-orange-outline",
-    secondary: "glass-orange",
-    ghost: "glass-orange-outline",
-    destructive:
-      "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-    link: "glass-orange-outline",
+    default:
+      "bg-brand-orange text-brand-black hover:bg-orange-600 shadow-lg hover:shadow-xl hover:scale-105",
+    outline:
+      "border-2 border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-brand-black",
+    secondary: "bg-gray-700 text-white hover:bg-gray-800 shadow-lg hover:shadow-xl hover:scale-105",
+    ghost: "bg-transparent text-brand-orange hover:bg-orange-50 border-2 border-brand-orange",
+    destructive: "bg-red-600 text-white hover:bg-red-700 shadow-lg hover:shadow-xl hover:scale-105",
+    link: "text-brand-orange hover:text-orange-600 underline",
+    success: "bg-green-600 text-white hover:bg-green-700 shadow-lg hover:shadow-xl hover:scale-105",
   };
 
   const sizes = {
-    default: "h-10 px-4 py-2 text-base",
-    sm: "h-8 rounded-md px-3 text-sm",
-    lg: "h-12 rounded-lg px-6 text-base",
-    icon: "h-10 w-10 rounded-md p-0",
+    default: "h-11 px-6 py-2.5 text-base rounded-xl",
+    sm: "h-9 px-4 py-2 text-sm rounded-lg",
+    md: "h-10 px-5 py-2 text-sm font-semibold rounded-lg",
+    lg: "h-13 px-8 py-3 text-base rounded-xl",
+    icon: "h-11 w-11 rounded-lg p-0",
   };
 
   return (
     <button
       className={`
-        relative px-8 py-3 rounded-full font-semibold text-base cursor-pointer transition-all duration-300 inline-flex items-center gap-2 glass-orange-outline
-        inline-flex items-center justify-center gap-2
-        whitespace-nowrap rounded-md font-medium
-        transition-all disabled:opacity-50 disabled:cursor-not-allowed
-        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
+        relative inline-flex items-center justify-center gap-2
+        font-bold whitespace-nowrap
+        transition-all duration-300
+        disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
+        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2
         ${variants[variant] || variants.default}
         ${sizes[size] || sizes.default}
         ${className}
       `}
       tabIndex={0}
-      style={{ transform: "none" }}
       {...props}
     >
-      <span className="relative z-10">{children || "Enquiry"}</span>
+      <span className="relative z-10 inline-flex items-center gap-1 leading-snug align-middle">
+        {children || "Button"}
+      </span>
     </button>
   );
-}
+});
+
+Button.propTypes = {
+  children: PropTypes.node,
+  variant: PropTypes.oneOf([
+    "default",
+    "outline",
+    "secondary",
+    "ghost",
+    "destructive",
+    "link",
+    "success",
+  ]),
+  size: PropTypes.oneOf(["default", "sm", "md", "lg", "icon"]),
+  className: PropTypes.string,
+};
+
+Button.defaultProps = {
+  variant: "default",
+  size: "default",
+  className: "",
+};
+
+export default Button;

@@ -4,11 +4,9 @@ import { motion } from "framer-motion";
 import { saveBlog, deleteBlog } from "../../redux/slices/contentSlice";
 import { uploadImage } from "../../services/storage";
 import { renderMarkdown } from "../../utils/markdown";
+import Button from "../../components/ui/Button";
+import { Plus, Save, X, Edit2, Trash2 } from "lucide-react";
 
-/**
- * Blogs Tab
- * Allows admin to manage blog posts
- */
 export default function BlogsTab() {
   const dispatch = useDispatch();
   const { blogs } = useSelector((state) => state.content);
@@ -53,11 +51,7 @@ export default function BlogsTab() {
         const title = String(blog.title || "").toLowerCase();
         const excerpt = String(blog.excerpt || "").toLowerCase();
         const author = String(blog.author || "").toLowerCase();
-        return (
-          title.includes(query) ||
-          excerpt.includes(query) ||
-          author.includes(query)
-        );
+        return title.includes(query) || excerpt.includes(query) || author.includes(query);
       });
     }
 
@@ -137,8 +131,7 @@ export default function BlogsTab() {
       featured_image: blog.featured_image || "",
       author: blog.author || "",
       category: blog.category || "",
-      published_date:
-        blog.published_date || new Date().toISOString().split("T")[0],
+      published_date: blog.published_date || new Date().toISOString().split("T")[0],
       read_time: blog.read_time || "",
     });
     setImagePreview(blog.featured_image || "");
@@ -166,11 +159,7 @@ export default function BlogsTab() {
   };
 
   const handleDeleteBlog = async (id) => {
-    if (
-      !window.confirm(
-        "Are you sure you want to delete this blog post permanently?",
-      )
-    ) {
+    if (!window.confirm("Are you sure you want to delete this blog post permanently?")) {
       return;
     }
     try {
@@ -187,21 +176,22 @@ export default function BlogsTab() {
     <div>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h2 className="text-xl font-bold text-brand-black">
-            Manage Blog Posts
-          </h2>
-          <p className="text-sm text-gray-600 mt-1">
-            Add, edit, or remove blog posts
-          </p>
+          <h2 className="text-xl font-bold text-brand-black">Manage Blog Posts</h2>
+          <p className="text-sm text-gray-600 mt-1">Add, edit, or remove blog posts</p>
         </div>
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={() => setShowForm(!showForm)}
-          className="px-6 py-3 bg-brand-orange hover:bg-brand-orange/90 text-brand-black font-semibold rounded-xl border-2 border-brand-orange transition-all shadow-lg"
-        >
-          {showForm ? "✕ Cancel" : "+ Add New Blog Post"}
-        </motion.button>
+        <Button onClick={() => setShowForm(!showForm)} size="lg" variant="default">
+          {showForm ? (
+            <>
+              <X className="h-4 w-4" />
+              Cancel
+            </>
+          ) : (
+            <>
+              <Plus className="h-4 w-4" />
+              Add New Blog Post
+            </>
+          )}
+        </Button>
       </div>
 
       {saveSuccess && (
@@ -238,9 +228,7 @@ export default function BlogsTab() {
 
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-semibold text-brand-black mb-2">
-                Title *
-              </label>
+              <label className="block text-sm font-semibold text-brand-black mb-2">Title *</label>
               <input
                 type="text"
                 name="title"
@@ -252,9 +240,7 @@ export default function BlogsTab() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-brand-black mb-2">
-                Author
-              </label>
+              <label className="block text-sm font-semibold text-brand-black mb-2">Author</label>
               <input
                 type="text"
                 name="author"
@@ -266,9 +252,7 @@ export default function BlogsTab() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-brand-black mb-2">
-                Category
-              </label>
+              <label className="block text-sm font-semibold text-brand-black mb-2">Category</label>
               <input
                 type="text"
                 name="category"
@@ -327,9 +311,7 @@ export default function BlogsTab() {
           </div>
 
           <div className="mt-6">
-            <label className="block text-sm font-semibold text-brand-black mb-2">
-              Excerpt
-            </label>
+            <label className="block text-sm font-semibold text-brand-black mb-2">Excerpt</label>
             <textarea
               name="excerpt"
               value={formData.excerpt}
@@ -356,9 +338,7 @@ export default function BlogsTab() {
 
           {formData.content && (
             <div className="mt-6">
-              <label className="block text-sm font-semibold text-brand-black mb-2">
-                Preview
-              </label>
+              <label className="block text-sm font-semibold text-brand-black mb-2">Preview</label>
               <div
                 className="prose prose-sm max-w-none p-4 bg-gray-50 rounded-xl border border-gray-200 markdown-content"
                 dangerouslySetInnerHTML={{
@@ -369,22 +349,14 @@ export default function BlogsTab() {
           )}
 
           <div className="flex gap-4 mt-6">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={handleAddBlog}
-              className="px-6 py-3 bg-brand-orange hover:bg-brand-orange/90 text-brand-black font-semibold rounded-xl transition-all shadow-lg"
-            >
+            <Button onClick={handleAddBlog} size="lg" variant="default">
+              <Save className="h-4 w-4" />
               {editingId ? "Update Blog Post" : "Save Blog Post"}
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={handleCancel}
-              className="px-6 py-3 bg-white hover:bg-gray-50 text-brand-black font-semibold rounded-xl border-2 border-gray-200 transition-all"
-            >
+            </Button>
+            <Button onClick={handleCancel} size="lg" variant="outline">
+              <X className="h-4 w-4" />
               Cancel
-            </motion.button>
+            </Button>
           </div>
         </motion.div>
       )}
@@ -439,42 +411,32 @@ export default function BlogsTab() {
                 <div className="flex-1">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
-                      <h3 className="text-lg font-bold text-brand-black mb-2">
-                        {blog.title}
-                      </h3>
+                      <h3 className="text-lg font-bold text-brand-black mb-2">{blog.title}</h3>
                       <p className="text-sm text-gray-600 mb-2 line-clamp-2">
                         {blog.excerpt || "No excerpt"}
                       </p>
                       <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
                         {blog.author && <span>✍️ {blog.author}</span>}
                         {blog.category && (
-                          <span className="px-2 py-1 bg-gray-100 rounded">
-                            {blog.category}
-                          </span>
+                          <span className="px-2 py-1 bg-gray-100 rounded">{blog.category}</span>
                         )}
-                        {blog.published_date && (
-                          <span>📅 {blog.published_date}</span>
-                        )}
+                        {blog.published_date && <span>📅 {blog.published_date}</span>}
                         {blog.read_time && <span>⏱️ {blog.read_time} min</span>}
                       </div>
                     </div>
                     <div className="flex gap-2">
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => handleEditBlog(blog)}
-                        className="px-4 py-2 bg-white hover:bg-gray-50 text-brand-orange font-semibold rounded-lg border-2 border-brand-orange transition-all text-sm"
-                      >
+                      <Button onClick={() => handleEditBlog(blog)} size="sm" variant="outline">
+                        <Edit2 className="h-4 w-4" />
                         Edit
-                      </motion.button>
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                      </Button>
+                      <Button
                         onClick={() => handleDeleteBlog(blog.id)}
-                        className="px-4 py-2 bg-white hover:bg-red-50 text-red-600 font-semibold rounded-lg border-2 border-red-200 hover:border-red-400 transition-all text-sm"
+                        size="sm"
+                        variant="destructive"
                       >
+                        <Trash2 className="h-4 w-4" />
                         Delete
-                      </motion.button>
+                      </Button>
                     </div>
                   </div>
                 </div>

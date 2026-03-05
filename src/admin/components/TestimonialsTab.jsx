@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Camera } from "lucide-react";
+import { Camera, Plus, Save, X, Edit2, Trash2, RotateCcw } from "lucide-react";
 import {
   collection,
   addDoc,
@@ -15,10 +15,6 @@ import { db } from "../../services/firebaseClient";
 import { uploadImage } from "../../services/storage";
 import Button from "../../components/ui/Button";
 
-/**
- * Testimonials Tab
- * Admin interface for managing customer testimonials
- */
 export default function TestimonialsTab() {
   const [testimonials, setTestimonials] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -193,16 +189,13 @@ export default function TestimonialsTab() {
     >
       <div className="flex flex-wrap justify-between items-start gap-4">
         <div>
-          <h2 className="text-xl font-bold text-brand-black mb-2">
-            Testimonials
-          </h2>
-          <p className="text-gray-600 text-sm">
-            Manage customer testimonials and reviews
-          </p>
+          <h2 className="text-xl font-bold text-brand-black mb-2">Testimonials</h2>
+          <p className="text-gray-600 text-sm">Manage customer testimonials and reviews</p>
         </div>
         {!showForm && (
-          <Button onClick={() => setShowForm(true)} size="md">
-            + Add Testimonial
+          <Button onClick={() => setShowForm(true)} size="md" variant="default">
+            <Plus className="h-4 w-4" />
+            Add New Testimonial
           </Button>
         )}
       </div>
@@ -230,13 +223,10 @@ export default function TestimonialsTab() {
       {lastDeleted && (
         <div className="admin-section admin-section--soft p-4 text-gray-700 border border-gray-200 flex flex-wrap items-center justify-between gap-3">
           <span>Testimonial deleted. You can undo this action.</span>
-          <button
-            type="button"
-            onClick={handleUndo}
-            className="px-4 py-2 text-sm bg-brand-orange text-brand-black rounded-lg hover:shadow-md transition-all"
-          >
+          <Button onClick={handleUndo} size="md" variant="outline">
+            <RotateCcw className="h-4 w-4" />
             Undo
-          </button>
+          </Button>
         </div>
       )}
 
@@ -267,9 +257,7 @@ export default function TestimonialsTab() {
 
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-brand-black mb-2">
-                Role/Title
-              </label>
+              <label className="block text-sm font-medium text-brand-black mb-2">Role/Title</label>
               <input
                 type="text"
                 name="role"
@@ -280,9 +268,7 @@ export default function TestimonialsTab() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-brand-black mb-2">
-                Company
-              </label>
+              <label className="block text-sm font-medium text-brand-black mb-2">Company</label>
               <input
                 type="text"
                 name="company"
@@ -295,9 +281,7 @@ export default function TestimonialsTab() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-brand-black mb-2">
-              Testimonial *
-            </label>
+            <label className="block text-sm font-medium text-brand-black mb-2">Testimonial *</label>
             <textarea
               name="content"
               value={formData.content}
@@ -314,18 +298,12 @@ export default function TestimonialsTab() {
             {imagePreview && (
               <div className="mb-4">
                 <div className="w-32 h-32 rounded overflow-hidden">
-                  <img
-                    src={imagePreview}
-                    alt="preview"
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={imagePreview} alt="preview" className="w-full h-full object-cover" />
                 </div>
               </div>
             )}
             <div>
-              <label className="block text-sm font-medium text-brand-black mb-2">
-                Upload file
-              </label>
+              <label className="block text-sm font-medium text-brand-black mb-2">Upload file</label>
               <div className="relative">
                 <input
                   type="file"
@@ -369,24 +347,21 @@ export default function TestimonialsTab() {
           </div>
 
           <div className="flex gap-4 pt-4">
-            <Button onClick={handleAddTestimonial} size="md">
-              {editingId ? "Update Testimonial" : "Add Testimonial"}
+            <Button onClick={handleAddTestimonial} size="md" variant="default">
+              <Save className="h-4 w-4" />
+              {editingId ? "Update Testimonial" : "Save Testimonial"}
             </Button>
-            <button
-              onClick={handleCancel}
-              className="px-6 py-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-            >
+            <Button onClick={handleCancel} size="md" variant="outline">
+              <X className="h-4 w-4" />
               Cancel
-            </button>
+            </Button>
           </div>
         </motion.div>
       )}
 
       {/* Testimonials List */}
       {loading ? (
-        <div className="p-8 text-center text-gray-600">
-          Loading testimonials...
-        </div>
+        <div className="p-8 text-center text-gray-600">Loading testimonials...</div>
       ) : testimonials.length === 0 ? (
         <div className="admin-section admin-section--soft p-8 text-center text-gray-600">
           No testimonials yet. Add one to get started!
@@ -403,9 +378,7 @@ export default function TestimonialsTab() {
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
-                  <h4 className="font-bold text-brand-black">
-                    {testimonial.name}
-                  </h4>
+                  <h4 className="font-bold text-brand-black">{testimonial.name}</h4>
                   {testimonial.role && (
                     <p className="text-sm text-brand-orange">
                       {testimonial.role}
@@ -419,23 +392,19 @@ export default function TestimonialsTab() {
                 </div>
                 <button
                   onClick={() => handleDelete(testimonial.id)}
-                  className="text-red-600 hover:text-red-700 text-lg"
+                  className="text-red-600 hover:text-red-700 hover:scale-110 transition-transform"
                   title="Delete"
                 >
-                  ✕
+                  <Trash2 className="h-5 w-5" />
                 </button>
               </div>
 
-              <p className="text-gray-700 text-sm line-clamp-3">
-                "{testimonial.content}"
-              </p>
+              <p className="text-gray-700 text-sm line-clamp-3">"{testimonial.content}"</p>
 
-              <button
-                onClick={() => handleEdit(testimonial)}
-                className="text-sm text-brand-orange hover:text-brand-orange font-medium"
-              >
+              <Button onClick={() => handleEdit(testimonial)} size="sm" variant="outline">
+                <Edit2 className="h-4 w-4" />
                 Edit
-              </button>
+              </Button>
             </motion.div>
           ))}
         </div>

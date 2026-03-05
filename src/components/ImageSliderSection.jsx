@@ -1,6 +1,8 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import Container from "./common/Container";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useResponsive } from "../hooks/useResponsive";
+import { useSwipe } from "../hooks/useSwipe";
 
 /**
  * Image Slider Section
@@ -9,11 +11,10 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
  * Usage Example:
  * <ImageSliderSection
  *   images={[
- *     { src: "/images/1.jpg", name: "Future Tech", description: "A glimpse into tomorrow's technology." },
- *     { src: "/images/2.png", name: "Smart Device", description: "Smart device for modern living." },
- *     { src: "/images/3.jpg", name: "Innovative Design", description: "Sleek and innovative product design." },
- *     { src: "/images/4.jpg", name: "Cutting-Edge", description: "Experience cutting-edge technology." },
- *   ]}
+ *     { src: "/images/IMIG_1.svg", name: "Future Tech", description: "A glimpse into tomorrow's technology." },
+ *     { src: "/images/IMIG_2.svg", name: "Smart Device", description: "Smart device for modern living." },
+ *     { src: "/images/IMIG_3.svg", name: "Innovative Design", description: "Sleek and innovative product design." },
+ *
  *   title="Our Designed Products"
  *   autoPlay={true}
  *   interval={35000}
@@ -36,6 +37,9 @@ export default function ImageSliderSection({
   const sliderRef = useRef(null);
   const containerRef = useRef(null);
 
+  // Use responsive hook for device detection
+  const { width } = useResponsive();
+
   useEffect(() => {
     if (!autoPlay || images.length === 0) return;
 
@@ -46,57 +50,59 @@ export default function ImageSliderSection({
     if (!style) {
       style = document.createElement("style");
       style.id = styleId;
-      style.textContent = `
-        @keyframes image-marquee {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-
-        .animate-image-marquee {
-          display: flex;
-          gap: 16px;
-          animation: image-marquee ${interval}ms linear infinite;
-          will-change: transform;
-        }
-
-        @media (min-width: 640px) {
-          .animate-image-marquee {
-            gap: 24px;
-          }
-        }
-
-        @media (min-width: 768px) {
-          .animate-image-marquee {
-            gap: 32px;
-          }
-        }
-
-        .animate-image-marquee:hover {
-          animation-play-state: paused;
-        }
-
-        .animate-image-marquee.manual-mode {
-          animation: none;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .animate-image-marquee {
-            animation: none;
-          }
-        }
-
-        @media (max-width: 640px) {
-          .animate-image-marquee {
-            gap: 16px;
-          }
-        }
-      `;
       document.head.appendChild(style);
     }
+
+    // Update style content with current interval
+    style.textContent = `
+      @keyframes image-marquee {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+
+      .animate-image-marquee {
+        display: flex;
+        gap: 16px;
+        animation: image-marquee ${interval}ms linear infinite;
+        will-change: transform;
+      }
+
+      @media (min-width: 640px) {
+        .animate-image-marquee {
+          gap: 24px;
+        }
+      }
+
+      @media (min-width: 768px) {
+        .animate-image-marquee {
+          gap: 32px;
+        }
+      }
+
+      .animate-image-marquee:hover {
+        animation-play-state: paused;
+      }
+
+      .animate-image-marquee.manual-mode {
+        animation: none;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .animate-image-marquee {
+          animation: none;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .animate-image-marquee {
+          gap: 16px;
+        }
+      }
+    `;
 
     return () => {
       // Don't remove the style to avoid flickering on re-renders
@@ -118,49 +124,54 @@ export default function ImageSliderSection({
     return () => clearInterval(dotInterval);
   }, [autoPlay, interval, images.length, isManualMode]);
 
+  // Navigate to specific image with smooth transition
+  const navigateToImage = useCallback(
+    (index) => {
+      setCurrentIndex(index);
+      setIsManualMode(true); // Switch to manual mode permanently
+
+      if (sliderRef.current) {
+        // Add manual mode class to stop animation
+        sliderRef.current.classList.add("manual-mode");
+
+        // Get the appropriate width based on screen size using responsive hook
+        let imageWidth, gap;
+
+        if (width >= 768) {
+          imageWidth = 360;
+          gap = 32;
+        } else if (width >= 640) {
+          imageWidth = 280;
+          gap = 24;
+        } else {
+          imageWidth = 200;
+          gap = 16;
+        }
+
+        const scrollPosition = index * (imageWidth + gap);
+
+        // Apply smooth transition
+        sliderRef.current.style.transition = "transform 0.5s ease-in-out";
+        sliderRef.current.style.transform = `translateX(-${scrollPosition}px)`;
+      }
+    },
+    [width],
+  );
+
   // Navigate to previous image
-  const handlePrevious = () => {
+  const handlePrevious = useCallback(() => {
     const newIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
     navigateToImage(newIndex);
-  };
+  }, [currentIndex, images.length, navigateToImage]);
 
   // Navigate to next image
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     const newIndex = (currentIndex + 1) % images.length;
     navigateToImage(newIndex);
-  };
+  }, [currentIndex, images.length, navigateToImage]);
 
-  // Navigate to specific image with smooth transition
-  const navigateToImage = (index) => {
-    setCurrentIndex(index);
-    setIsManualMode(true); // Switch to manual mode permanently
-
-    if (sliderRef.current) {
-      // Add manual mode class to stop animation
-      sliderRef.current.classList.add("manual-mode");
-
-      // Get the appropriate width based on screen size
-      const width = window.innerWidth;
-      let imageWidth, gap;
-
-      if (width >= 768) {
-        imageWidth = 360;
-        gap = 32;
-      } else if (width >= 640) {
-        imageWidth = 280;
-        gap = 24;
-      } else {
-        imageWidth = 200;
-        gap = 16;
-      }
-
-      const scrollPosition = index * (imageWidth + gap);
-
-      // Apply smooth transition
-      sliderRef.current.style.transition = "transform 0.5s ease-in-out";
-      sliderRef.current.style.transform = `translateX(-${scrollPosition}px)`;
-    }
-  };
+  // Set up swipe gesture handling
+  const { ref: swipeRef } = useSwipe(handleNext, handlePrevious, 40);
 
   if (!images || images.length === 0) {
     return null;
@@ -170,25 +181,24 @@ export default function ImageSliderSection({
   const duplicatedImages = [...images, ...images];
 
   return (
-    <section className="pt-2 sm:pt-3 md:pt-4 lg:pt-6 xl:pt-8 pb-6 sm:pb-8 md:pb-12 lg:pb-16 xl:pb-20 bg-transparent">
+    <section className="pt-6 sm:pt-8 md:pt-10 lg:pt-14 pb-6 sm:pb-8 md:pb-10 lg:pb-14 bg-white">
       <Container className="content-maxwidth image-slider-content">
-        <div className="text-left mb-8 sm:mb-10 md:mb-12 lg:mb-16 mt-0 pt-0">
-          <div className="flex flex-col md:flex-row items-start gap-3 md:gap-4">
+        <div className="text-left mb-6 sm:mb-7 md:mb-8 lg:mb-10 mt-0 pt-0">
+          <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-8">
             {/* Left: Headline */}
-            <div className="w-full md:flex-1 flex flex-col items-start text-left">
-              <h1 className="capabilities-gradient-text font-semibold leading-[1.25] tracking-tight mb-2 sm:mb-3 md:mb-4 lg:mb-6 text-[18px] sm:text-[24px] md:text-[32px] lg:text-[50px]">
+            <div className="w-full lg:flex-1 flex flex-col items-start text-left">
+              <h1 className="heading-orange text-orange-500 font-semibold leading-[1.25] tracking-tight mb-6 sm:mb-6 md:mb-6 lg:mb-6 text-[22px] sm:text-[26px] md:text-[32px] lg:text-[50px]">
                 {title}
               </h1>
             </div>
 
             {/* Right: Description */}
-            <div className="w-full md:flex-[1.5] flex flex-col items-start text-left">
-              <p className="text-justify text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-black">
-                Stop worrying about design errors or manufacturing delays. Our
-                comprehensive approach integrates advanced simulation and
-                in-house prototyping to catch issues early, delivering
-                high-performance PCB designs that are optimized for cost and
-                rapid production.
+            <div className="w-full lg:flex-[1.5] flex flex-col items-start text-left lg:ml-11">
+              <p className="text-[18px] sm:text-[20px] md:text-[22px] lg:text-[23px] font-medium text-gray-800 leading-relaxed text-justify">
+                Stop worrying about design errors or manufacturing delays. Our comprehensive
+                approach integrates advanced simulation and in-house prototyping to catch issues
+                early, delivering high-performance PCB designs that are optimized for cost and rapid
+                production.
               </p>
             </div>
           </div>
@@ -196,8 +206,11 @@ export default function ImageSliderSection({
 
         {/* Horizontal Scrolling Carousel */}
         <div
-          ref={containerRef}
-          className="overflow-hidden relative rounded-xl md:rounded-2xl group"
+          ref={(el) => {
+            containerRef.current = el;
+            swipeRef.current = el;
+          }}
+          className="overflow-hidden relative rounded-xl md:rounded-2xl group pb-2 sm:pb-3 md:pb-4"
         >
           {/* Left Arrow Button */}
           <button
@@ -217,11 +230,7 @@ export default function ImageSliderSection({
             <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
 
-          <div
-            ref={sliderRef}
-            className="animate-image-marquee"
-            style={{ width: "max-content" }}
-          >
+          <div ref={sliderRef} className="animate-image-marquee" style={{ width: "max-content" }}>
             {duplicatedImages.map((image, index) => (
               <div
                 key={`${index}-${typeof image === "object" ? image.src : image}`}
@@ -235,6 +244,8 @@ export default function ImageSliderSection({
                       ? image.name
                       : `Product ${(index % images.length) + 1}`
                   }
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   style={{
                     objectPosition: "center",
@@ -243,8 +254,6 @@ export default function ImageSliderSection({
                     height: "100%",
                     width: "100%",
                   }}
-                  loading="lazy"
-                  decoding="async"
                 />
                 {/* Sliding Overlay on Hover */}
                 {typeof image === "object" && image.name && (
@@ -253,7 +262,7 @@ export default function ImageSliderSection({
                       {image.name}
                     </div>
                     {image.description && (
-                      <div className="text-xs sm:text-xs md:text-sm lg:text-base font-normal drop-shadow-md">
+                      <div className="text-sm md:text-base lg:text-base font-normal drop-shadow-md">
                         {image.description}
                       </div>
                     )}

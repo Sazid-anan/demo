@@ -8,18 +8,15 @@ export const SITE_CONTENT = {
   // Company Information
   company: {
     name: "DANVION",
-    tagline:
-      "Leading provider of Edge AI solutions and product development services.",
+    tagline: "Leading provider of Edge AI solutions and product development services.",
     description:
       "We specialize in Edge AI solutions, embedded systems, and complete product development from concept to production.",
   },
 
   // Contact Information
   contact: {
-    email: "sazid@danvion.com",
-    phone: "+60148914600",
-    phoneDisplay: "+60148914600",
-    location: "79/Ka Siddiqia, Sonabangla Lane, Khulna",
+    email: "support@danvion.com",
+    location: "128 City Road, London, EC1V 2NX, GB",
   },
 
   // Header Navigation
@@ -192,16 +189,14 @@ export const SITE_CONTENT = {
   products: {
     title: "Our Products",
     subtitle: "Innovative Solutions",
-    description:
-      "Explore our range of Edge AI and IoT products designed for various industries.",
+    description: "Explore our range of Edge AI and IoT products designed for various industries.",
   },
 
   // Blogs Page
   blogs: {
     title: "Latest Insights",
     subtitle: "Blog & Resources",
-    description:
-      "Stay updated with the latest trends in Edge AI, IoT, and product development.",
+    description: "Stay updated with the latest trends in Edge AI, IoT, and product development.",
     readMore: "Read More",
     readingTime: "{minutes} min read",
   },
@@ -226,5 +221,11 @@ export const SITE_CONTENT = {
     viewAll: "View All",
     backToTop: "Back to Top",
     scrollDown: "Scroll Down",
+  },
+
+  // Shared Descriptions (Used across multiple sections)
+  sharedDescriptions: {
+    engineeringSolutions:
+      "From hardware design to edge AI deployment, we deliver complete engineering solutions that bring intelligent products to life.",
   },
 };

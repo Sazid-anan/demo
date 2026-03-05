@@ -11,14 +11,12 @@ export default {
   ],
   theme: {
     extend: {
-      /* Jacobs-style Responsive Breakpoints (Bootstrap) */
+      /* Responsive Breakpoints - Mobile-First Approach */
       screens: {
-        xs: "0px", // Mobile (default/base)
-        sm: "576px", // Tablet start
-        md: "768px", // Tablet mid-point
-        lg: "992px", // Laptop/Desktop start
-        xl: "1200px", // Desktop 1080p
-        xxl: "1400px", // Ultra-wide/4K
+        xs: "0px", // Mobile (default/base): 0-575px
+        sm: "576px", // Tablet: 576px+
+        md: "750px", // Tablet mid-point: 750px+
+        lg: "992px", // Desktop: 992px+
       },
       colors: {
         /* Design System Colors */
@@ -49,18 +47,19 @@ export default {
         "brand-white": "#ffffff",
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
+        sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
       },
       fontSize: {
-        /* Jacobs-inspired typography system (62.5% base = 1rem = 10px) */
-        xs: "0.8rem" /* 8px */,
-        sm: "1rem" /* 10px */,
-        base: "1.6rem" /* 16px - Jacobs body font */,
-        lg: "1.8rem" /* 18px */,
-        xl: "2rem" /* 20px - Jacobs h3 */,
-        "2xl": "2.5rem" /* 25px - Jacobs feature h3 */,
-        "3xl": "3.5rem" /* 35px - Jacobs section header h2 */,
-        "4xl": "4.8rem" /* 48px */,
+        /* Standard Typography Scale - Mobile-First Responsive */
+        xs: "0.75rem" /* 12px - Small text/captions */,
+        sm: "0.875rem" /* 14px - Small body text */,
+        base: "1rem" /* 16px - Body text (default) */,
+        lg: "1.125rem" /* 18px - Large body text */,
+        xl: "1.25rem" /* 20px - Extra large text */,
+        "2xl": "1.5rem" /* 24px - Headings h4 */,
+        "3xl": "1.875rem" /* 30px - Headings h3 */,
+        "4xl": "2.25rem" /* 36px - Headings h2 */,
+        "5xl": "3rem" /* 48px - Headings h1 */,
       },
       borderRadius: {
         xl: "0.625rem",

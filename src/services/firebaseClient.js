@@ -4,29 +4,25 @@ import { initializeFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey:
-    import.meta.env.VITE_FIREBASE_API_KEY ||
-    "AIzaSyDwqUvx83Iy61mKO1G0zkTrvyQ9WiNC26E",
-  authDomain:
-    import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "danvion-ltd.firebaseapp.com",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyDwqUvx83Iy61mKO1G0zkTrvyQ9WiNC26E",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "danvion-ltd.firebaseapp.com",
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "danvion-ltd",
-  storageBucket:
-    import.meta.env.VITE_FIREBASE_STORAGE_BUCKET ||
-    "danvion-ltd.firebasestorage.app",
-  messagingSenderId:
-    import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "774328377216",
-  appId:
-    import.meta.env.VITE_FIREBASE_APP_ID ||
-    "1:774328377216:web:69b49b1ca574c2e8c4eb65",
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "danvion-ltd.firebasestorage.app",
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "774328377216",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:774328377216:web:69b49b1ca574c2e8c4eb65",
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || "G-8PV2CY2PD1",
 };
 
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
+
+// Initialize Firestore with optimized settings
 export const db = initializeFirestore(app, {
   cache: { kind: "persistent" },
+  experimentalForceLongPolling: true, // Fallback for QUIC protocol issues
 });
+
 export const storage = getStorage(app);
 
 // Suppress Firebase connection warnings by overriding console methods
@@ -41,9 +37,7 @@ console.error = function (...args) {
     errorString.includes("WebChannelConnection") ||
     errorString.includes("RPC") ||
     errorString.includes("net::ERR_INTERNET_DISCONNECTED") ||
-    errorString.includes(
-      "Failed to get document because the client is offline",
-    ) ||
+    errorString.includes("Failed to get document because the client is offline") ||
     errorString.includes("enableIndexedDbPersistence()")
   ) {
     return; // Silently suppress these warnings

@@ -3,10 +3,6 @@ import { motion } from "framer-motion";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../../services/firebaseClient";
 
-/**
- * Testimonials Preview Widget
- * Shows recent testimonials in admin dashboard
- */
 export default function TestimonialsPreview() {
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -54,9 +50,7 @@ export default function TestimonialsPreview() {
     >
       <h3 className="text-lg font-bold text-brand-black flex items-center gap-2">
         <span>⭐ Recent Testimonials</span>
-        <span className="text-sm font-normal text-gray-600">
-          ({testimonials.length})
-        </span>
+        <span className="text-sm font-normal text-gray-600">({testimonials.length})</span>
       </h3>
 
       <div className="space-y-3">
@@ -70,9 +64,7 @@ export default function TestimonialsPreview() {
           >
             <div className="flex items-start justify-between gap-3 mb-2">
               <div>
-                <p className="font-semibold text-sm text-brand-black">
-                  {testimonial.name}
-                </p>
+                <p className="font-semibold text-sm text-brand-black">{testimonial.name}</p>
                 {testimonial.role && (
                   <p className="text-xs text-brand-orange">
                     {testimonial.role}
@@ -80,13 +72,9 @@ export default function TestimonialsPreview() {
                   </p>
                 )}
               </div>
-              <div className="text-yellow-500 text-sm">
-                {"★".repeat(testimonial.rating || 5)}
-              </div>
+              <div className="text-yellow-500 text-sm">{"★".repeat(testimonial.rating || 5)}</div>
             </div>
-            <p className="text-xs text-gray-600 line-clamp-2">
-              "{testimonial.content}"
-            </p>
+            <p className="text-xs text-gray-600 line-clamp-2">"{testimonial.content}"</p>
           </motion.div>
         ))}
       </div>

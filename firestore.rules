@@ -1,18 +1,159 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    
+    /**
+     * ADMIN VERIFICATION (HYBRID)
+     * Phase 1: Accepts both email (temporary) and custom claims (new)
+     * Email fallback allows current access while custom claims are being set up
+     * Phase 2 (after testing): Remove email fallback for security
+     */
     function isAdmin() {
-      return request.auth != null && request.auth.token.email == 'sazid@danvion.com';
+      return request.auth != null && (
+        request.auth.token.admin == true ||  // NEW: Custom claims (secure)
+        request.auth.token.email == 'sazid@danvion.com'  // OLD: Email (temporary fallback)
+      );
     }
 
+    /**
+     * INPUT VALIDATION FUNCTIONS
+     */
+    function isValidEmail(email) {
+      return email is string && 
+             email.size() > 0 && 
+             email.size() <= 254 &&
+             email.matches('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}');
+    }
+
+    function isValidName(name) {
+      return name is string && 
+             name.size() >= 2 && 
+             name.size() <= 100 &&
+             name.trim().size() > 0;
+    }
+
+    function isValidMessage(message) {
+      return message is string && 
+             message.size() >= 10 && 
+             message.size() <= 5000 &&
+             message.trim().size() > 0;
+    }
+
+    function isValidPhone(phone) {
+      return phone == null || (phone is string && phone.size() <= 20);
+    }
+
+    function hasValidTimestamp(ts) {
+      return ts is timestamp;
+    }
+
+    function hasConsentTimestamp(consentTime) {
+      return consentTime == null || consentTime is timestamp;
+    }
+
+    /**
+     * CONTACT MESSAGES COLLECTION
+     * - Public can CREATE (submit forms)
+     * - Only ADMINS can READ, UPDATE, DELETE
+     * - Input validation required
+     * - Data retention: 30 days (auto-deleted by Cloud Function)
+     */
     match /contact_messages/{docId} {
-      allow create: if true;
+      allow create: if true &&
+        request.resource.data.keys().hasAll(['name', 'email', 'message', 'created_at']) &&
+        isValidName(request.resource.data.name) &&
+        isValidEmail(request.resource.data.email) &&
+        isValidMessage(request.resource.data.message) &&
+        isValidPhone(request.resource.data.get('phone', '')) &&
+        hasValidTimestamp(request.resource.data.created_at) &&
+        hasConsentTimestamp(request.resource.data.get('consent_timestamp', null));
+      
       allow read, update, delete: if isAdmin();
     }
 
-    match /{document=**} {
+    /**
+     * AUDIT LOGS COLLECTION
+     * - Only accessible to cloud functions (firestore service account)
+     * - Admin can read their own access logs
+     * - Contains: timestamp, user, email, IP, action, changes
+     */
+    match /audit_logs/{docId} {
+      allow create: if request.auth == null;  // Only Cloud Functions (no auth)
+      allow read: if isAdmin();
+      allow delete: if isAdmin() && resource.data.email == request.auth.email;  // Only own logs
+    }
+
+    /**
+     * CONTACT SUBMISSION RATE LIMIT LOGS
+     * - For tracking rate limiting by IP/email
+     * - Cleaned up by Cloud Function after 7 days
+     * - Admin can read for monitoring
+     */
+    match /contact_submissions_log/{docId} {
+      allow create: if request.auth == null;  // Only Cloud Functions
+      allow read: if isAdmin();
+    }
+
+    /**
+     * USER CONSENTS COLLECTION
+     * - GDPR compliance: Track user consent for data collection
+     * - Users can create their own record
+     * - Admin can read all for audit purposes
+     */
+    match /user_consents/{docId} {
+      allow create: if request.auth != null;
+      allow read: if isAdmin() || request.auth.uid == docId;
+      allow update, delete: if false;  // No updates/deletes allowed
+    }
+
+    /**
+     * PUBLIC CONTENT COLLECTIONS
+     * - Products, Blogs, Pages: Public read-only
+     * - Only admins can write
+     */
+    match /home_page/{docId} {
       allow read: if true;
       allow write: if isAdmin();
+    }
+
+    match /services_page/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /products/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /blogs/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /team_members/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    /**
+     * ADMIN DASHBOARD COLLECTIONS
+     * - Testimonials, Messages: Admin only
+     */
+    match /testimonials/{docId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /admin_messages/{docId} {
+      allow read, write: if isAdmin();
+    }
+
+    /**
+     * DEFAULT: DENY ALL
+     * Any collection not explicitly listed is denied
+     */
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }

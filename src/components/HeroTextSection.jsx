@@ -1,63 +1,76 @@
-import Container from "./common/Container";
-import { Calendar } from "lucide-react";
 import { motion } from "framer-motion";
+import { Calendar } from "lucide-react";
+import Container from "./common/Container";
+import { EXTERNAL_LINKS } from "../config/links";
+import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
 
 /**
- * Hero Text Section
- * Displays the main headline and description on a white background
+ * Hero Text Section (REFERENCE DESIGN)
+ * Black background with split layout
+ * Left: Headline with colored text + CTA button
+ * Right: Description text
+ * Fully responsive for mobile, tablet, desktop
+ * Includes prefers-reduced-motion support for accessibility
  */
-
 export default function HeroTextSection() {
+  const prefersReducedMotion = usePrefersReducedMotion();
+
   return (
-    <section className="relative bg-black container-fluid topbanner overflow-hidden">
-      <Container className="content-maxwidth hero-topbanner-content">
-        <div>
-          <div className="flex flex-wrap sm:flex-nowrap items-start gap-3 sm:gap-3 md:gap-4 mt-1 sm:mt-2">
-            {/* Left: Headline */}
-            <div className="w-full sm:flex-1 flex flex-col items-start text-left sm:w-auto">
-              <h1 className="animated-gradient-text font-semibold leading-[1.25] tracking-tight mb-1 sm:mb-2 md:mb-4 lg:mb-6 text-[18px] sm:text-[24px] md:text-[32px] lg:text-[50px]">
-                Alchemy for the
-                <br />
-                Intelligent Age
-              </h1>
-              {/* Button - hidden on mobile, shown on desktop */}
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.2 }}
-                onClick={() => window.open("https://calendly.com/", "_blank")}
-                className="hidden sm:flex group mt-1.5 sm:mt-2 md:mt-4 lg:mt-6 px-1.5 sm:px-4 md:px-5 lg:px-6 py-0.5 sm:py-2 md:py-2.5 lg:py-3 bg-orange-500 font-bold rounded-full transition-all duration-300 items-center gap-0.5 sm:gap-2 hover:shadow-lg hover:bg-white border border-orange-500 cursor-pointer text-xs sm:text-sm md:text-base lg:text-lg"
-              >
-                <Calendar className="w-2 h-2 sm:w-4 sm:h-4 md:w-5 md:h-5 text-white group-hover:text-orange-500 transition-colors duration-300 flex-shrink-0" />
-                <span className="relative z-10 font-semibold text-white group-hover:text-orange-500 transition-colors duration-300 leading-tight">
-                  Book a Free Consultation for 30 Minutes
-                </span>
-              </motion.button>
-            </div>
-
-            {/* Right: Description */}
-            <div className="w-full sm:flex-[1.5] flex flex-col items-start text-left mt-2 sm:mt-0 sm:w-auto">
-              <p className="text-justify text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-white leading-snug">
-                At Danvion, we're pushing the boundaries of artificial
-                intelligence at the edge – delivering cutting-edge solutions for
-                the world's most complex challenges. With our expertise in
-                embedded AI, hardware integration, and real-time processing,
-                we're creating smarter, faster, and more efficient products.
-              </p>
-            </div>
-          </div>
-
-          {/* Button - shown only on mobile, below description */}
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.2 }}
-            onClick={() => window.open("https://calendly.com/", "_blank")}
-            className="flex sm:hidden group mt-2 px-2.5 py-1 bg-orange-500 font-bold rounded-full transition-all duration-300 items-center gap-1 hover:shadow-lg hover:bg-white border border-orange-500 cursor-pointer text-xs"
+    <section className="w-full bg-orange-500 py-6 sm:py-8 md:py-10 lg:py-14 overflow-hidden">
+      <Container className="content-maxwidth w-full">
+        <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-8 mb-0">
+          {/* Left: Headline + Button */}
+          <motion.div
+            initial={{ opacity: 0, x: prefersReducedMotion ? 0 : -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{
+              duration: prefersReducedMotion ? 0 : 0.7,
+              delay: prefersReducedMotion ? 0 : 0.1,
+            }}
+            className="w-full lg:flex-1 flex flex-col items-start text-left"
           >
-            <Calendar className="w-2.5 h-2.5 text-white group-hover:text-orange-500 transition-colors duration-300 flex-shrink-0" />
-            <span className="relative z-10 font-semibold text-white group-hover:text-orange-500 transition-colors duration-300 leading-tight">
-              Book a Free Consultation for 30 Minutes
-            </span>
-          </motion.button>
+            {/* Headline with colored text */}
+            <h1 className="text-[22px] sm:text-[26px] md:text-[32px] lg:text-[50px] font-bold leading-tight tracking-tighter mb-6 sm:mb-6 md:mb-6 lg:mb-6">
+              <span className="block text-white">Alchemy</span>
+              <span className="block text-white">for the</span>
+              <span className="block text-white">Intelligent Age</span>
+            </h1>
+
+            {/* CTA Button */}
+            <motion.button
+              initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: prefersReducedMotion ? 0 : 0.7,
+                delay: prefersReducedMotion ? 0 : 0.3,
+              }}
+              whileHover={prefersReducedMotion ? {} : { scale: 1.05 }}
+              whileTap={prefersReducedMotion ? {} : { scale: 0.95 }}
+              onClick={() => window.open(EXTERNAL_LINKS.CALENDLY, "_blank")}
+              className="w-fit px-4 sm:px-5 md:px-6 lg:px-7 py-2.5 sm:py-3 md:py-3.5 lg:py-4 bg-white hover:bg-gray-100 text-orange-500 hover:text-orange-600 font-bold rounded-full transition-all duration-300 shadow-lg flex items-center gap-2 text-xs sm:text-sm md:text-base lg:text-lg"
+            >
+              <Calendar className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+              <span>Book a Free Consultation for 30 Minutes</span>
+            </motion.button>
+          </motion.div>
+
+          {/* Right: Description Text */}
+          <motion.div
+            initial={{ opacity: 0, x: prefersReducedMotion ? 0 : 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{
+              duration: prefersReducedMotion ? 0 : 0.7,
+              delay: prefersReducedMotion ? 0 : 0.2,
+            }}
+            className="w-full lg:flex-[1.5] flex flex-col items-start text-left lg:ml-11"
+          >
+            <p className="text-white text-[18px] sm:text-[20px] md:text-[22px] lg:text-[23px] font-medium leading-relaxed text-justify">
+              At Danvion, we're pushing the boundaries of artificial intelligence at the edge –
+              delivering cutting-edge solutions for the world's most complex challenges. With our
+              expertise in embedded AI, hardware integration, and real-time processing, we're
+              creating smarter, faster, and more efficient products.
+            </p>
+          </motion.div>
         </div>
       </Container>
     </section>

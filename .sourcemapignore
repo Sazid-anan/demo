@@ -1,0 +1,8 @@
+# Ignore source maps for bundled assets
+
+dist/assets/_.js
+dist/assets/_.css
+
+# These files are already minified and don't need source maps
+
+index.html

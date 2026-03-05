@@ -1,15 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { Download } from "lucide-react";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  orderBy,
-  query,
-  setDoc,
-} from "firebase/firestore";
+import { Download, RefreshCw, BookOpen, Eye, Trash2 } from "lucide-react";
+import { collection, deleteDoc, doc, getDocs, orderBy, query, setDoc } from "firebase/firestore";
 import { db } from "../../services/firebaseClient";
 import Button from "../../components/ui/Button";
 
@@ -37,20 +29,12 @@ export default function MessagesTab() {
       const name = String(message.name || "").toLowerCase();
       const email = String(message.email || "").toLowerCase();
       const content = String(message.message || "").toLowerCase();
-      return (
-        name.includes(queryText) ||
-        email.includes(queryText) ||
-        content.includes(queryText)
-      );
+      return name.includes(queryText) || email.includes(queryText) || content.includes(queryText);
     });
   }, [messages, messageQuery]);
 
   const selectedMessage = useMemo(() => {
-    return (
-      filteredMessages.find((msg) => msg.id === selectedId) ||
-      filteredMessages[0] ||
-      null
-    );
+    return filteredMessages.find((msg) => msg.id === selectedId) || filteredMessages[0] || null;
   }, [filteredMessages, selectedId]);
 
   const loadMessages = useCallback(async () => {
@@ -58,10 +42,7 @@ export default function MessagesTab() {
     setError("");
     try {
       const snap = await getDocs(
-        query(
-          collection(db, "contact_messages"),
-          orderBy("created_at", "desc"),
-        ),
+        query(collection(db, "contact_messages"), orderBy("created_at", "desc")),
       );
       const data = snap.docs.map((docSnap) => ({
         id: docSnap.id,
@@ -93,9 +74,7 @@ export default function MessagesTab() {
       await deleteDoc(doc(db, "contact_messages", id));
       const nextMessages = messages.filter((msg) => msg.id !== id);
       setMessages(nextMessages);
-      setSelectedId((prev) =>
-        prev === id ? nextMessages[0]?.id || null : prev,
-      );
+      setSelectedId((prev) => (prev === id ? nextMessages[0]?.id || null : prev));
       if (deleted) {
         setLastDeleted({ id, data: deleted });
       }
@@ -123,15 +102,9 @@ export default function MessagesTab() {
   const handleToggleRead = async (id, currentReadStatus) => {
     try {
       const newReadStatus = !currentReadStatus;
-      await setDoc(
-        doc(db, "contact_messages", id),
-        { is_read: newReadStatus },
-        { merge: true },
-      );
+      await setDoc(doc(db, "contact_messages", id), { is_read: newReadStatus }, { merge: true });
       setMessages((prev) =>
-        prev.map((msg) =>
-          msg.id === id ? { ...msg, is_read: newReadStatus } : msg,
-        ),
+        prev.map((msg) => (msg.id === id ? { ...msg, is_read: newReadStatus } : msg)),
       );
     } catch (err) {
       setError(err?.message || "Failed to update message status");
@@ -144,15 +117,7 @@ export default function MessagesTab() {
       return;
     }
 
-    const headers = [
-      "Date",
-      "Name",
-      "Email",
-      "Phone",
-      "Company",
-      "Message",
-      "Status",
-    ];
+    const headers = ["Date", "Name", "Email", "Phone", "Company", "Message", "Status"];
     const rows = messages.map((msg) => [
       formatDate(msg.created_at),
       msg.name || "",
@@ -163,10 +128,7 @@ export default function MessagesTab() {
       msg.is_read ? "Read" : "Unread",
     ]);
 
-    const csvContent = [
-      headers.join(","),
-      ...rows.map((row) => row.join(",")),
-    ].join("\n");
+    const csvContent = [headers.join(","), ...rows.map((row) => row.join(","))].join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
@@ -186,16 +148,10 @@ export default function MessagesTab() {
     >
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-brand-black mb-2">
-            Contact Messages
-          </h2>
-          <p className="text-gray-600 text-sm">
-            View messages sent from the website contact form
-          </p>
+          <h2 className="text-xl font-bold text-brand-black mb-2">Contact Messages</h2>
+          <p className="text-gray-600 text-sm">View messages sent from the website contact form</p>
           {lastLoadedAt && (
-            <p className="text-xs text-gray-500 mt-2">
-              Last loaded: {lastLoadedAt}
-            </p>
+            <p className="text-xs text-gray-500 mt-2">Last loaded: {lastLoadedAt}</p>
           )}
         </div>
         <div className="flex flex-wrap items-center gap-3">
@@ -207,6 +163,7 @@ export default function MessagesTab() {
             className="w-full sm:w-56 px-4 py-2 border rounded-lg text-sm"
           />
           <Button onClick={loadMessages} size="md" disabled={loading}>
+            <RefreshCw className="h-4 w-4" />
             {loading ? "Refreshing..." : "Refresh"}
           </Button>
           <Button
@@ -215,10 +172,8 @@ export default function MessagesTab() {
             variant="outline"
             disabled={messages.length === 0}
           >
-            <span className="inline-flex items-center gap-2">
-              <Download className="h-4 w-4" />
-              Export CSV
-            </span>
+            <Download className="h-4 w-4" />
+            Export CSV
           </Button>
         </div>
       </div>
@@ -232,13 +187,9 @@ export default function MessagesTab() {
       {lastDeleted && (
         <div className="admin-section admin-section--soft p-4 text-gray-700 border border-gray-200 flex flex-wrap items-center justify-between gap-3">
           <span>Message deleted. You can undo this action.</span>
-          <button
-            type="button"
-            onClick={handleUndo}
-            className="px-4 py-2 text-sm bg-brand-orange text-brand-black rounded-lg hover:shadow-md transition-all"
-          >
-            Undo
-          </button>
+          <Button onClick={handleUndo} size="md" variant="default">
+            ↶ Undo Delete
+          </Button>
         </div>
       )}
 
@@ -259,9 +210,7 @@ export default function MessagesTab() {
                 type="button"
                 onClick={() => setSelectedId(message.id)}
                 className={`admin-card-lite w-full text-left p-4 transition-all relative ${
-                  selectedId === message.id
-                    ? "border-brand-orange shadow-lg"
-                    : "hover:shadow-md"
+                  selectedId === message.id ? "border-brand-orange shadow-lg" : "hover:shadow-md"
                 }`}
               >
                 {!message.is_read && (
@@ -271,9 +220,7 @@ export default function MessagesTab() {
                   <h3 className="font-semibold text-brand-black text-sm">
                     {message.name || "Anonymous"}
                   </h3>
-                  <span className="text-xs text-gray-500">
-                    {formatDate(message.created_at)}
-                  </span>
+                  <span className="text-xs text-gray-500">{formatDate(message.created_at)}</span>
                 </div>
                 <p className="text-xs text-brand-orange mt-1 break-all">
                   {message.email || "No email"}
@@ -298,28 +245,32 @@ export default function MessagesTab() {
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        handleToggleRead(
-                          selectedMessage.id,
-                          selectedMessage.is_read,
-                        )
-                      }
-                      className="px-4 py-2 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
+                    <Button
+                      onClick={() => handleToggleRead(selectedMessage.id, selectedMessage.is_read)}
+                      size="md"
+                      variant="outline"
                     >
-                      {selectedMessage.is_read ? "Mark Unread" : "Mark Read"}
-                    </button>
-                    <button
-                      type="button"
+                      {selectedMessage.is_read ? (
+                        <>
+                          <BookOpen className="h-4 w-4" />
+                          Mark Unread
+                        </>
+                      ) : (
+                        <>
+                          <Eye className="h-4 w-4" />
+                          Mark Read
+                        </>
+                      )}
+                    </Button>
+                    <Button
                       onClick={() => handleDelete(selectedMessage.id)}
                       disabled={deletingId === selectedMessage.id}
-                      className="px-4 py-2 text-sm bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors disabled:opacity-60"
+                      size="md"
+                      variant="destructive"
                     >
-                      {deletingId === selectedMessage.id
-                        ? "Deleting..."
-                        : "Delete"}
-                    </button>
+                      <Trash2 className="h-4 w-4" />
+                      {deletingId === selectedMessage.id ? "Deleting..." : "Delete"}
+                    </Button>
                   </div>
                 </div>
 

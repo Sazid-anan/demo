@@ -3,6 +3,7 @@ import { Phone, Mail, Linkedin, Calendar } from "lucide-react";
 import { useState } from "react";
 import { EXTERNAL_LINKS } from "../../config/links";
 import { SITE_CONTENT } from "../../config/content";
+import { useResponsive } from "../../hooks/useResponsive";
 
 /**
  * StickyContactBar Component
@@ -14,18 +15,20 @@ import { SITE_CONTENT } from "../../config/content";
  */
 export default function StickyContactBar() {
   const [hoveredItem, setHoveredItem] = useState(null);
+  // useResponsive hook is called for potential future responsive behavior
+  useResponsive();
 
   const contactItems = [
-    {
-      icon: Phone,
-      label: "Call Us",
-      detail: SITE_CONTENT.contact.phoneDisplay,
-      href: `tel:${SITE_CONTENT.contact.phone}`,
-      color: "text-brand-orange",
-      // Show on all devices
-      showOnMobile: true,
-      showOnTablet: true,
-    },
+    // {
+    //   icon: Phone,
+    //   label: "Call Us",
+    //   detail: SITE_CONTENT.contact.phoneDisplay,
+    //   href: `tel:${SITE_CONTENT.contact.phone}`,
+    //   color: "text-brand-orange",
+    //   // Show on all devices
+    //   showOnMobile: true,
+    //   showOnTablet: true,
+    // },
     {
       icon: Mail,
       label: "Email Us",
@@ -83,9 +86,9 @@ export default function StickyContactBar() {
 
   const hoverVariants = {
     hover: {
-      scale: 1.25,
-      x: -15,
-      rotate: 5,
+      scale: 1.1,
+      x: -5,
+      rotate: 2,
       boxShadow: "0 0 20px rgba(255, 140, 0, 0.6)",
       backgroundColor: "rgba(255, 140, 0, 0.3)",
       borderColor: "rgba(255, 140, 0, 0.6)",
@@ -140,21 +143,21 @@ export default function StickyContactBar() {
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: 20, scale: 0.8 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
-                  className="hidden lg:block absolute right-10 sm:right-12 md:right-14 lg:right-16 top-1/2 -translate-y-1/2 bg-gradient-to-br from-orange-400 via-orange-300 to-orange-400 backdrop-blur-xl text-white px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-3 rounded-lg md:rounded-xl whitespace-nowrap pointer-events-none shadow-[0_4px_16px_rgba(255,140,0,0.3)] border-2 border-orange-300/60 text-xs sm:text-xs md:text-sm"
+                  className="hidden lg:block absolute right-8 top-1/2 -translate-y-1/2 bg-gradient-to-br from-orange-400 via-orange-300 to-orange-400 backdrop-blur-xl text-white px-2 py-1.5 rounded-lg whitespace-nowrap pointer-events-none shadow-[0_4px_16px_rgba(255,140,0,0.3)] border-2 border-orange-300/60"
                 >
-                  <div className="flex items-center gap-2 mb-1">
-                    <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                    <p className="font-bold text-[12px] md:text-[14px] text-white uppercase tracking-wider">
+                  <div className="flex items-center gap-1.5 mb-0.5">
+                    <div className="w-1 h-1 rounded-full bg-white animate-pulse" />
+                    <p className="font-bold text-[10px] text-white uppercase tracking-wide">
                       {item.label}
                     </p>
                   </div>
                   {item.detail && (
-                    <p className="text-[14px] md:text-[16px] font-semibold text-white ml-3.5 tracking-wide">
+                    <p className="text-[11px] font-semibold text-white ml-2.5 tracking-normal">
                       {item.detail}
                     </p>
                   )}
                   {/* Orange accent bar */}
-                  <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-white via-orange-200 to-white rounded-l-xl opacity-70" />
+                  <div className="absolute top-0 left-0 w-0.5 h-full bg-gradient-to-b from-white via-orange-200 to-white rounded-l-lg opacity-70" />
                 </motion.div>
               )}
             </AnimatePresence>

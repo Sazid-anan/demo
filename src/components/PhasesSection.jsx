@@ -1,16 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
-import {
-  Lightbulb,
-  Cpu,
-  Layers,
-  Activity,
-  Box,
-  Factory,
-  ArrowRight,
-  ArrowLeft,
-  ArrowDown,
-} from "lucide-react";
+import { Lightbulb, Cpu, Layers, Activity, Box, Factory } from "lucide-react";
 import Container from "./common/Container";
 
 const phases = [
@@ -45,16 +35,15 @@ const phases = [
       "We design PCBs using Altium Designer, KiCad. Whether it's a high-current, low-noise analog or high-density digital board.",
   },
   {
-    id: 6,
-    number: "06",
-    title: "Prototyping",
-    icon: Factory,
-    color: "bg-amber-500",
-    darkColor: "bg-amber-700",
+    id: 4,
+    number: "04",
+    title: "Simulation",
+    icon: Activity,
+    color: "bg-pink-500",
+    darkColor: "bg-pink-700",
     description:
-      "Designing hardware requires building and testing hardware. We provide both prototype assembly and testing in-house.",
+      "Simulations are an integral part of our design process. We use both industry standard and open-source simulation tools to model complex systems.",
   },
-
   {
     id: 5,
     number: "05",
@@ -66,18 +55,18 @@ const phases = [
       "Our mechanical design workflow brings together all of our expertise from simulations and electronics design.",
   },
   {
-    id: 4,
-    number: "04",
-    title: "Simulation",
-    icon: Activity,
-    color: "bg-pink-500",
-    darkColor: "bg-pink-700",
+    id: 6,
+    number: "06",
+    title: "Prototyping",
+    icon: Factory,
+    color: "bg-amber-500",
+    darkColor: "bg-amber-700",
     description:
-      "Simulations are an integral part of our design process. We use both industry standard and open-source simulation tools to model complex systems.",
+      "Designing hardware requires building and testing hardware. We provide both prototype assembly and testing in-house.",
   },
 ];
 
-// Phase Card Component - Clean and Organized with Responsive Design
+// Phase Card Component - Optimized for Professional Look
 const PhaseCard = ({ process, index }) => {
   const IconComponent = process.icon;
   const [isHovered, setIsHovered] = useState(false);
@@ -92,53 +81,46 @@ const PhaseCard = ({ process, index }) => {
       onMouseLeave={() => setIsHovered(false)}
       className="relative group h-full w-full"
     >
-      {/* Glass Card Container with Fixed Aspect Ratio */}
+      {/* Optimized Card Container - Professional Sizes */}
       <div
-        className={`relative h-full min-h-[200px] sm:min-h-[210px] md:min-h-[225px] lg:min-h-[240px] flex flex-col bg-white/10 backdrop-blur-md rounded-xl md:rounded-2xl border border-white/20 p-2.5 md:p-3.5 lg:p-4 transition-all duration-300 ${isHovered ? "border-white/40 shadow-2xl shadow-white/10 transform scale-[1.02]" : "shadow-xl"}`}
+        className={`relative h-full min-h-[180px] sm:min-h-[190px] md:min-h-[200px] lg:min-h-[220px] flex flex-col bg-white rounded-lg md:rounded-xl border-2 p-4 md:p-[18px] lg:p-5 transition-all duration-300 ${isHovered ? "border-orange-500 shadow-2xl shadow-orange-200 transform scale-[1.02] bg-gradient-to-br from-white to-orange-50" : "border-gray-300 shadow-lg hover:shadow-xl"}`}
       >
-        {/* Number Badge - Top Right with Better Positioning */}
+        {/* Number Badge - Compact Size */}
         <div
-          className={`absolute top-3.5 right-3.5 w-8 h-8 md:w-9 md:h-9 rounded-full ${process.color} flex items-center justify-center font-bold text-[0.72rem] md:text-[0.8rem] shadow-lg transition-all duration-300 ${isHovered ? "rotate-12 scale-110" : ""}`}
-          style={{ color: "#ffffff" }}
+          className={`absolute top-3 right-3 w-9 h-9 md:w-10 md:h-10 rounded-full ${process.color} flex items-center justify-center font-bold text-sm text-white shadow-lg transition-all duration-300 ${isHovered ? "rotate-12 scale-110" : ""}`}
         >
           {process.number}
         </div>
 
-        {/* Icon Container with Consistent Sizing */}
+        {/* Icon Container - Optimized Sizing */}
         <div
-          className={`w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 mb-2.5 md:mb-3 ${process.color} rounded-lg md:rounded-xl flex items-center justify-center transition-all duration-300 ${isHovered ? "shadow-2xl scale-105" : "shadow-lg"}`}
+          className={`w-12 h-12 md:w-[52px] md:h-[52px] lg:w-14 lg:h-14 mb-3 ${process.color} rounded-lg md:rounded-xl flex items-center justify-center transition-all duration-300 ${isHovered ? "shadow-2xl scale-110 rotate-3" : "shadow-lg"}`}
         >
           <IconComponent
-            className={`w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 transition-transform duration-300 ${isHovered ? "scale-110 rotate-6" : ""}`}
-            strokeWidth={1.5}
+            className={`w-6 h-6 md:w-[26px] md:h-[26px] lg:w-7 lg:h-7 transition-transform duration-300 ${isHovered ? "scale-110 rotate-12" : ""}`}
+            strokeWidth={2}
             color="#ffffff"
           />
         </div>
 
-        {/* Content with Better Spacing */}
-        <div className="space-y-1.5 md:space-y-2 flex-1 flex flex-col">
-          <h3
-            className="text-[1rem] md:text-[1.06rem] lg:text-lg font-bold leading-tight"
-            style={{ color: "#ffffff" }}
-          >
+        {/* Content - Optimized Spacing */}
+        <div className="space-y-2 flex-1 flex flex-col">
+          <h3 className="text-base md:text-lg lg:text-xl font-bold leading-tight text-gray-800">
             {process.title}
           </h3>
 
           <div
-            className={`h-0.5 rounded-full transition-all duration-300 ${isHovered ? "w-12" : "w-8"} ${process.color}`}
+            className={`h-0.5 rounded-full transition-all duration-300 ${isHovered ? "w-14" : "w-10"} ${process.color}`}
           ></div>
 
-          <p
-            className="text-[0.875rem] md:text-[0.875rem] lg:text-[0.875rem] leading-relaxed flex-1 text-white/90"
-            style={{ textAlign: "justify" }}
-          >
+          <p className="leading-relaxed flex-1 text-gray-600 text-sm md:text-base lg:text-base text-justify">
             {process.description}
           </p>
         </div>
 
         {/* Hover Glow Effect */}
         <div
-          className={`absolute inset-0 rounded-xl md:rounded-2xl transition-opacity duration-300 pointer-events-none ${isHovered ? "opacity-100" : "opacity-0"}`}
+          className={`absolute inset-0 rounded-lg md:rounded-xl transition-opacity duration-300 pointer-events-none ${isHovered ? "opacity-100" : "opacity-0"}`}
           style={{
             background: `radial-gradient(circle at 50% 0%, ${process.color.replace("bg-", "rgba(")}10, 0.1), transparent 70%)`,
           }}
@@ -148,160 +130,9 @@ const PhaseCard = ({ process, index }) => {
   );
 };
 
-const buildSnakeNextMap = (total, columns) => {
-  const order = [];
-  const rows = Math.ceil(total / columns);
-
-  for (let row = 0; row < rows; row += 1) {
-    const start = row * columns;
-    const end = Math.min(start + columns, total);
-    const rowIndexes = Array.from({ length: end - start }, (_, i) => start + i);
-
-    if (row % 2 === 1) {
-      rowIndexes.reverse();
-    }
-
-    order.push(...rowIndexes);
-  }
-
-  const nextMap = {};
-  order.forEach((current, idx) => {
-    nextMap[current] = idx < order.length - 1 ? order[idx + 1] : null;
-  });
-
-  return nextMap;
-};
-
-const getDirection = (from, to, columns) => {
-  if (to === null || to === undefined) return null;
-
-  const fromRow = Math.floor(from / columns);
-  const toRow = Math.floor(to / columns);
-  const fromCol = from % columns;
-  const toCol = to % columns;
-
-  // Same row - horizontal movement
-  if (fromRow === toRow) {
-    if (toCol > fromCol) {
-      return "right";
-    } else if (toCol < fromCol) {
-      return "left";
-    }
-  }
-
-  // Different row - vertical movement
-  if (toRow > fromRow) {
-    return "down";
-  }
-
-  return null;
-};
-
-const getGridColumnCount = (gridElement) => {
-  if (!gridElement) return 1;
-  const templateColumns = window
-    .getComputedStyle(gridElement)
-    .gridTemplateColumns.trim();
-  if (!templateColumns) return 1;
-  return Math.max(1, templateColumns.split(" ").length);
-};
-
 const PhaseSection = () => {
-  const total = phases.length;
-  const gridRef = useRef(null);
-  const cardRefs = useRef([]);
-  const [connectors, setConnectors] = useState([]);
-  const connectorPadding = 4; // Keep arrows visible when grid gaps are tight
-
-  useEffect(() => {
-    const gridElement = gridRef.current;
-    if (!gridElement) return undefined;
-
-    const updateConnectors = () => {
-      const columns = getGridColumnCount(gridElement);
-      const nextMap = buildSnakeNextMap(total, columns);
-      const gridRect = gridElement.getBoundingClientRect();
-      const nextConnectors = [];
-
-      for (let index = 0; index < total; index += 1) {
-        const nextIndex = nextMap[index];
-        if (nextIndex === null || nextIndex === undefined) continue;
-
-        const fromElement = cardRefs.current[index];
-        const toElement = cardRefs.current[nextIndex];
-        if (!fromElement || !toElement) continue;
-
-        const fromRect = fromElement.getBoundingClientRect();
-        const toRect = toElement.getBoundingClientRect();
-        const direction = getDirection(index, nextIndex, columns);
-
-        if (direction === "right" || direction === "left") {
-          const y = fromRect.top + fromRect.height / 2 - gridRect.top;
-          const x1 =
-            direction === "right"
-              ? fromRect.right - gridRect.left + connectorPadding
-              : fromRect.left - gridRect.left - connectorPadding;
-          const x2 =
-            direction === "right"
-              ? toRect.left - gridRect.left - connectorPadding
-              : toRect.right - gridRect.left + connectorPadding;
-
-          if (Math.abs(x2 - x1) > 8) {
-            nextConnectors.push({
-              id: `${index}-${nextIndex}`,
-              direction,
-              x: (x1 + x2) / 2,
-              y,
-            });
-          }
-        }
-
-        if (direction === "down") {
-          const x = fromRect.left + fromRect.width / 2 - gridRect.left;
-          const y1 = fromRect.bottom - gridRect.top + connectorPadding;
-          const y2 = toRect.top - gridRect.top - connectorPadding;
-
-          if (Math.abs(y2 - y1) > 8) {
-            nextConnectors.push({
-              id: `${index}-${nextIndex}`,
-              direction,
-              x,
-              y: (y1 + y2) / 2,
-            });
-          }
-        }
-      }
-
-      setConnectors(nextConnectors);
-    };
-
-    updateConnectors();
-
-    const rafUpdate = () => window.requestAnimationFrame(updateConnectors);
-    const resizeObserver =
-      typeof ResizeObserver === "undefined"
-        ? null
-        : new ResizeObserver(() => {
-            rafUpdate();
-          });
-
-    if (resizeObserver) {
-      resizeObserver.observe(gridElement);
-      cardRefs.current.forEach((element) => {
-        if (element) resizeObserver.observe(element);
-      });
-    }
-
-    window.addEventListener("resize", rafUpdate);
-
-    return () => {
-      if (resizeObserver) resizeObserver.disconnect();
-      window.removeEventListener("resize", rafUpdate);
-    };
-  }, [total]);
-
   return (
-    <section className="w-full bg-black font-sans py-8 sm:py-10 md:py-12 lg:py-16">
+    <section className="w-full bg-gray-100 font-sans py-6 sm:py-8 md:py-10 lg:py-14">
       <Container className="content-maxwidth w-full">
         {/* Header Section with Better Responsive Design */}
         <motion.div
@@ -309,9 +140,9 @@ const PhaseSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-8 sm:mb-10 md:mb-12 lg:mb-16"
+          className="mb-6 sm:mb-7 md:mb-8 lg:mb-10"
         >
-          <div className="flex flex-col lg:flex-row items-start gap-6 lg:gap-8">
+          <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-8">
             {/* Left: Headline */}
             <div className="w-full lg:flex-1 flex flex-col items-start text-left">
               <motion.h1
@@ -319,70 +150,32 @@ const PhaseSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.05 }}
-                className="animated-gradient-text section-heading font-semibold leading-tight tracking-tight text-2xl sm:text-3xl md:text-4xl lg:text-5xl"
+                className="heading-orange text-orange-500 section-heading font-semibold leading-tight tracking-tight text-[22px] sm:text-[26px] md:text-[32px] lg:text-[50px]"
               >
                 Our Development Phases
               </motion.h1>
             </div>
 
             {/* Right: Description */}
-            <div className="w-full lg:flex-[1.5] flex flex-col items-start text-left">
-              <p
-                className="text-white/90 text-sm sm:text-base md:text-lg lg:text-xl font-medium leading-relaxed"
-                style={{ textAlign: "justify" }}
-              >
-                We streamline your success by handling every detail from initial
-                schematics to in-house prototyping and testing
+            <div className="w-full lg:flex-[1.5] flex flex-col items-start text-left lg:ml-11">
+              <p className="text-gray-800 text-[18px] sm:text-[20px] md:text-[22px] lg:text-[23px] font-medium leading-relaxed text-justify">
+                We streamline your success by handling every detail from initial schematics to
+                in-house prototyping and testing
               </p>
             </div>
           </div>
         </motion.div>
 
-        {/* Phase Cards Grid with Snake Pattern and Better Responsive Spacing */}
-        <div
-          ref={gridRef}
-          className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8"
-        >
-          {/* Dynamic Arrow Connectors */}
-          {connectors.map((connector) => {
-            const Icon =
-              connector.direction === "left"
-                ? ArrowLeft
-                : connector.direction === "down"
-                  ? ArrowDown
-                  : ArrowRight;
-
-            return (
-              <div
-                key={connector.id}
-                className="pointer-events-none absolute z-30 -translate-x-1/2 -translate-y-1/2"
-                style={{ left: `${connector.x}px`, top: `${connector.y}px` }}
-              >
-                <Icon
-                  className="phase-flow-arrow text-orange-500 w-5 h-5 md:w-6 md:h-6"
-                  strokeWidth={2.5}
-                />
-              </div>
-            );
-          })}
-
-          {/* Phase Cards */}
-          {phases.map((process, index) => {
-            const phaseId = `phase-section-${index}`;
-
-            return (
-              <div
-                key={process.id}
-                ref={(element) => {
-                  cardRefs.current[index] = element;
-                }}
-                className="relative w-full"
-                id={phaseId}
-              >
+        {/* Phase Cards Grid - Optimized Professional Spacing */}
+        <div className="mb-0 sm:mb-0 md:mb-0">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-5 lg:gap-6">
+            {/* Phase Cards */}
+            {phases.map((process, index) => (
+              <div key={process.id} className="relative w-full">
                 <PhaseCard process={process} index={index} />
               </div>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </Container>
     </section>

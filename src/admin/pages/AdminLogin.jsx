@@ -5,10 +5,6 @@ import { motion } from "framer-motion";
 import { loginAdmin, clearLoginError } from "../../redux/slices/authSlice";
 import Button from "../../components/ui/Button";
 
-/**
- * Admin Login Page
- * Simple login authentication for admin panel
- */
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -51,12 +47,8 @@ export default function AdminLogin() {
               className="h-12 w-12 rounded-xl border border-gray-200 bg-white p-2"
             />
           </div>
-          <p className="text-xs uppercase tracking-[0.4em] text-gray-500">
-            Danvion
-          </p>
-          <h1 className="text-h2 font-bold text-brand-black mt-2">
-            Admin Access
-          </h1>
+          <p className="text-xs uppercase tracking-[0.4em] text-gray-500">Danvion</p>
+          <h1 className="text-h2 font-bold text-brand-black mt-2">Admin Access</h1>
           <p className="text-gray-600 mt-1">Secure login required</p>
         </div>
 
@@ -79,16 +71,13 @@ export default function AdminLogin() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-brand-black mb-2"
-            >
+            <label htmlFor="email" className="block text-sm font-medium text-brand-black mb-2">
               Email Address
             </label>
             <input
               type="email"
               id="email"
-              autocomplete="email"
+              autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -103,16 +92,13 @@ export default function AdminLogin() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-brand-black mb-2"
-            >
+            <label htmlFor="password" className="block text-sm font-medium text-brand-black mb-2">
               Password
             </label>
             <input
               type="password"
               id="password"
-              autocomplete="current-password"
+              autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required

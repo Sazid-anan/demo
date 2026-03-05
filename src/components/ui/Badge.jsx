@@ -1,12 +1,7 @@
-/**
- * Badge Component
- * Modern badge/label component
- */
-export default function Badge({
-  children,
-  variant = "default",
-  className = "",
-}) {
+import React from "react";
+import PropTypes from "prop-types";
+
+const Badge = React.memo(function Badge({ children, variant = "default", className = "" }) {
   const variants = {
     default: "bg-primary text-primary-foreground",
     secondary: "bg-secondary text-secondary-foreground",
@@ -29,4 +24,17 @@ export default function Badge({
       {children}
     </span>
   );
-}
+});
+
+Badge.propTypes = {
+  children: PropTypes.node.isRequired,
+  variant: PropTypes.oneOf(["default", "secondary", "outline", "destructive"]),
+  className: PropTypes.string,
+};
+
+Badge.defaultProps = {
+  variant: "default",
+  className: "",
+};
+
+export default Badge;

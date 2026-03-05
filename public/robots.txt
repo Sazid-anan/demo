@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+
+# Crawl Delay (milliseconds)
+Crawl-delay: 1
+
+# Sitemaps
+Sitemap: https://danvion.com/sitemap.xml

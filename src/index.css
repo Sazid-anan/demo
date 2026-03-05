@@ -17,7 +17,7 @@
 /* 1. Load Tailwind CSS framework */
 @import "tailwindcss";
 
-/* 2. Load Google Fonts */
+/* 2. Load Google Fonts with font-display swap for performance */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 /* 3. Load base styles (variables, resets, typography) */
@@ -41,4 +41,5 @@
  * - Minimum 44px touch targets for accessibility
  * - GPU-accelerated animations with translate3d
  * - Reduced motion support with prefers-reduced-motion
+ * - Font loading optimized with font-display: swap
  */

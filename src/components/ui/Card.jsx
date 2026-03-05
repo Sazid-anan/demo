@@ -1,8 +1,7 @@
-/**
- * Card Component
- * Container component with modern styling
- */
-export function Card({ children, className = "" }) {
+import React from "react";
+import PropTypes from "prop-types";
+
+export const Card = React.memo(function Card({ children, className = "" }) {
   return (
     <div
       className={`
@@ -17,49 +16,14 @@ export function Card({ children, className = "" }) {
       {children}
     </div>
   );
-}
+});
 
-export function CardHeader({ children, className = "" }) {
-  return (
-    <div
-      className={`
-      grid auto-rows-min items-start gap-1.5 
-      px-6 pt-6
-      ${className}
-    `}
-    >
-      {children}
-    </div>
-  );
-}
+Card.propTypes = {
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string,
+};
 
-export function CardTitle({ children, className = "" }) {
-  return (
-    <h4
-      className={`
-      text-lg font-semibold leading-none
-      ${className}
-    `}
-    >
-      {children}
-    </h4>
-  );
-}
-
-export function CardDescription({ children, className = "" }) {
-  return (
-    <p
-      className={`
-      text-muted-foreground text-sm
-      ${className}
-    `}
-    >
-      {children}
-    </p>
-  );
-}
-
-export function CardContent({ children, className = "" }) {
+export const CardContent = React.memo(function CardContent({ children, className = "" }) {
   return (
     <div
       className={`
@@ -70,17 +34,9 @@ export function CardContent({ children, className = "" }) {
       {children}
     </div>
   );
-}
+});
 
-export function CardFooter({ children, className = "" }) {
-  return (
-    <div
-      className={`
-      px-6 pb-6 flex gap-3
-      ${className}
-    `}
-    >
-      {children}
-    </div>
-  );
-}
+CardContent.propTypes = {
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string,
+};

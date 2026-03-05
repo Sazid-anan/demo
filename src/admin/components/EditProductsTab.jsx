@@ -1,16 +1,12 @@
 import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
-import { Upload } from "lucide-react";
+import { Upload, Plus, Save, X, Edit2, Trash2 } from "lucide-react";
 import { saveProduct, deleteProduct } from "../../redux/slices/contentSlice";
 import { uploadImage } from "../../services/storage";
 import Button from "../../components/ui/Button";
 import { renderMarkdown } from "../../utils/markdown";
 
-/**
- * Edit Products Tab
- * Allows admin to manage products
- */
 export default function EditProductsTab() {
   const dispatch = useDispatch();
   const { products } = useSelector((state) => state.content);
@@ -54,11 +50,7 @@ export default function EditProductsTab() {
         const name = String(product.name || "").toLowerCase();
         const description = String(product.description || "").toLowerCase();
         const contact = String(product.contact_info || "").toLowerCase();
-        return (
-          name.includes(query) ||
-          description.includes(query) ||
-          contact.includes(query)
-        );
+        return name.includes(query) || description.includes(query) || contact.includes(query);
       });
     }
 
@@ -77,16 +69,11 @@ export default function EditProductsTab() {
     try {
       setErrorMessage("");
       if (!formData.name || !formData.description) {
-        setErrorMessage(
-          "Please fill in required fields (Name and Description)",
-        );
+        setErrorMessage("Please fill in required fields (Name and Description)");
         return;
       }
 
-      let url =
-        formData.image_url && formData.image_url.trim()
-          ? formData.image_url.trim()
-          : null;
+      let url = formData.image_url && formData.image_url.trim() ? formData.image_url.trim() : null;
       if (!url && imageFile) {
         url = await uploadImage(imageFile, "products");
       }
@@ -160,21 +147,14 @@ export default function EditProductsTab() {
     >
       <div className="flex flex-wrap justify-between items-start gap-4">
         <div>
-          <h2 className="text-xl font-bold text-brand-black mb-2">
-            Manage Products
-          </h2>
-          <p className="text-gray-600 text-sm">
-            Add, edit, or remove products from your catalog
-          </p>
-          {lastSavedAt && (
-            <p className="text-xs text-gray-500 mt-2">
-              Last saved: {lastSavedAt}
-            </p>
-          )}
+          <h2 className="text-xl font-bold text-brand-black mb-2">Manage Products</h2>
+          <p className="text-gray-600 text-sm">Add, edit, or remove products from your catalog</p>
+          {lastSavedAt && <p className="text-xs text-gray-500 mt-2">Last saved: {lastSavedAt}</p>}
         </div>
         {!showForm && (
-          <Button onClick={() => setShowForm(true)} size="md">
-            + Add Product
+          <Button onClick={() => setShowForm(true)} size="md" variant="default">
+            <Plus className="h-4 w-4" />
+            Add Product
           </Button>
         )}
       </div>
@@ -255,9 +235,7 @@ export default function EditProductsTab() {
                 className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 transition-all duration-300 shadow-sm hover:shadow-md resize-none orange-pop-hover"
               ></textarea>
               <div className="mt-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
-                <h3 className="text-lg font-bold text-brand-black mb-2">
-                  Details (Preview)
-                </h3>
+                <h3 className="text-lg font-bold text-brand-black mb-2">Details (Preview)</h3>
                 <div
                   className="markdown-content"
                   dangerouslySetInnerHTML={{
@@ -275,11 +253,7 @@ export default function EditProductsTab() {
                     Image Preview
                   </label>
                   <div className="relative w-full h-48 rounded overflow-hidden">
-                    <img
-                      src={imagePreview}
-                      alt="preview"
-                      className="w-full h-full object-cover"
-                    />
+                    <img src={imagePreview} alt="preview" className="w-full h-full object-cover" />
                     <button
                       type="button"
                       onClick={() => {
@@ -287,9 +261,10 @@ export default function EditProductsTab() {
                         setImageFile(null);
                         setFormData((prev) => ({ ...prev, image_url: "" }));
                       }}
-                      className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-sm font-medium transition-colors"
+                      className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 hover:scale-110 text-white px-3 py-1 rounded-lg text-sm font-medium transition-all inline-flex items-center gap-1"
                     >
-                      Remove Image
+                      <X className="h-3 w-3" />
+                      Remove
                     </button>
                   </div>
                 </div>
@@ -324,9 +299,7 @@ export default function EditProductsTab() {
                       <Upload className="h-4 w-4" />
                       Choose file
                     </span>
-                    <p className="text-xs text-gray-500 mt-1">
-                      or drag and drop
-                    </p>
+                    <p className="text-xs text-gray-500 mt-1">or drag and drop</p>
                   </label>
                 </div>
               </div>
@@ -349,9 +322,7 @@ export default function EditProductsTab() {
 
             {/* Category */}
             <div>
-              <label className="block text-sm font-medium text-brand-black mb-2">
-                Category
-              </label>
+              <label className="block text-sm font-medium text-brand-black mb-2">Category</label>
               <select
                 name="category"
                 value={formData.category}
@@ -364,12 +335,11 @@ export default function EditProductsTab() {
                     {cat}
                   </option>
                 ))}
-                {formData.category &&
-                  !categories.includes(formData.category) && (
-                    <option value={formData.category} selected>
-                      {formData.category} (new)
-                    </option>
-                  )}
+                {formData.category && !categories.includes(formData.category) && (
+                  <option value={formData.category} selected>
+                    {formData.category} (new)
+                  </option>
+                )}
               </select>
               <input
                 type="text"
@@ -383,15 +353,14 @@ export default function EditProductsTab() {
 
             {/* Buttons */}
             <div className="flex gap-4 pt-4">
-              <Button onClick={handleAddProduct} size="md">
-                {editingId ? "Update Product" : "Add Product"}
+              <Button onClick={handleAddProduct} size="md" variant="default">
+                <Save className="h-4 w-4" />
+                {editingId ? "Update Product" : "Save Product"}
               </Button>
-              <button
-                onClick={handleCancel}
-                className="px-6 py-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-              >
+              <Button onClick={handleCancel} size="md" variant="outline">
+                <X className="h-4 w-4" />
                 Cancel
-              </button>
+              </Button>
             </div>
           </div>
         </motion.div>
@@ -455,47 +424,36 @@ export default function EditProductsTab() {
                 )}
 
                 <div className="p-4">
-                  <h4 className="font-bold text-brand-black mb-1">
-                    {product.name}
-                  </h4>
-                  <p className="text-gray-600 text-sm mb-3">
-                    {product.description}
-                  </p>
+                  <h4 className="font-bold text-brand-black mb-1">{product.name}</h4>
+                  <p className="text-gray-600 text-sm mb-3">{product.description}</p>
                   <p className="text-xs text-gray-500 mb-3">
                     Contact: {product.contact_info || "N/A"}
                   </p>
 
                   <div className="flex gap-2">
-                    <button
-                      onClick={() => handleEditProduct(product)}
-                      className="px-3 py-1 text-sm bg-brand-orange text-brand-black rounded hover:shadow-md transition-all"
-                    >
+                    <Button onClick={() => handleEditProduct(product)} size="sm" variant="outline">
+                      <Edit2 className="h-4 w-4" />
                       Edit
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       onClick={async () => {
-                        if (
-                          window.confirm(
-                            "Are you sure you want to delete this product?",
-                          )
-                        ) {
+                        if (window.confirm("Are you sure you want to delete this product?")) {
                           try {
                             await dispatch(deleteProduct(product.id)).unwrap();
                             setSaveSuccess(true);
                             setLastSavedAt(new Date().toLocaleString());
                             setTimeout(() => setSaveSuccess(false), 3000);
                           } catch (err) {
-                            setErrorMessage(
-                              "Failed to delete product: " +
-                                (err?.message || err),
-                            );
+                            setErrorMessage("Failed to delete product: " + (err?.message || err));
                           }
                         }
                       }}
-                      className="px-3 py-1 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors"
+                      size="sm"
+                      variant="destructive"
                     >
+                      <Trash2 className="h-4 w-4" />
                       Delete
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </motion.div>

@@ -9,8 +9,14 @@ import {
   Users,
   Star,
   Mail,
+  Settings,
+  History,
   User,
   LogOut,
+  Image as ImageIcon,
+  Calendar,
+  Palette,
+  Search,
 } from "lucide-react";
 import { logoutAdmin } from "../../redux/slices/authSlice";
 import { setActiveTab } from "../../redux/slices/adminSlice";
@@ -21,19 +27,21 @@ import MessagesTab from "../components/MessagesTab";
 import AnalyticsWidget from "../components/AnalyticsWidget";
 import TestimonialsTab from "../components/TestimonialsTab";
 import BlogsTab from "../components/BlogsTab";
+import SiteSettingsTab from "../components/SiteSettingsTab";
+import EmailTemplatesTab from "../components/EmailTemplatesTab";
+import ActivityLogsTab from "../components/ActivityLogsTab";
+import MediaLibraryTab from "../components/MediaLibraryTab";
+import ContentSchedulerTab from "../components/ContentSchedulerTab";
+import ThemeCustomizerTab from "../components/ThemeCustomizerTab";
+import SEOManagerTab from "../components/SEOManagerTab";
 
-/**
- * Admin Dashboard
- * Main admin panel with tabs for managing content
- */
 export default function AdminDashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoggedIn, adminEmail } = useSelector((state) => state.auth);
   const { activeTab } = useSelector((state) => state.admin);
   const storageBucket =
-    import.meta.env.VITE_FIREBASE_STORAGE_BUCKET ||
-    "danvion-ltd.firebasestorage.app";
+    import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "danvion-ltd.firebasestorage.app";
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -58,7 +66,13 @@ export default function AdminDashboard() {
     { id: "blogs", label: "Blog Posts", icon: FileText },
     { id: "team", label: "Leadership Team", icon: Users },
     { id: "testimonials", label: "Testimonials", icon: Star },
-    { id: "messages", label: "Messages", icon: Mail },
+    { id: "media", label: "Media Library", icon: ImageIcon },
+    { id: "scheduler", label: "Content Scheduler", icon: Calendar },
+    { id: "theme", label: "Theme Customizer", icon: Palette },
+    { id: "seo", label: "SEO Manager", icon: Search },
+    { id: "settings", label: "Settings", icon: Settings },
+    { id: "email", label: "Email Templates", icon: Mail },
+    { id: "activity", label: "Activity Logs", icon: History },
   ];
 
   const tabGroups = [
@@ -68,7 +82,19 @@ export default function AdminDashboard() {
     },
     {
       title: "Content",
-      items: ["products", "blogs", "team", "testimonials", "messages"],
+      items: ["products", "blogs", "team", "testimonials"],
+    },
+    {
+      title: "Tools",
+      items: ["media", "scheduler"],
+    },
+    {
+      title: "Advanced",
+      items: ["theme", "seo"],
+    },
+    {
+      title: "Administration",
+      items: ["settings", "email", "activity"],
     },
   ];
 
@@ -78,7 +104,7 @@ export default function AdminDashboard() {
     <div
       className="min-h-screen admin-area text-brand-black"
       style={{
-        fontFamily: "'Comfortaa', cursive",
+        fontFamily: "Inter",
       }}
     >
       {/* Main Content */}
@@ -91,12 +117,8 @@ export default function AdminDashboard() {
               className="h-12 w-12 rounded-xl border border-gray-200 bg-white p-2"
             />
             <div>
-              <p className="text-xs uppercase tracking-[0.3em] text-gray-500">
-                Danvion Admin
-              </p>
-              <h1 className="text-h2 font-bold text-brand-black mt-2">
-                Content Control Center
-              </h1>
+              <p className="text-xs uppercase tracking-[0.3em] text-gray-500">Danvion Admin</p>
+              <h1 className="text-h2 font-bold text-brand-black mt-2">Content Control Center</h1>
               <p className="text-sm text-gray-600 mt-1">
                 Update pages, assets, and messages with confidence.
               </p>
@@ -116,12 +138,8 @@ export default function AdminDashboard() {
           >
             <div className="admin-panel sticky top-28 rounded-2xl p-5">
               <div className="mb-6">
-                <p className="text-xs uppercase tracking-[0.3em] text-gray-500">
-                  Navigation
-                </p>
-                <h2 className="text-2xl font-bold text-brand-black mt-2">
-                  Dashboard
-                </h2>
+                <p className="text-xs uppercase tracking-[0.3em] text-gray-500">Navigation</p>
+                <h2 className="text-2xl font-bold text-brand-black mt-2">Dashboard</h2>
                 <p className="text-sm text-gray-600 mt-1">
                   Manage your content and publish updates.
                 </p>
@@ -158,15 +176,11 @@ export default function AdminDashboard() {
               <div className="mt-8 border-t-2 border-gray-200 pt-4 space-y-3">
                 <div className="flex items-center gap-2 text-xs text-gray-500">
                   <span>Storage:</span>
-                  <span className="font-semibold text-brand-black">
-                    {storageBucket}
-                  </span>
+                  <span className="font-semibold text-brand-black">{storageBucket}</span>
                 </div>
                 <div className="flex items-center gap-3 bg-white/80 border border-gray-200 px-3 py-2 rounded-xl">
                   <User className="h-4 w-4 text-brand-orange" />
-                  <span className="text-xs text-brand-black truncate">
-                    {adminEmail}
-                  </span>
+                  <span className="text-xs text-brand-black truncate">{adminEmail}</span>
                 </div>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
@@ -223,6 +237,13 @@ export default function AdminDashboard() {
               {activeTab === "team" && <EditTeamTab />}
               {activeTab === "testimonials" && <TestimonialsTab />}
               {activeTab === "messages" && <MessagesTab />}
+              {activeTab === "media" && <MediaLibraryTab />}
+              {activeTab === "scheduler" && <ContentSchedulerTab />}
+              {activeTab === "theme" && <ThemeCustomizerTab />}
+              {activeTab === "seo" && <SEOManagerTab />}
+              {activeTab === "settings" && <SiteSettingsTab />}
+              {activeTab === "email" && <EmailTemplatesTab />}
+              {activeTab === "activity" && <ActivityLogsTab />}
             </motion.div>
           </div>
         </div>
