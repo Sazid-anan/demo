@@ -1,7 +1,7 @@
 {
   "hosting": {
     "public": "dist",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "**/*.map"],
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
         "source": "**",
@@ -9,19 +9,6 @@
       }
     ],
     "headers": [
-      {
-        "source": "**/*.map",
-        "headers": [
-          {
-            "key": "X-Content-Type-Options",
-            "value": "nosniff"
-          },
-          {
-            "key": "X-Robots-Tag",
-            "value": "noindex"
-          }
-        ]
-      },
       {
         "source": "/index.html",
         "headers": [

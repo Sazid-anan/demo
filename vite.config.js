@@ -4,27 +4,16 @@ import react from "@vitejs/plugin-react";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // ALWAYS disable source maps (development and production) to protect source code
-  css: {
-    devSourcemap: false,
-  },
-  server: {
-    sourcemapIgnoreList: () => true, // Hide all source maps in dev server
-  },
   build: {
-    sourcemap: false, // No source maps in production
+    sourcemap: false,
     minify: "terser",
     terserOptions: {
       compress: {
         drop_console: true,
-        drop_debugger: true, // Remove debugger statements
         dead_code: true,
         passes: 2,
       },
       mangle: true,
-      format: {
-        comments: false, // Remove all comments
-      },
     },
     rollupOptions: {
       output: {

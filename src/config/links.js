@@ -10,7 +10,7 @@ export const EXTERNAL_LINKS = {
   LINKEDIN: "https://www.linkedin.com/company/danvion",
 
   // Calendly Booking Link - Update with your Calendly URL
-  CALENDLY: "https://calendly.com/",
+  CALENDLY: "https://calendly.com/danvion/30min",
 
   // Add more links below as needed
   // FACEBOOK: "https://facebook.com/your-page",

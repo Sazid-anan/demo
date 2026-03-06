@@ -1,4 +1,3 @@
-/* global require, exports */
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 
@@ -158,7 +157,7 @@ exports.logAdminAccess = functions.firestore
 exports.deleteOldContactMessages = functions.pubsub
   .schedule("every day 03:00")
   .timeZone("UTC")
-  .onRun(async () => {
+  .onRun(async (context) => {
     console.log("Starting auto-delete of old contact messages...");
 
     const thirtyDaysAgo = new Date();
@@ -173,26 +172,23 @@ exports.deleteOldContactMessages = functions.pubsub
 
       console.log(`Found ${snapshot.size} messages to delete`);
 
-      // Delete in batches of 500 (Firestore limit)
-      let batch = db.batch();
+      // Delete in batches
+      const batch = db.batch();
       let count = 0;
-      let batchCount = 0;
 
-      for (const doc of snapshot.docs) {
+      snapshot.forEach((doc) => {
         batch.delete(doc.ref);
         count++;
-        batchCount++;
 
         // Firestore batch operation limit is 500
-        if (batchCount === 500) {
-          await batch.commit();
-          batch = db.batch();
-          batchCount = 0;
+        if (count % 500 === 0) {
+          batch.commit();
+          return (batch = db.batch());
         }
-      }
+      });
 
       // Commit remaining deletions
-      if (batchCount > 0) {
+      if (count > 0) {
         await batch.commit();
       }
 
@@ -293,7 +289,7 @@ exports.recordUserConsent = functions.https.onCall(async (data, context) => {
 exports.cleanupRateLimitLogs = functions.pubsub
   .schedule("every day 04:00")
   .timeZone("UTC")
-  .onRun(async () => {
+  .onRun(async (context) => {
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 

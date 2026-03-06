@@ -113,10 +113,7 @@ export default function Footer() {
                     className="text-black hover:text-brand-orange text-[12px] transition-colors flex items-center gap-1.5 group"
                   >
                     <span className="opacity-0 group-hover:opacity-100 transition-opacity">
-                      <ArrowRight
-                        className="w-3 h-3 text-brand-orange"
-                        strokeWidth={2.5}
-                      />
+                      <ArrowRight className="w-3 h-3 text-brand-orange" strokeWidth={2.5} />
                     </span>
                     Home
                   </Link>
@@ -142,6 +139,19 @@ export default function Footer() {
                     </span>
                     Blog
                   </Link>
+                </motion.div>
+                <motion.div variants={linkHoverVariants} whileHover="hover">
+                  <a
+                    href={EXTERNAL_LINKS.CALENDLY}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-black hover:text-brand-orange text-[12px] transition-colors flex items-center gap-1.5 group"
+                  >
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ArrowRight className="w-3 h-3" />
+                    </span>
+                    Book a 30-min Call
+                  </a>
                 </motion.div>
                 <motion.div variants={linkHoverVariants} whileHover="hover">
                   <a
@@ -184,9 +194,7 @@ export default function Footer() {
                 <motion.div variants={linkHoverVariants} whileHover="hover">
                   <Link
                     to="/"
-                    onClick={() =>
-                      window.scrollTo({ top: 0, behavior: "smooth" })
-                    }
+                    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                     className="text-black hover:text-brand-orange text-[12px] transition-colors flex items-center gap-1.5 group"
                   >
                     <span className="opacity-0 group-hover:opacity-100 transition-opacity">
@@ -210,10 +218,7 @@ export default function Footer() {
               <div className="h-0.5 w-7 sm:w-8 bg-gradient-to-r from-brand-orange to-orange-500 mb-1 sm:mb-1.5 rounded-full" />
               <div className="flex flex-col gap-1 sm:gap-1.5">
                 {/* Email */}
-                <a
-                  href="mailto:support@danvion.com"
-                  className="flex items-start gap-1.5 group"
-                >
+                <a href="mailto:support@danvion.com" className="flex items-start gap-1.5 group">
                   <Mail className="w-2 h-2 text-brand-orange flex-shrink-0 mt-0.5" />
                   <div className="flex flex-col">
                     <p className="text-[12px] text-black uppercase tracking-wider leading-none mb-0.5">
@@ -249,10 +254,7 @@ export default function Footer() {
         <div className="py-0.5 sm:py-1">
           <div className="flex flex-col gap-0.5 sm:gap-1 text-center">
             <p className="text-[12px] text-black">
-              {SITE_CONTENT.footer.bottom.copyright.replace(
-                "{year}",
-                currentYear,
-              )}
+              {SITE_CONTENT.footer.bottom.copyright.replace("{year}", currentYear)}
             </p>
             <div className="flex items-center justify-center gap-1.5 text-[12px] text-black flex-wrap">
               <a href="#" className="hover:text-brand-orange transition-colors">

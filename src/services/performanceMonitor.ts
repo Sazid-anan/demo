@@ -64,36 +64,22 @@ export class PerformanceMonitor {
   logPageLoadTime() {
     if (typeof window === "undefined" || !window.performance) return;
 
-    // Use modern Performance API instead of deprecated performance.timing
-    try {
-      const navigationEntry = performance.getEntriesByType(
-        "navigation",
-      )[0] as PerformanceNavigationTiming;
-      if (!navigationEntry) return;
+    const perfData = window.performance.timing;
+    const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
 
-      const pageLoadTime = navigationEntry.loadEventEnd - navigationEntry.fetchStart;
+    this.logMetric("Page Load Time", pageLoadTime, "ms", { threshold: 3000 });
 
-      // Only log if values are valid (positive)
-      if (pageLoadTime > 0 && pageLoadTime < 60000) {
-        this.logMetric("Page Load Time", pageLoadTime, "ms", { threshold: 3000 });
+    const metrics = {
+      "DNS Lookup": perfData.domainLookupEnd - perfData.domainLookupStart,
+      "TCP Connection": perfData.connectEnd - perfData.connectStart,
+      "Server Response": perfData.responseEnd - perfData.requestStart,
+      "DOM Processing": perfData.domComplete - perfData.domLoading,
+      "Resource Loading": perfData.loadEventEnd - perfData.loadEventStart,
+    };
 
-        const metrics = {
-          "DNS Lookup": navigationEntry.domainLookupEnd - navigationEntry.domainLookupStart,
-          "TCP Connection": navigationEntry.connectEnd - navigationEntry.connectStart,
-          "Server Response": navigationEntry.responseEnd - navigationEntry.requestStart,
-          "DOM Processing": navigationEntry.domComplete - navigationEntry.domInteractive,
-          "Resource Loading": navigationEntry.loadEventEnd - navigationEntry.loadEventStart,
-        };
-
-        Object.entries(metrics).forEach(([name, time]) => {
-          if (time >= 0 && time < 60000) {
-            this.logMetric(name, time, "ms");
-          }
-        });
-      }
-    } catch (e) {
-      if (this.isDev) console.warn("Performance logging not available:", e);
-    }
+    Object.entries(metrics).forEach(([name, time]) => {
+      this.logMetric(name, time, "ms");
+    });
   }
 
   logMetric(

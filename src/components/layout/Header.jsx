@@ -13,7 +13,7 @@ import SolutionsDropdown from "../SolutionsDropdown";
  */
 export default function Header() {
   const location = useLocation();
-  const { isMobile } = useResponsive();
+  const { isMobile, isTablet } = useResponsive();
   const [showSolutions, setShowSolutions] = useState(false);
 
   const handleSolutionsClick = (e) => {
@@ -30,7 +30,7 @@ export default function Header() {
         className="sticky top-0 z-50 bg-orange-500 shadow-lg transition-shadow duration-300"
       >
         <div className="w-full flex justify-center">
-          <div className="w-full max-w-7xl px-5 sm:px-6 md:px-8 lg:px-10">
+          <div className="w-full max-w-7xl px-2 sm:px-3 md:px-4 lg:px-6">
             <div className="flex justify-between items-center h-14 sm:h-16 md:h-18 lg:h-20">
               {/* Logo */}
               <Link

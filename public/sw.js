@@ -1,4 +1,3 @@
-/* global clients */
 /**
  * Service Worker - Advanced Caching & Offline Support
  * Implements efficient caching strategies with offline mode and push notifications
@@ -36,6 +35,16 @@ const CACHE_LIMITS = {
 
 // Image cache TTL (in days)
 const IMAGE_CACHE_TTL = 30;
+
+/**
+ * Get size of all caches
+ */
+async function getCacheSize() {
+  if (!navigator.storage || !navigator.storage.estimate) {
+    return null;
+  }
+  return await navigator.storage.estimate();
+}
 
 /**
  * Clean up old cache entries and enforce size limits
@@ -250,7 +259,7 @@ self.addEventListener("push", (event) => {
   if (event.data) {
     try {
       notificationData = event.data.json();
-    } catch {
+    } catch (e) {
       notificationData.body = event.data.text();
     }
   }

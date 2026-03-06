@@ -52,7 +52,8 @@ export default function CapabilitiesSection({ homePage }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.05 }}
-                className="heading-orange text-orange-500 font-semibold leading-[1.2] tracking-tight mb-6 sm:mb-6 md:mb-6 lg:mb-6 text-[22px] sm:text-[26px] md:text-[32px] lg:text-[50px] text-left"
+                className="heading-orange text-orange-500 font-semibold leading-[1.2] tracking-tight mb-6 sm:mb-6 md:mb-6 lg:mb-6 text-[18px] sm:text-[24px] md:text-[32px] lg:text-[50px]"
+                style={{ textAlign: "left", color: "#f97316" }}
               >
                 {homePage?.capabilities_title || "Our Engineering"}
                 <br />
@@ -62,7 +63,10 @@ export default function CapabilitiesSection({ homePage }) {
 
             {/* Right: Description */}
             <div className="w-full lg:flex-[1.5] flex flex-col items-start text-left lg:ml-11">
-              <p className="text-[18px] sm:text-[20px] md:text-[22px] lg:text-[23px] font-medium text-gray-800 leading-relaxed text-justify">
+              <p
+                className="section-lead-text text-[23px] font-medium text-gray-800 leading-relaxed"
+                style={{ textAlign: "justify" }}
+              >
                 {SITE_CONTENT.sharedDescriptions.engineeringSolutions}
               </p>
             </div>
@@ -71,11 +75,10 @@ export default function CapabilitiesSection({ homePage }) {
 
         <div className="mb-0 sm:mb-0 md:mb-0">
           <Card className="relative w-full max-w-full mx-auto px-3 sm:px-2 md:px-3 lg:px-4 py-3 sm:py-3 md:py-4 lg:py-5 bg-white border-2 border-orange-200/60 shadow-lg shadow-orange-100/50">
-            <div className="capabilities-grid grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-7 gap-3 sm:gap-3 md:gap-4 lg:gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-3 sm:gap-3 md:gap-4 lg:gap-3">
               {capabilities.map((capability, index) => (
                 <motion.div
                   key={index}
-                  className="capability-cell"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -83,9 +86,9 @@ export default function CapabilitiesSection({ homePage }) {
                   whileHover={{ y: -4, scale: 1.05 }}
                   style={{ willChange: "transform, opacity" }}
                 >
-                  <Card className="capability-card relative aspect-square w-full flex flex-col items-center justify-center gap-2 sm:gap-2 md:gap-2.5 p-4 sm:p-4 md:p-3 lg:p-3 hover:shadow-lg transition-all duration-300 bg-white border border-gray-200 hover:border-orange-500/50 hover:shadow-orange-100/50">
-                    <capability.icon className="capability-icon h-10 w-10 sm:h-10 sm:w-10 md:h-11 md:w-11 lg:h-12 lg:w-12 text-orange-500 flex-shrink-0" />
-                    <h3 className="capability-title text-center text-xs sm:text-xs md:text-sm lg:text-sm font-semibold text-foreground leading-tight px-0.5">
+                  <Card className="relative aspect-square w-full flex flex-col items-center justify-center gap-2 sm:gap-2 md:gap-2.5 p-4 sm:p-4 md:p-3 lg:p-3 hover:shadow-lg transition-all duration-300 bg-white border border-gray-200 hover:border-orange-500/50 hover:shadow-orange-100/50">
+                    <capability.icon className="h-10 w-10 sm:h-10 sm:w-10 md:h-11 md:w-11 lg:h-12 lg:w-12 text-orange-500 flex-shrink-0\" />
+                    <h3 className="text-center text-xs sm:text-xs md:text-sm lg:text-sm font-semibold text-foreground leading-tight px-0.5">
                       {capability.title}
                     </h3>
                   </Card>

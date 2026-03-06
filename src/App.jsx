@@ -109,15 +109,14 @@ function App() {
   // Initialize performance monitoring
   useEffect(() => {
     performanceMonitor.initWebVitals();
-
-    const handleLoad = () => {
+    window.addEventListener("load", () => {
       performanceMonitor.logPageLoadTime();
-    };
-
-    window.addEventListener("load", handleLoad);
+    });
 
     return () => {
-      window.removeEventListener("load", handleLoad);
+      window.removeEventListener("load", () => {
+        performanceMonitor.logPageLoadTime();
+      });
     };
   }, []);
 

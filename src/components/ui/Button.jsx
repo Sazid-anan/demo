@@ -9,8 +9,7 @@ const Button = React.memo(function Button({
   className = "",
   ...props
 }) {
-  // useResponsive hook is called for potential future responsive behavior
-  useResponsive();
+  const { isMobile } = useResponsive();
   const variants = {
     default:
       "bg-brand-orange text-brand-black hover:bg-orange-600 shadow-lg hover:shadow-xl hover:scale-105",

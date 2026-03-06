@@ -11,9 +11,6 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
 
-    <!-- Security Headers (Note: X-Frame-Options only works as HTTP header, set in firebase.json) -->
-    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
-
     <!-- SEO Meta Tags -->
     <meta
       name="description"
@@ -68,48 +65,14 @@
     </script>
 
     <title>Danvion - Edge AI Solutions & Product Development</title>
-
-    <!-- Source code protection -->
-    <script>
-      // Disable right-click context menu (prevents easy "View Source" access)
-      document.addEventListener("contextmenu", (e) => {
-        e.preventDefault();
-        return false;
-      });
-
-      // Disable common keyboard shortcuts for DevTools
-      document.addEventListener("keydown", (e) => {
-        // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
-        if (
-          e.key === "F12" ||
-          (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J" || e.key === "C")) ||
-          (e.ctrlKey && e.key === "u")
-        ) {
-          e.preventDefault();
-          return false;
-        }
-      });
-
-      // Disable text selection (optional - can be restrictive for UX)
-      // Uncomment the lines below if you want to prevent text selection
-      // document.addEventListener("selectstart", (e) => {
-      //   e.preventDefault();
-      //   return false;
-      // });
-    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
 
-    <!-- Service Worker registration for caching (disabled in dev mode) -->
+    <!-- Service Worker registration for caching -->
     <script>
-      if (
-        "serviceWorker" in navigator &&
-        !window.location.hash.includes("no-sw") &&
-        window.location.hostname !== "localhost" &&
-        !window.location.hostname.includes("127.0.0.1")
-      ) {
+      if ("serviceWorker" in navigator && !window.location.hash.includes("no-sw")) {
         window.addEventListener("load", () => {
           navigator.serviceWorker.register("/sw.js").catch(() => {
             // Silently fail if service worker registration fails

@@ -56,14 +56,13 @@ export function useResponsive() {
  * @returns {boolean} - Whether the media query matches
  */
 export function useMediaQuery(query) {
-  // Initialize with actual value to avoid cascading renders
-  const [matches, setMatches] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return window.matchMedia(query).matches;
-  });
+  const [matches, setMatches] = useState(false);
 
   useEffect(() => {
     const media = window.matchMedia(query);
+
+    // Set initial value
+    setMatches(media.matches);
 
     // Define listener
     const listener = (e) => setMatches(e.matches);

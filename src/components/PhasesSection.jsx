@@ -87,7 +87,8 @@ const PhaseCard = ({ process, index }) => {
       >
         {/* Number Badge - Compact Size */}
         <div
-          className={`absolute top-3 right-3 w-9 h-9 md:w-10 md:h-10 rounded-full ${process.color} flex items-center justify-center font-bold text-sm text-white shadow-lg transition-all duration-300 ${isHovered ? "rotate-12 scale-110" : ""}`}
+          className={`absolute top-3 right-3 w-9 h-9 md:w-10 md:h-10 rounded-full ${process.color} flex items-center justify-center font-bold text-sm shadow-lg transition-all duration-300 ${isHovered ? "rotate-12 scale-110" : ""}`}
+          style={{ color: "#ffffff" }}
         >
           {process.number}
         </div>
@@ -105,7 +106,10 @@ const PhaseCard = ({ process, index }) => {
 
         {/* Content - Optimized Spacing */}
         <div className="space-y-2 flex-1 flex flex-col">
-          <h3 className="text-base md:text-lg lg:text-xl font-bold leading-tight text-gray-800">
+          <h3
+            className="text-base md:text-lg lg:text-xl font-bold leading-tight"
+            style={{ color: "#1f2937" }}
+          >
             {process.title}
           </h3>
 
@@ -113,7 +117,10 @@ const PhaseCard = ({ process, index }) => {
             className={`h-0.5 rounded-full transition-all duration-300 ${isHovered ? "w-14" : "w-10"} ${process.color}`}
           ></div>
 
-          <p className="leading-relaxed flex-1 text-gray-600 text-sm md:text-base lg:text-base text-justify">
+          <p
+            className="leading-relaxed flex-1 text-gray-600 text-sm md:text-base lg:text-base"
+            style={{ textAlign: "justify" }}
+          >
             {process.description}
           </p>
         </div>
@@ -150,7 +157,8 @@ const PhaseSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.05 }}
-                className="heading-orange text-orange-500 section-heading font-semibold leading-tight tracking-tight text-[22px] sm:text-[26px] md:text-[32px] lg:text-[50px]"
+                className="heading-orange text-orange-500 section-heading font-semibold leading-tight tracking-tight text-2xl sm:text-3xl md:text-4xl lg:text-5xl"
+                style={{ color: "#f97316" }}
               >
                 Our Development Phases
               </motion.h1>
@@ -158,7 +166,10 @@ const PhaseSection = () => {
 
             {/* Right: Description */}
             <div className="w-full lg:flex-[1.5] flex flex-col items-start text-left lg:ml-11">
-              <p className="text-gray-800 text-[18px] sm:text-[20px] md:text-[22px] lg:text-[23px] font-medium leading-relaxed text-justify">
+              <p
+                className="section-lead-text text-gray-800 text-[23px] font-medium leading-relaxed"
+                style={{ textAlign: "justify" }}
+              >
                 We streamline your success by handling every detail from initial schematics to
                 in-house prototyping and testing
               </p>

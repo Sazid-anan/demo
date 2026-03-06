@@ -187,14 +187,20 @@ export default function ImageSliderSection({
           <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-8">
             {/* Left: Headline */}
             <div className="w-full lg:flex-1 flex flex-col items-start text-left">
-              <h1 className="heading-orange text-orange-500 font-semibold leading-[1.25] tracking-tight mb-6 sm:mb-6 md:mb-6 lg:mb-6 text-[22px] sm:text-[26px] md:text-[32px] lg:text-[50px]">
+              <h1
+                className="heading-orange text-orange-500 font-semibold leading-[1.25] tracking-tight mb-6 sm:mb-6 md:mb-6 lg:mb-6 text-[18px] sm:text-[24px] md:text-[32px] lg:text-[50px]"
+                style={{ color: "#f97316" }}
+              >
                 {title}
               </h1>
             </div>
 
             {/* Right: Description */}
             <div className="w-full lg:flex-[1.5] flex flex-col items-start text-left lg:ml-11">
-              <p className="text-[18px] sm:text-[20px] md:text-[22px] lg:text-[23px] font-medium text-gray-800 leading-relaxed text-justify">
+              <p
+                className="section-lead-text text-[23px] font-medium text-gray-800 leading-relaxed"
+                style={{ textAlign: "justify" }}
+              >
                 Stop worrying about design errors or manufacturing delays. Our comprehensive
                 approach integrates advanced simulation and in-house prototyping to catch issues
                 early, delivering high-performance PCB designs that are optimized for cost and rapid

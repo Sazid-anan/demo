@@ -8,8 +8,6 @@ export class AnalyticsService {
   isDev: boolean;
   isProd: boolean;
   events: any[] = [];
-  private lastEventTimestamps: Map<string, number> = new Map();
-  private readonly DEBOUNCE_MS = 1000; // Prevent duplicate events within 1 second
 
   constructor() {
     this.isDev = (import.meta as any).env.DEV;
@@ -18,31 +16,9 @@ export class AnalyticsService {
   }
 
   /**
-   * Check if event is duplicate (debouncing for React Strict Mode)
-   */
-  private isDuplicateEvent(eventKey: string): boolean {
-    const now = Date.now();
-    const lastTimestamp = this.lastEventTimestamps.get(eventKey);
-
-    if (lastTimestamp && now - lastTimestamp < this.DEBOUNCE_MS) {
-      return true; // Duplicate within debounce window
-    }
-
-    this.lastEventTimestamps.set(eventKey, now);
-    return false;
-  }
-
-  /**
    * Track page view
    */
   trackPageView(pageName: string, properties: Record<string, any> = {}) {
-    const eventKey = `page_view_${pageName}_${window.location.pathname}`;
-
-    // Prevent duplicate events from React Strict Mode
-    if (this.isDuplicateEvent(eventKey)) {
-      return;
-    }
-
     const eventData = {
       event: "page_view",
       page_title: pageName,

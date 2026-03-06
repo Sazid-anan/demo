@@ -160,8 +160,8 @@ select {
   /* Reduce padding on small containers on mobile */
   [class*="px-6"],
   [class*="px-8"] {
-    padding-left: 1.25rem !important;
-    padding-right: 1.25rem !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
   }
 
   /* Better spacing for readability on mobile */
@@ -416,8 +416,8 @@ select {
   .container,
   .container-fluid,
   [class*="mx-auto"] {
-    padding-left: 1.25rem !important;
-    padding-right: 1.25rem !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
   }
 
   /* Optimize max-width containers */
@@ -425,9 +425,7 @@ select {
   .max-w-6xl,
   .max-w-5xl,
   .max-w-4xl,
-  .max-w-\[1280px\],
-  .content-maxwidth,
-  .container {
+  [class*="max-w"] {
     max-width: 100% !important;
     margin-left: auto !important;
     margin-right: auto !important;
@@ -435,9 +433,11 @@ select {
 
   /* ===== HEADER/NAVBAR OPTIMIZATION ===== */
   header,
-  .topbanner {
-    padding-left: 1.25rem !important;
-    padding-right: 1.25rem !important;
+  motion.header,
+  .topbanner,
+  nav {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
     border-radius: 0 !important;
   }
 
@@ -448,7 +448,6 @@ select {
 
   /* Compact header spacing */
   header nav,
-  .topbanner nav,
   .navbar {
     padding-top: 0.5rem !important;
     padding-bottom: 0.5rem !important;
@@ -631,13 +630,13 @@ select {
 
   /* Phase Section */
   .phases-section {
-    padding-left: 1.25rem !important;
-    padding-right: 1.25rem !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
   }
 
   /* Footer optimization */
   footer {
-    padding: clamp(0.6rem, 1.8vw, 1rem) 1.25rem !important;
+    padding: clamp(0.6rem, 1.8vw, 1rem) 0.75rem !important;
   }
 
   footer [class*="grid"] {
@@ -779,19 +778,19 @@ select {
 /* EXTRA SMALL DEVICES (<380px) */
 @media (max-width: 380px) {
   html {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   h1 {
-    font-size: 1.4rem !important;
+    font-size: 1.25rem !important;
   }
 
   h2 {
-    font-size: 1.2rem !important;
+    font-size: 1.1rem !important;
   }
 
   h3 {
-    font-size: 1.05rem !important;
+    font-size: 1rem !important;
   }
 
   button,
@@ -803,8 +802,8 @@ select {
   /* Stack everything tightly on very small screens */
   .container,
   [class*="mx-auto"] {
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
   }
 
   /* Hide less important content on tiny screens */
@@ -812,29 +811,25 @@ select {
     display: none !important;
   }
 
-  /* iPhone SE / Small screens - Keep 2-column square card layout */
+  /* iPhone SE - Icon and text on same line */
   .capabilities-content .aspect-square {
-    flex-direction: column !important;
-    gap: 0.4rem !important;
-    min-height: 0 !important;
-    padding: 0.65rem !important;
-    aspect-ratio: 1/1 !important;
-    align-items: center !important;
-    justify-content: center !important;
+    flex-direction: row !important;
+    gap: 0.5rem !important;
+    min-height: auto !important;
+    padding: 0.75rem !important;
   }
 
   .capabilities-content .aspect-square svg {
-    width: 1.3rem !important;
-    height: 1.3rem !important;
+    width: 1.5rem !important;
+    height: 1.5rem !important;
     flex-shrink: 0 !important;
   }
 
   .capabilities-content .aspect-square h3 {
-    font-size: 0.62rem !important;
+    font-size: 0.65rem !important;
     line-height: 1.2 !important;
-    text-align: center !important;
+    text-align: left !important;
     margin: 0 !important;
-    word-break: break-word !important;
   }
 }
 
@@ -1253,7 +1248,7 @@ select {
   }
 
   .topbanner p {
-    font-size: 1.375rem !important;
+    font-size: 0.9375rem !important;
     line-height: 1.55 !important;
     text-align: justify !important;
   }
@@ -1939,23 +1934,23 @@ select {
     margin-right: auto !important;
   }
 
-  .capabilities-content .grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  .capabilities-content .grid.grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
     gap: 0.5rem !important;
-    padding: 0 0.5rem !important;
+    padding: 0 2.5rem !important;
   }
 
   .capabilities-content .aspect-square {
     max-width: 100% !important;
-    min-height: 0 !important;
-    aspect-ratio: 1 / 1 !important;
+    min-height: 3rem !important;
+    aspect-ratio: auto !important;
     border-radius: 0.75rem !important;
-    padding: 0.65rem !important;
-    gap: 0.5rem !important;
+    padding: 0.65rem 1rem 0.65rem 1.5rem !important;
+    gap: 0.75rem !important;
     display: flex !important;
-    flex-direction: column !important;
+    flex-direction: row !important;
     align-items: center !important;
-    justify-content: center !important;
+    justify-content: flex-start !important;
   }
 
   .capabilities-content .aspect-square svg {
@@ -1966,11 +1961,11 @@ select {
   }
 
   .capabilities-content .aspect-square h3 {
-    font-size: 0.8rem !important;
+    font-size: 0.9rem !important;
     line-height: 1.3 !important;
     margin: 0 !important;
-    text-align: center !important;
-    flex: 0 !important;
+    text-align: left !important;
+    flex: 1 !important;
   }
 }
 
@@ -2095,7 +2090,7 @@ select {
   }
 
   section.w-full.bg-black.font-sans .content-maxwidth.w-full > .mb-4.sm\:mb-5.md\:mb-6.lg\:mb-7 p {
-    font-size: 1.375rem !important;
+    font-size: 0.95rem !important;
     line-height: 1.5 !important;
     margin: 0 !important;
   }
@@ -2144,7 +2139,7 @@ select {
   }
 
   section.w-full.bg-black.font-sans .content-maxwidth.w-full > div:first-child p {
-    font-size: 1.375rem !important;
+    font-size: 0.95rem !important;
     line-height: 1.45 !important;
     margin: 0 !important;
   }
@@ -3047,10 +3042,10 @@ section:has(.image-slider-content) {
 
   /* Capabilities card container - optimized */
   .capabilities-content .relative.w-full {
-    padding: 0.5rem !important;
+    padding: 0.3rem !important;
     border-radius: 0.6rem !important;
     margin-top: 0 !important;
-    max-width: 95% !important;
+    max-width: 60% !important;
     margin-left: auto !important;
     margin-right: auto !important;
   }
@@ -3059,15 +3054,15 @@ section:has(.image-slider-content) {
     margin-bottom: 0 !important;
   }
 
-  /* Capabilities grid - 2 column layout for mobile */
+  /* Capabilities grid - Single column centered layout for mobile */
   .capabilities-content .grid.grid-cols-2.sm\:grid-cols-4.lg\:grid-cols-8,
   .capabilities-content .grid[class*="grid-cols"] {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 0.5rem !important;
+    grid-template-columns: repeat(1, 1fr) !important;
+    gap: 0.6rem !important;
     max-width: 100% !important;
     margin-left: auto !important;
     margin-right: auto !important;
-    padding: 0 0.5rem !important;
+    padding: 0 !important;
     justify-items: stretch !important;
   }
 
@@ -3095,41 +3090,40 @@ section:has(.image-slider-content) {
   .capabilities-content .relative.w-full.max-w-\[1150px\] {
     padding: 0.5rem !important;
     border-radius: 0.6rem !important;
-    max-width: 95% !important;
+    max-width: 60% !important;
     margin-left: auto !important;
     margin-right: auto !important;
   }
 
-  /* Individual capability boxes - square centered design */
+  /* Individual capability boxes - wide rectangular design */
   .capabilities-content .aspect-square.w-full,
   .capabilities-content .aspect-square {
     max-width: 100% !important;
     width: 100% !important;
-    min-height: 0 !important;
+    min-height: auto !important;
     max-height: none !important;
-    aspect-ratio: 1/1 !important;
-    border-radius: 0.65rem !important;
-    padding: 0.75rem !important;
+    aspect-ratio: 3/1 !important;
+    border-radius: 0.5rem !important;
+    padding: 0.65rem 1rem !important;
     gap: 0.5rem !important;
     display: flex !important;
-    flex-direction: column !important;
+    flex-direction: row !important;
     align-items: center !important;
-    justify-content: center !important;
+    justify-content: flex-start !important;
   }
 
   .capabilities-content .aspect-square svg {
-    width: 1.65rem !important;
-    height: 1.65rem !important;
+    width: 2rem !important;
+    height: 2rem !important;
     flex-shrink: 0 !important;
   }
 
   .capabilities-content .aspect-square h3 {
-    font-size: 0.68rem !important;
-    line-height: 1.25 !important;
+    font-size: 0.75rem !important;
+    line-height: 1.3 !important;
     padding: 0 !important;
     font-weight: 600 !important;
-    text-align: center !important;
-    word-break: break-word !important;
+    text-align: left !important;
   }
 
   /* ===== DEVELOPMENT PHASES SECTION ===== */
@@ -3139,19 +3133,19 @@ section:has(.image-slider-content) {
   }
 
   .content-maxwidth.w-full {
-    padding-left: 1.25rem !important;
-    padding-right: 1.25rem !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
   }
 
   .content-maxwidth.w-full > .mb-6.sm\:mb-7.md\:mb-8.lg\:mb-10 h1 {
-    font-size: 1.4rem !important;
+    font-size: 1.25rem !important;
     line-height: 1.2 !important;
-    margin-bottom: 0.5rem !important;
+    margin-bottom: 0.35rem !important;
   }
 
   .content-maxwidth.w-full > .mb-6.sm\:mb-7.md\:mb-8.lg\:mb-10 p {
-    font-size: 0.875rem !important;
-    line-height: 1.5 !important;
+    font-size: 0.7rem !important;
+    line-height: 1.4 !important;
   }
 
   /* Phase cards grid - 2 columns for iPhone 14 Pro Max */
@@ -3587,8 +3581,8 @@ section:has(.image-slider-content) {
   .content-maxwidth,
   .container,
   section {
-    padding-left: 0.75rem !important;
-    padding-right: 0.75rem !important;
+    padding-left: 0.65rem !important;
+    padding-right: 0.65rem !important;
   }
 
   section {
@@ -3604,15 +3598,14 @@ section:has(.image-slider-content) {
   /* Capability boxes optimization for ultra-small screens */
   .capabilities-content .relative.w-full {
     padding: 0.5rem !important;
-    max-width: 100% !important;
+    max-width: 80% !important;
     margin-left: auto !important;
     margin-right: auto !important;
   }
 
   .capabilities-content .grid[class*="grid-cols"] {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 0.45rem !important;
-    padding: 0 0.35rem !important;
+    gap: 0.6rem !important;
+    padding: 0 !important;
     justify-items: stretch !important;
   }
 
@@ -3621,23 +3614,22 @@ section:has(.image-slider-content) {
   }
 
   .capabilities-content .aspect-square {
-    padding: 0.5rem !important;
-    gap: 0.35rem !important;
-    aspect-ratio: 1/1 !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    align-items: center !important;
+    padding: 0.65rem 1rem !important;
+    gap: 0.5rem !important;
+    aspect-ratio: 3/1 !important;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
   }
 
   .capabilities-content .aspect-square svg {
-    width: 1.35rem !important;
-    height: 1.35rem !important;
+    width: 2rem !important;
+    height: 2rem !important;
   }
 
   .capabilities-content .aspect-square h3 {
-    font-size: 0.65rem !important;
-    text-align: center !important;
-    line-height: 1.2 !important;
+    font-size: 0.72rem !important;
+    text-align: left !important;
+    line-height: 1.15 !important;
   }
 }
 
@@ -3846,72 +3838,38 @@ footer.footer-uniform-text .h-px + div {
   }
 }
 
-/* ===== FINAL SCOPED MOBILE CAPABILITIES OPTIMIZATION ===== */
+/* ===== TARGETED TYPOGRAPHY CONSISTENCY FIXES ===== */
+/* Keep lead section paragraphs visually consistent across sections. */
+.section-lead-text {
+  font-size: 23px;
+  line-height: 1.55;
+}
+
 @media (max-width: 767px) {
-  .capabilities-content .capabilities-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: clamp(0.5rem, 2.5vw, 0.75rem) !important;
-    padding: 0 0.5rem !important;
-    align-items: stretch !important;
-  }
-
-  .capabilities-content .capability-cell {
-    min-width: 0 !important;
-  }
-
-  .capabilities-content .capability-card {
-    width: 100% !important;
-    max-width: 100% !important;
-    aspect-ratio: 1 / 1 !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    border-radius: 0.7rem !important;
-    padding: clamp(0.65rem, 2.5vw, 0.9rem) !important;
-    gap: clamp(0.45rem, 1.8vw, 0.65rem) !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    overflow: hidden !important;
-  }
-
-  .capabilities-content .capability-icon {
-    width: clamp(1.4rem, 5.5vw, 1.85rem) !important;
-    height: clamp(1.4rem, 5.5vw, 1.85rem) !important;
-    flex-shrink: 0 !important;
-  }
-
-  .capabilities-content .capability-title {
-    font-size: clamp(0.7rem, 2.8vw, 0.9rem) !important;
-    line-height: 1.25 !important;
-    margin: 0 !important;
-    text-align: center !important;
-    max-width: 100% !important;
-    overflow-wrap: anywhere !important;
-    word-break: break-word !important;
-    hyphens: auto !important;
-    font-weight: 600 !important;
+  .section-lead-text {
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
   }
 }
 
-@media (max-width: 380px) {
-  .capabilities-content .capabilities-grid {
-    gap: 0.45rem !important;
-    padding: 0 0.35rem !important;
+@media (min-width: 768px) and (max-width: 1366px) {
+  .section-lead-text {
+    font-size: 1.125rem !important;
+    line-height: 1.55 !important;
   }
 
-  .capabilities-content .capability-card {
-    padding: 0.6rem !important;
-    gap: 0.4rem !important;
+  /* Keep Capabilities lead paragraph aligned with shared lead-text sizing. */
+  .capabilities-content > div:first-child p.section-lead-text,
+  .capabilities-content [class*="flex-"] p.section-lead-text {
+    font-size: 1.125rem !important;
+    line-height: 1.55 !important;
+    font-weight: 500 !important;
   }
 
-  .capabilities-content .capability-icon {
-    width: 1.25rem !important;
-    height: 1.25rem !important;
-  }
-
-  .capabilities-content .capability-title {
-    font-size: 0.65rem !important;
-    line-height: 1.2 !important;
+  /* Do not let broad button rules override Header nav typography. */
+  header nav > button,
+  header nav > a > div {
+    font-size: 1rem !important;
+    min-height: auto !important;
   }
 }

@@ -107,10 +107,9 @@ export function MobileNavPill({ theme = "dark" }) {
 
   return (
     <motion.nav
-      id="mobile-nav"
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="fixed bottom-0 inset-x-0 mx-auto z-50 sm:hidden pb-[env(safe-area-inset-bottom)]"
+      className="fixed bottom-0 left-1/2 -translate-x-1/2 z-50 sm:hidden"
     >
       <div
         className={`
@@ -119,7 +118,7 @@ export function MobileNavPill({ theme = "dark" }) {
           rounded-none sm:rounded-full px-4 py-2.5
           flex items-center justify-center gap-3
           shadow-2xl border
-          min-w-0 w-full max-w-full sm:w-auto
+          min-w-[320px]
         `}
       >
         {navItems.map((item) => {

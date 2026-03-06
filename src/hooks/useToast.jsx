@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import { useState, useCallback, createContext, useContext } from "react";
 import { X, CheckCircle, AlertCircle, Info } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,27 +9,24 @@ let toastId = 0;
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
 
+  const addToast = useCallback((message, type = "info", duration = 4000) => {
+    const id = toastId++;
+    const toast = { id, message, type, duration };
+
+    setToasts((prev) => [...prev, toast]);
+
+    if (duration > 0) {
+      setTimeout(() => {
+        removeToast(id);
+      }, duration);
+    }
+
+    return id;
+  }, []);
+
   const removeToast = useCallback((id) => {
     setToasts((prev) => prev.filter((toast) => toast.id !== id));
   }, []);
-
-  const addToast = useCallback(
-    (message, type = "info", duration = 4000) => {
-      const id = toastId++;
-      const toast = { id, message, type, duration };
-
-      setToasts((prev) => [...prev, toast]);
-
-      if (duration > 0) {
-        setTimeout(() => {
-          removeToast(id);
-        }, duration);
-      }
-
-      return id;
-    },
-    [removeToast],
-  );
 
   const success = useCallback(
     (message, duration = 3000) => addToast(message, "success", duration),

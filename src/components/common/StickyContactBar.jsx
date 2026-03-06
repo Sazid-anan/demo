@@ -15,8 +15,7 @@ import { useResponsive } from "../../hooks/useResponsive";
  */
 export default function StickyContactBar() {
   const [hoveredItem, setHoveredItem] = useState(null);
-  // useResponsive hook is called for potential future responsive behavior
-  useResponsive();
+  const { isMobile, isTablet } = useResponsive();
 
   const contactItems = [
     // {

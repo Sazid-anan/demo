@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
@@ -20,9 +20,6 @@ import { errorLogger } from "../services/errorLogger";
 import { analyticsService } from "../services/analyticsService";
 import { SITE_CONTENT } from "../config/content";
 
-// Rate limit: users can submit once every 5 minutes
-const RATE_LIMIT_MINUTES = 5;
-
 /**
  * Home Page
  * Modern SaaS landing page with hero section and featured content
@@ -30,10 +27,9 @@ const RATE_LIMIT_MINUTES = 5;
 export default function Home() {
   const location = useLocation();
   const { homePage } = useSelector((state) => state.content);
-  useResponsive(); // Used for responsive layout tracking
+  const { isMobile, isTablet } = useResponsive();
   const toast = useToast();
   const [formSubmitted, setFormSubmitted] = useState(false);
-  const formRef = useRef(null);
 
   // Form validation setup
   const validateForm = (values) => {
@@ -63,71 +59,63 @@ export default function Home() {
     return errors;
   };
 
-  // Form submission handler - defined separately to avoid referencing form before declaration
-  const handleFormSubmit = async (values) => {
-    try {
-      // Check rate limiting on client side (server-side check also happens)
-      const lastSubmission = localStorage.getItem("lastContactSubmission");
-      const rateLimitTimeMs = Date.now() - RATE_LIMIT_MINUTES * 60 * 1000;
-
-      if (lastSubmission && parseInt(lastSubmission) > rateLimitTimeMs) {
-        toast.error(
-          `⏱️ Please wait ${RATE_LIMIT_MINUTES} minutes before submitting another message.`,
-        );
-        return;
-      }
-
-      const payload = {
-        name: values.name.trim(),
-        email: values.email.trim(),
-        phone: values.phone.trim() || null,
-        message: values.message.trim(),
-        is_read: false, // Mark as unread when first created
-        created_at: serverTimestamp(),
-        consent_timestamp: serverTimestamp(), // GDPR: Track consent
-      };
-
-      await addDoc(collection(db, "contact_messages"), payload);
-
-      // Store submission time for rate limiting
-      localStorage.setItem("lastContactSubmission", Date.now().toString());
-
-      // Track conversion
-      analyticsService.trackConversion("contact_form_submission", 1, {
-        source: "home_page",
-      });
-
-      setFormSubmitted(true);
-      if (formRef.current) formRef.current.reset();
-      toast.success("✅ Thank you! We'll get back to you soon.");
-
-      // Clear success message after 5 seconds
-      setTimeout(() => setFormSubmitted(false), 5000);
-    } catch (error) {
-      errorLogger.captureException(error, {
-        where: "home-contact-form",
-        action: "submit_contact_form",
-      });
-
-      // Handle rate limiting error
-      if (error.code === "resource-exhausted") {
-        toast.error("⏱️ Too many submissions. Please try again in 5 minutes.");
-      } else {
-        toast.error("❌ Failed to submit form. Please try again.");
-      }
-    }
-  };
-
   const form = useFormValidation(
     { name: "", email: "", phone: "", message: "" },
-    handleFormSubmit,
+    async (values) => {
+      try {
+        // Check rate limiting on client side (server-side check also happens)
+        const lastSubmission = localStorage.getItem("lastContactSubmission");
+        const rateLimitTimeMs = Date.now() - RATE_LIMIT_MINUTES * 60 * 1000;
+
+        if (lastSubmission && parseInt(lastSubmission) > rateLimitTimeMs) {
+          toast.error(
+            `⏱️ Please wait ${RATE_LIMIT_MINUTES} minutes before submitting another message.`,
+          );
+          return;
+        }
+
+        const payload = {
+          name: values.name.trim(),
+          email: values.email.trim(),
+          phone: values.phone.trim() || null,
+          message: values.message.trim(),
+          is_read: false, // Mark as unread when first created
+          created_at: serverTimestamp(),
+          consent_timestamp: serverTimestamp(), // GDPR: Track consent
+        };
+
+        await addDoc(collection(db, "contact_messages"), payload);
+
+        // Store submission time for rate limiting
+        localStorage.setItem("lastContactSubmission", Date.now().toString());
+
+        // Track conversion
+        analyticsService.trackConversion("contact_form_submission", 1, {
+          source: "home_page",
+        });
+
+        setFormSubmitted(true);
+        form.reset();
+        toast.success("✅ Thank you! We'll get back to you soon.");
+
+        // Clear success message after 5 seconds
+        setTimeout(() => setFormSubmitted(false), 5000);
+      } catch (error) {
+        errorLogger.captureException(error, {
+          where: "home-contact-form",
+          action: "submit_contact_form",
+        });
+
+        // Handle rate limiting error
+        if (error.code === "resource-exhausted") {
+          toast.error("⏱️ Too many submissions. Please try again in 5 minutes.");
+        } else {
+          toast.error("❌ Failed to submit form. Please try again.");
+        }
+      }
+    },
     validateForm,
   );
-
-  // Store form reference for use in submit handler (after component mounts)
-  useEffect(() => {
-    formRef.current = form;
-  });
 
   // Section 2 variables
   const section2Title = homePage?.section2_title || "";
@@ -147,6 +135,11 @@ export default function Home() {
       }
     }
   }, [location.hash]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    form.handleChange(e);
+  };
 
   const handleBlur = (e) => {
     const { name } = e.target;
@@ -216,7 +209,7 @@ export default function Home() {
         id="contact"
         className="pt-6 sm:pt-8 md:pt-10 lg:pt-14 pb-6 sm:pb-8 md:pb-10 lg:pb-14 font-sans bg-gray-100"
       >
-        <Container className="content-maxwidth">
+        <div className="max-w-[1280px] w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -226,12 +219,18 @@ export default function Home() {
           >
             <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-8">
               <div className="w-full lg:flex-1 flex flex-col items-start text-left">
-                <h1 className="heading-orange text-orange-500 font-semibold leading-[1.25] tracking-tight mb-6 sm:mb-6 md:mb-6 lg:mb-6 text-[22px] sm:text-[26px] md:text-[32px] lg:text-[50px]">
+                <h1
+                  className="heading-orange text-orange-500 font-semibold leading-[1.25] tracking-tight mb-6 sm:mb-6 md:mb-6 lg:mb-6 text-[28px] sm:text-[32px] md:text-[40px] lg:text-[50px]"
+                  style={{ color: "#f97316" }}
+                >
                   Get In Touch
                 </h1>
               </div>
               <div className="w-full lg:flex-[1.5] flex flex-col items-start text-left lg:ml-11">
-                <p className="text-[18px] sm:text-[20px] md:text-[22px] lg:text-[23px] font-medium text-gray-800 leading-relaxed text-justify">
+                <p
+                  className="text-[23px] font-medium text-gray-800 leading-relaxed"
+                  style={{ textAlign: "justify" }}
+                >
                   {SITE_CONTENT.sharedDescriptions.engineeringSolutions}
                 </p>
               </div>
@@ -249,12 +248,27 @@ export default function Home() {
             >
               <div className="w-full text-left center">
                 <h2
-                  className="font-bold leading-[0.9] tracking-tighter text-orange-500"
+                  className="font-bold leading-[0.9] tracking-tighter"
                   style={{ fontSize: "clamp(18px, 4.5vw, 70px)" }}
                 >
-                  <span className="heading-orange block mb-2">Let's Innovate</span>
-                  <span className="heading-orange block mb-2">With</span>
-                  <span className="heading-orange block">Danvion</span>
+                  <span
+                    className="heading-orange block mb-2 text-orange-500"
+                    style={{ color: "#f97316" }}
+                  >
+                    Let's Innovate
+                  </span>
+                  <span
+                    className="heading-orange block mb-2 text-orange-500"
+                    style={{ color: "#f97316" }}
+                  >
+                    With
+                  </span>
+                  <span
+                    className="heading-orange block text-orange-500"
+                    style={{ color: "#f97316" }}
+                  >
+                    Danvion
+                  </span>
                 </h2>
               </div>
             </motion.div>
@@ -423,7 +437,7 @@ export default function Home() {
               </div>
             </motion.div>
           </div>
-        </Container>
+        </div>
       </section>
       {/* Second Section */}
       {section2Title && (

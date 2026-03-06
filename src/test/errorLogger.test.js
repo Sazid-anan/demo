@@ -7,10 +7,11 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 describe("Error Logger", () => {
   let consoleErrorSpy;
+  let consoleLogSpy;
 
   beforeEach(() => {
     consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.spyOn(console, "log").mockImplementation(() => {});
+    consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
   });
 
   describe("Auth Error Messages", () => {

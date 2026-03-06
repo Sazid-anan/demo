@@ -30,7 +30,7 @@ export default function HeroTextSection() {
             className="w-full lg:flex-1 flex flex-col items-start text-left"
           >
             {/* Headline with colored text */}
-            <h1 className="text-[22px] sm:text-[26px] md:text-[32px] lg:text-[50px] font-bold leading-tight tracking-tighter mb-6 sm:mb-6 md:mb-6 lg:mb-6">
+            <h1 className="text-[28px] sm:text-[36px] md:text-[42px] lg:text-[50px] font-bold leading-tight tracking-tighter mb-6 sm:mb-6 md:mb-6 lg:mb-6">
               <span className="block text-white">Alchemy</span>
               <span className="block text-white">for the</span>
               <span className="block text-white">Intelligent Age</span>
@@ -64,7 +64,10 @@ export default function HeroTextSection() {
             }}
             className="w-full lg:flex-[1.5] flex flex-col items-start text-left lg:ml-11"
           >
-            <p className="text-white text-[18px] sm:text-[20px] md:text-[22px] lg:text-[23px] font-medium leading-relaxed text-justify">
+            <p
+              className="section-lead-text text-white text-[23px] font-medium leading-relaxed"
+              style={{ textAlign: "justify" }}
+            >
               At Danvion, we're pushing the boundaries of artificial intelligence at the edge –
               delivering cutting-edge solutions for the world's most complex challenges. With our
               expertise in embedded AI, hardware integration, and real-time processing, we're
