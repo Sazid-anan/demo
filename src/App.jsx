@@ -2,9 +2,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "r
 import { useEffect, lazy, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchContent } from "./redux/slices/contentSlice";
-import { onAuthStateChanged } from "firebase/auth";
-import { collection, doc, onSnapshot } from "firebase/firestore";
-import { auth, db } from "./services/firebaseClient";
 import { setAuthUser } from "./redux/slices/authSlice";
 
 // Error Handling & Notifications
@@ -122,40 +119,101 @@ function App() {
 
   useEffect(() => {
     let isActive = true;
-    const triggerRefresh = async () => {
-      if (!isActive) return;
-      try {
-        await dispatch(fetchContent({ force: true }));
-      } finally {
-        // Cleanup handled by isActive flag
+    let unsubscribers = [];
+    let loadHandler = null;
+
+    const triggerRefresh = () => {
+      if (isActive) {
+        dispatch(fetchContent({ force: true }));
       }
     };
 
-    triggerRefresh();
+    dispatch(fetchContent());
 
-    const unsubscribers = [
-      onSnapshot(doc(db, "home_page", "singleton"), triggerRefresh),
-      onSnapshot(doc(db, "services_page", "singleton"), triggerRefresh),
-      onSnapshot(collection(db, "products"), triggerRefresh),
-      onSnapshot(collection(db, "blogs"), triggerRefresh),
-    ];
+    const setupRealtimeListeners = async () => {
+      if (!isActive) return;
+
+      const [{ onSnapshot, doc, collection }, { db }] = await Promise.all([
+        import("firebase/firestore"),
+        import("./services/firebaseClient"),
+      ]);
+
+      if (!isActive) return;
+
+      unsubscribers = [
+        onSnapshot(doc(db, "home_page", "singleton"), triggerRefresh),
+        onSnapshot(doc(db, "services_page", "singleton"), triggerRefresh),
+        onSnapshot(collection(db, "products"), triggerRefresh),
+        onSnapshot(collection(db, "blogs"), triggerRefresh),
+      ];
+    };
+
+    const scheduleRealtimeSetup = () => {
+      window.setTimeout(() => {
+        setupRealtimeListeners().catch(() => {
+          // Keep app usable even if realtime listeners fail.
+        });
+      }, 3000);
+    };
+
+    if (document.readyState === "complete") {
+      scheduleRealtimeSetup();
+    } else {
+      loadHandler = () => scheduleRealtimeSetup();
+      window.addEventListener("load", loadHandler, { once: true });
+    }
 
     return () => {
       isActive = false;
+      if (loadHandler) {
+        window.removeEventListener("load", loadHandler);
+      }
       unsubscribers.forEach((unsubscribe) => unsubscribe());
     };
   }, [dispatch]);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user?.email) {
-        dispatch(setAuthUser({ email: user.email }));
-      } else {
-        dispatch(setAuthUser(null));
-      }
-    });
+    let unsubscribe = () => {};
+    let isMounted = true;
+    let loadHandler = null;
 
-    return () => unsubscribe();
+    const setupAuth = async () => {
+      const [{ onAuthStateChanged }, { auth }] = await Promise.all([
+        import("firebase/auth"),
+        import("./services/firebaseClient"),
+      ]);
+
+      if (!isMounted) return;
+
+      unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (user?.email) {
+          dispatch(setAuthUser({ email: user.email }));
+        } else {
+          dispatch(setAuthUser(null));
+        }
+      });
+    };
+
+    if (document.readyState === "complete") {
+      setupAuth().catch(() => {
+        // Keep app usable even if auth listener fails.
+      });
+    } else {
+      loadHandler = () => {
+        setupAuth().catch(() => {
+          // Keep app usable even if auth listener fails.
+        });
+      };
+      window.addEventListener("load", loadHandler, { once: true });
+    }
+
+    return () => {
+      isMounted = false;
+      if (loadHandler) {
+        window.removeEventListener("load", loadHandler);
+      }
+      unsubscribe();
+    };
   }, [dispatch]);
 
   return (

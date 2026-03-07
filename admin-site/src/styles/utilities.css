@@ -1,0 +1,530 @@
+/**
+ * UTILITY STYLES
+ * Spacing, grid, flexbox, text, visibility, forms, and helper classes
+ */
+
+/* Performance Optimizations for Mobile */
+.glass-orange,
+.glass-orange-outline,
+[class*="motion-"],
+.animate-image-marquee,
+.particle {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+section {
+  contain: layout style;
+}
+
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+.lazy-section {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+/* ===== MOBILE-FIRST RESPONSIVE UTILITIES ===== */
+
+/* Spacing - Fluid padding and margins using rem */
+.section-padding-y {
+  padding-top: clamp(2rem, 5vw, 6rem);
+  padding-bottom: clamp(2rem, 5vw, 6rem);
+}
+
+.section-padding-y-compact {
+  padding-top: clamp(1.5rem, 4vw, 4rem);
+  padding-bottom: clamp(1.5rem, 4vw, 4rem);
+}
+
+.gap-responsive {
+  gap: clamp(1rem, 3vw, 3rem);
+}
+
+.gap-responsive-lg {
+  gap: clamp(1.5rem, 4vw, 4rem);
+}
+
+.mt-responsive {
+  margin-top: clamp(1rem, 3vw, 3rem);
+}
+
+.mb-responsive {
+  margin-bottom: clamp(1rem, 3vw, 3rem);
+}
+
+.my-responsive {
+  margin-top: clamp(1rem, 3vw, 3rem);
+  margin-bottom: clamp(1rem, 3vw, 3rem);
+}
+
+.p-responsive {
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+.px-responsive {
+  padding-left: clamp(1rem, 3vw, 2rem);
+  padding-right: clamp(1rem, 3vw, 2rem);
+}
+
+.py-responsive {
+  padding-top: clamp(1rem, 3vw, 2rem);
+  padding-bottom: clamp(1rem, 3vw, 2rem);
+}
+
+/* ===== IMAGE OPTIMIZATION - MOBILE-FIRST ===== */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+.img-aspect-square {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.img-aspect-video {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.img-aspect-portrait {
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+.img-aspect-landscape {
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+img[loading="lazy"] {
+  content-visibility: auto;
+}
+
+img[src] {
+  content-visibility: auto;
+}
+
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ===== CSS GRID UTILITIES - MOBILE-FIRST ===== */
+.grid-responsive-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+@media (min-width: 481px) {
+  .grid-responsive-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.grid-responsive-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+@media (min-width: 481px) {
+  .grid-responsive-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 769px) {
+  .grid-responsive-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.grid-responsive-4 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+@media (min-width: 481px) {
+  .grid-responsive-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 769px) {
+  .grid-responsive-4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1281px) {
+  .grid-responsive-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.grid-auto-fit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15.625rem), 1fr));
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+.grid-main-layout {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+}
+
+/* ===== FLEXBOX UTILITIES - MOBILE-FIRST ===== */
+.flex-responsive {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+@media (min-width: 481px) {
+  .flex-responsive {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.flex-responsive-laptop {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+@media (min-width: 769px) {
+  .flex-responsive-laptop {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.flex-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+@media (min-width: 769px) {
+  .flex-nav {
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+  }
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Responsive max container widths */
+.container-max-content {
+  max-width: 100%;
+  width: 100%;
+}
+
+@media (min-width: 481px) {
+  .container-max-content {
+    max-width: 40rem;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 769px) {
+  .container-max-content {
+    max-width: 56.25rem;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 1281px) {
+  .container-max-content {
+    max-width: 75rem;
+    margin: 0 auto;
+  }
+}
+
+/* Mobile: 1 column (default) */
+/* Tablet: 2 columns (481px+) */
+/* Laptop: 3 columns (769px+) */
+@media (min-width: 481px) {
+  .grid-tablet-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .section-padding-tablet {
+    padding-top: clamp(2rem, 4vw, 3rem);
+    padding-bottom: clamp(2rem, 4vw, 3rem);
+  }
+}
+
+@media (min-width: 769px) {
+  .grid-laptop-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  .container-720p {
+    max-width: 68.75rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .text-container-720p {
+    max-width: 65ch;
+  }
+
+  .section-padding-laptop {
+    padding-top: clamp(3rem, 5vw, 4rem);
+    padding-bottom: clamp(3rem, 5vw, 4rem);
+  }
+}
+
+@media (min-width: 1281px) {
+  .container-1080p {
+    max-width: 90rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .grid-desktop-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .section-padding-desktop {
+    padding-top: clamp(4rem, 6vw, 6rem);
+    padding-bottom: clamp(4rem, 6vw, 6rem);
+  }
+
+  img[srcset] {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* ===== RESPONSIVE TEXT UTILITIES ===== */
+.text-responsive-sm {
+  font-size: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  line-height: 1.5;
+}
+
+.text-responsive-base {
+  font-size: clamp(0.875rem, 0.85rem + 0.25vw, 1rem);
+  line-height: 1.6;
+}
+
+.text-responsive-lg {
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.25rem);
+  line-height: 1.6;
+}
+
+.text-responsive-xl {
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.5rem);
+  line-height: 1.5;
+}
+
+.text-hero {
+  font-size: clamp(1.75rem, 1rem + 4vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.text-hero-sm {
+  font-size: clamp(1.5rem, 0.9rem + 3vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.btn-responsive {
+  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.5rem);
+  font-size: clamp(0.875rem, 0.85rem + 0.25vw, 1rem);
+  min-height: 2.75rem;
+}
+
+/* ===== VISIBILITY UTILITIES - MOBILE-FIRST ===== */
+.hide-mobile {
+  display: none;
+}
+
+@media (min-width: 481px) {
+  .hide-mobile {
+    display: block;
+  }
+}
+
+.show-mobile-only {
+  display: block;
+}
+
+@media (min-width: 481px) {
+  .show-mobile-only {
+    display: none;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .hide-tablet {
+    display: none;
+  }
+}
+
+.show-tablet-only {
+  display: none;
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .show-tablet-only {
+    display: block;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1280px) {
+  .hide-laptop {
+    display: none;
+  }
+}
+
+@media (min-width: 1281px) {
+  .hide-desktop {
+    display: none;
+  }
+}
+
+.show-desktop-only {
+  display: none;
+}
+
+@media (min-width: 1281px) {
+  .show-desktop-only {
+    display: block;
+  }
+}
+
+/* ===== MOBILE-FIRST FORM STYLES ===== */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+textarea,
+select {
+  min-height: 2.75rem;
+  padding: 0.75rem 1rem;
+  font-size: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+textarea {
+  min-height: 7.5rem;
+  resize: vertical;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+input[type="password"]:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid #f37106;
+  outline-offset: 2px;
+  border-color: #f37106 !important;
+}
+
+@media (min-width: 769px) {
+  input[type="text"]:hover,
+  input[type="email"]:hover,
+  input[type="tel"]:hover,
+  input[type="password"]:hover,
+  textarea:hover,
+  select:hover {
+    box-shadow: 0 0.25rem 1rem rgba(243, 113, 6, 0.1) !important;
+  }
+
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="tel"]:focus,
+  input[type="password"]:focus,
+  textarea:focus,
+  select:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1.5rem rgba(243, 113, 6, 0.15) !important;
+  }
+}
+
+/* ===== NAVIGATION UTILITIES - MOBILE-FIRST ===== */
+.nav-sticky-mobile {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(0.75rem);
+}
+
+.nav-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  backdrop-filter: blur(0.75rem);
+}
+
+.mobile-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+@media (min-width: 769px) {
+  .mobile-menu {
+    display: none;
+  }
+}
+
+.desktop-nav {
+  display: none;
+}
+
+@media (min-width: 769px) {
+  .desktop-nav {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: "Inter", sans-serif;
+}
