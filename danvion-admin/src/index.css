@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+/* Admin panel base styles */
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #f9fafb;
+}
+
+/* Keep admin-specific styles from original */
+.admin-area {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+.admin-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.admin-card-lite {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+}
+.admin-section {
+  background: white;
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+  padding: 1.5rem;
+}

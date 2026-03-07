@@ -1,0 +1,35 @@
+{
+  "folders": [
+    {
+      "path": "danvion-main",
+      "name": "Main Site (Public)",
+    },
+    {
+      "path": "danvion-admin",
+      "name": "Admin Panel",
+    },
+    {
+      "path": "project3",
+      "name": "Original Project (Reference)",
+    },
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/.firebase": true,
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/.firebase": true,
+    },
+  },
+  "extensions": {
+    "recommendations": [
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode",
+      "bradlc.vscode-tailwindcss",
+    ],
+  },
+}
