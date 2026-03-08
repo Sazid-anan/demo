@@ -187,7 +187,7 @@ export default function ImageSliderSection({
           <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-8">
             {/* Left: Headline */}
             <div className="w-full lg:flex-1 flex flex-col items-start text-left">
-              <h1 className="heading-orange text-orange-500 font-semibold leading-[1.25] tracking-tight mb-6 sm:mb-6 md:mb-6 lg:mb-6 text-[22px] sm:text-[26px] md:text-[32px] lg:text-[50px]">
+              <h1 className="section-heading-display heading-orange text-orange-500 font-semibold leading-tight tracking-tight mb-6 sm:mb-6 md:mb-6 lg:mb-6">
                 {title}
               </h1>
             </div>
@@ -195,10 +195,11 @@ export default function ImageSliderSection({
             {/* Right: Description */}
             <div className="w-full lg:flex-[1.5] flex flex-col items-start text-left lg:ml-11">
               <p className="text-[18px] sm:text-[20px] md:text-[22px] lg:text-[23px] font-medium text-gray-800 leading-relaxed text-justify">
-                Stop worrying about design errors or manufacturing delays. Our comprehensive
-                approach integrates advanced simulation and in-house prototyping to catch issues
-                early, delivering high-performance PCB designs that are optimized for cost and rapid
-                production.
+                Stop worrying about design errors or manufacturing delays. Our
+                comprehensive approach integrates advanced simulation and
+                in-house prototyping to catch issues early, delivering
+                high-performance PCB designs that are optimized for cost and
+                rapid production.
               </p>
             </div>
           </div>
@@ -230,11 +231,15 @@ export default function ImageSliderSection({
             <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
 
-          <div ref={sliderRef} className="animate-image-marquee" style={{ width: "max-content" }}>
+          <div
+            ref={sliderRef}
+            className="animate-image-marquee"
+            style={{ width: "max-content" }}
+          >
             {duplicatedImages.map((image, index) => (
               <div
                 key={`${index}-${typeof image === "object" ? image.src : image}`}
-                className="shrink-0 w-[160px] h-[100px] sm:w-[220px] sm:h-[140px] md:w-[280px] md:h-[180px] lg:w-[360px] lg:h-[240px] rounded-lg md:rounded-xl lg:rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden group relative cursor-pointer flex items-center justify-center"
+                className="shrink-0 w-40 h-25 sm:w-55 sm:h-35 md:w-70 md:h-45 lg:w-90 lg:h-60 rounded-lg md:rounded-xl lg:rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden group relative cursor-pointer flex items-center justify-center"
                 style={{ fontSize: 0, lineHeight: 0 }}
               >
                 <img
@@ -246,6 +251,8 @@ export default function ImageSliderSection({
                   }
                   loading="lazy"
                   decoding="async"
+                  width="400"
+                  height="400"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   style={{
                     objectPosition: "center",
@@ -257,7 +264,7 @@ export default function ImageSliderSection({
                 />
                 {/* Sliding Overlay on Hover */}
                 {typeof image === "object" && image.name && (
-                  <div className="absolute left-0 right-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-orange-700/90 via-orange-500/80 to-transparent text-white text-center py-1.5 sm:py-2 md:py-3 px-1.5 text-xs sm:text-sm md:text-base lg:text-lg font-semibold tracking-wide flex flex-col items-center rounded-b-lg md:rounded-b-xl lg:rounded-b-2xl">
+                  <div className="absolute left-0 right-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-linear-to-t from-orange-700/90 via-orange-500/80 to-transparent text-white text-center py-1.5 sm:py-2 md:py-3 px-1.5 text-xs sm:text-sm md:text-base lg:text-lg font-semibold tracking-wide flex flex-col items-center rounded-b-lg md:rounded-b-xl lg:rounded-b-2xl">
                     <div className="mb-0.5 sm:mb-1 text-xs sm:text-sm md:text-base lg:text-lg font-bold drop-shadow-lg">
                       {image.name}
                     </div>

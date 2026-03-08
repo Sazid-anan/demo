@@ -209,8 +209,8 @@ class ErrorLogger {
   private sendToErrorService(errorData: any) {
     try {
       // Example: Send to custom logging endpoint
-      if (process.env.VITE_ERROR_REPORTING_ENDPOINT) {
-        fetch(process.env.VITE_ERROR_REPORTING_ENDPOINT, {
+      if (import.meta.env.VITE_ERROR_REPORTING_ENDPOINT) {
+        fetch(import.meta.env.VITE_ERROR_REPORTING_ENDPOINT, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(errorData),

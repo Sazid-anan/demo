@@ -1,45 +1,54 @@
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import Container from "./common/Container";
 import { Card } from "./ui/Card";
-import { Zap, CircuitBoard, Code, Brain, Smartphone, Signal, Box } from "lucide-react";
+import {
+  Zap,
+  CircuitBoard,
+  Code,
+  Brain,
+  Smartphone,
+  Signal,
+  Box,
+} from "lucide-react";
 import { SITE_CONTENT } from "../config/content";
+
+const capabilities = [
+  {
+    title: "System Architecture",
+    icon: Zap,
+  },
+  {
+    title: "PCB Design & Layout",
+    icon: CircuitBoard,
+  },
+  {
+    title: "Signal & Power Integrity",
+    icon: Signal,
+  },
+  {
+    title: "Firmware Development",
+    icon: Code,
+  },
+  {
+    title: "IoT Connectivity",
+    icon: Smartphone,
+  },
+  {
+    title: "Edge AI Integration",
+    icon: Brain,
+  },
+  {
+    title: "Enclosure Design",
+    icon: Box,
+  },
+];
 
 /**
  * CapabilitiesSection Component
  * Displays end-to-end engineering capabilities with category badges
  */
 export default function CapabilitiesSection({ homePage }) {
-  const capabilities = [
-    {
-      title: "System Architecture",
-      icon: Zap,
-    },
-    {
-      title: "PCB Design & Layout",
-      icon: CircuitBoard,
-    },
-    {
-      title: "Signal & Power Integrity",
-      icon: Signal,
-    },
-    {
-      title: "Firmware Development",
-      icon: Code,
-    },
-    {
-      title: "IoT Connectivity",
-      icon: Smartphone,
-    },
-    {
-      title: "Edge AI Integration",
-      icon: Brain,
-    },
-    {
-      title: "Enclosure Design",
-      icon: Box,
-    },
-  ];
-
   return (
     <section className="pt-6 sm:pt-8 md:pt-10 lg:pt-14 pb-8 sm:pb-8 md:pb-10 lg:pb-14 bg-white">
       <Container className="content-maxwidth capabilities-content">
@@ -47,22 +56,22 @@ export default function CapabilitiesSection({ homePage }) {
           <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-8">
             {/* Left: Headline */}
             <div className="w-full lg:flex-1 flex flex-col items-start text-left">
-              <motion.h1
+              <motion.h2
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.05 }}
-                className="heading-orange text-orange-500 font-semibold leading-[1.2] tracking-tight mb-6 sm:mb-6 md:mb-6 lg:mb-6 text-[22px] sm:text-[26px] md:text-[32px] lg:text-[50px] text-left"
+                className="section-heading-display heading-orange text-orange-500 font-semibold leading-[1.2] tracking-tight mb-6 sm:mb-6 md:mb-6 lg:mb-6 text-left"
               >
                 {homePage?.capabilities_title || "Our Engineering"}
                 <br />
                 Capabilities
-              </motion.h1>
+              </motion.h2>
             </div>
 
             {/* Right: Description */}
             <div className="w-full lg:flex-[1.5] flex flex-col items-start text-left lg:ml-11">
-              <p className="text-[18px] sm:text-[20px] md:text-[22px] lg:text-[23px] font-medium text-gray-800 leading-relaxed text-justify">
+              <p className="capabilities-description-copy text-[18px] sm:text-[20px] md:text-[22px] lg:text-[23px] font-medium text-gray-800 leading-relaxed text-justify">
                 {SITE_CONTENT.sharedDescriptions.engineeringSolutions}
               </p>
             </div>
@@ -84,8 +93,8 @@ export default function CapabilitiesSection({ homePage }) {
                   style={{ willChange: "transform, opacity" }}
                 >
                   <Card className="capability-card relative aspect-square w-full flex flex-col items-center justify-center gap-2 sm:gap-2 md:gap-2.5 p-4 sm:p-4 md:p-3 lg:p-3 hover:shadow-lg transition-all duration-300 bg-white border border-gray-200 hover:border-orange-500/50 hover:shadow-orange-100/50">
-                    <capability.icon className="capability-icon h-10 w-10 sm:h-10 sm:w-10 md:h-11 md:w-11 lg:h-12 lg:w-12 text-orange-500 flex-shrink-0" />
-                    <h3 className="capability-title text-center text-xs sm:text-xs md:text-sm lg:text-sm font-semibold text-foreground leading-tight px-0.5">
+                    <capability.icon className="capability-icon h-10 w-10 sm:h-10 sm:w-10 md:h-11 md:w-11 lg:h-12 lg:w-12 text-orange-500 shrink-0" />
+                    <h3 className="capability-title text-center text-[10px] sm:text-[10px] md:text-[11px] lg:text-[12px] font-semibold text-foreground leading-tight px-0.5">
                       {capability.title}
                     </h3>
                   </Card>

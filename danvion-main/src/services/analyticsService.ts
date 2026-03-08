@@ -8,6 +8,7 @@ export class AnalyticsService {
   isDev: boolean;
   isProd: boolean;
   events: any[] = [];
+  private readonly MAX_EVENTS = 500;
 
   constructor() {
     this.isDev = (import.meta as any).env.DEV;
@@ -270,6 +271,11 @@ export class AnalyticsService {
    */
   private _logEvent(eventData: Record<string, any>) {
     this.events.push(eventData);
+
+    // Enforce max events cap
+    if (this.events.length > this.MAX_EVENTS) {
+      this.events.shift();
+    }
 
     if (this.isDev) {
       if (import.meta.env.DEV) {

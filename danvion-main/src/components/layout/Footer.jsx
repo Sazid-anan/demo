@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { Linkedin, ArrowRight, Mail, MapPin } from "lucide-react";
 import { EXTERNAL_LINKS, INTERNAL_LINKS } from "../../config/links";
@@ -52,12 +53,12 @@ export default function Footer() {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
-      className="relative mt-1 sm:mt-2 md:mt-2 lg:mt-2 bg-gradient-to-b from-white/40 to-white/20 backdrop-blur-xs border-t border-white/30"
+      className="relative mt-1 sm:mt-2 md:mt-2 lg:mt-2 bg-linear-to-b from-white/40 to-white/20 backdrop-blur-xs border-t border-white/30"
     >
       {/* Content */}
       <Container className="relative content-maxwidth">
         {/* Top accent line */}
-        <div className="h-px bg-gradient-to-r from-transparent via-brand-orange/40 to-transparent mb-1.5 sm:mb-2 md:mb-2" />
+        <div className="h-px bg-linear-to-r from-transparent via-brand-orange/40 to-transparent mb-1.5 sm:mb-2 md:mb-2" />
 
         {/* Main Footer Content */}
         <div className="pt-0.5">
@@ -68,10 +69,10 @@ export default function Footer() {
               whileHover={{ y: -4 }}
               transition={{ duration: 0.3 }}
             >
-              <h4 className="text-[12px] font-bold mb-1 sm:mb-1.5 uppercase tracking-widest text-black">
+              <h3 className="text-[12px] font-bold mb-1 sm:mb-1.5 uppercase tracking-widest text-black">
                 {SITE_CONTENT.company.name}
-              </h4>
-              <div className="h-0.5 w-7 sm:w-8 bg-gradient-to-r from-brand-orange to-orange-500 mb-1 sm:mb-1.5 rounded-full" />
+              </h3>
+              <div className="h-0.5 w-7 sm:w-8 bg-linear-to-r from-brand-orange to-orange-500 mb-1 sm:mb-1.5 rounded-full" />
               <p className="hidden sm:block text-[12px] text-black leading-tight mb-2 sm:mb-2.5">
                 {SITE_CONTENT.company.tagline}
               </p>
@@ -102,10 +103,10 @@ export default function Footer() {
               whileHover={{ y: -4 }}
               transition={{ duration: 0.3 }}
             >
-              <h4 className="text-[12px] font-bold mb-1 sm:mb-1.5 uppercase tracking-widest text-black">
+              <h3 className="text-[12px] font-bold mb-1 sm:mb-1.5 uppercase tracking-widest text-black">
                 {SITE_CONTENT.footer.sections.navigation.title}
-              </h4>
-              <div className="h-0.5 w-7 sm:w-8 bg-gradient-to-r from-brand-orange to-orange-500 mb-1 sm:mb-1.5 rounded-full" />
+              </h3>
+              <div className="h-0.5 w-7 sm:w-8 bg-linear-to-r from-brand-orange to-orange-500 mb-1 sm:mb-1.5 rounded-full" />
               <nav className="flex flex-col gap-0.5 sm:gap-1">
                 <motion.div variants={linkHoverVariants} whileHover="hover">
                   <Link
@@ -174,10 +175,10 @@ export default function Footer() {
               whileHover={{ y: -4 }}
               transition={{ duration: 0.3 }}
             >
-              <h4 className="text-[12px] font-bold mb-1 sm:mb-1.5 uppercase tracking-widest text-black">
+              <h3 className="text-[12px] font-bold mb-1 sm:mb-1.5 uppercase tracking-widest text-black">
                 {SITE_CONTENT.footer.sections.resources.title}
-              </h4>
-              <div className="h-0.5 w-7 sm:w-8 bg-gradient-to-r from-brand-orange to-orange-500 mb-1 sm:mb-1.5 rounded-full" />
+              </h3>
+              <div className="h-0.5 w-7 sm:w-8 bg-linear-to-r from-brand-orange to-orange-500 mb-1 sm:mb-1.5 rounded-full" />
               <nav className="flex flex-col gap-0.5 sm:gap-1">
                 <motion.div variants={linkHoverVariants} whileHover="hover">
                   <a
@@ -212,14 +213,14 @@ export default function Footer() {
               whileHover={{ y: -4 }}
               transition={{ duration: 0.3 }}
             >
-              <h4 className="text-[12px] font-bold mb-1 sm:mb-1.5 uppercase tracking-widest text-black">
+              <h3 className="text-[12px] font-bold mb-1 sm:mb-1.5 uppercase tracking-widest text-black">
                 {SITE_CONTENT.footer.sections.getInTouch.title}
-              </h4>
-              <div className="h-0.5 w-7 sm:w-8 bg-gradient-to-r from-brand-orange to-orange-500 mb-1 sm:mb-1.5 rounded-full" />
+              </h3>
+              <div className="h-0.5 w-7 sm:w-8 bg-linear-to-r from-brand-orange to-orange-500 mb-1 sm:mb-1.5 rounded-full" />
               <div className="flex flex-col gap-1 sm:gap-1.5">
                 {/* Email */}
                 <a href="mailto:support@danvion.com" className="flex items-start gap-1.5 group">
-                  <Mail className="w-2 h-2 text-brand-orange flex-shrink-0 mt-0.5" />
+                  <Mail className="w-2 h-2 text-brand-orange shrink-0 mt-0.5" />
                   <div className="flex flex-col">
                     <p className="text-[12px] text-black uppercase tracking-wider leading-none mb-0.5">
                       Email
@@ -232,7 +233,7 @@ export default function Footer() {
 
                 {/* Address */}
                 <div className="flex items-start gap-1.5">
-                  <MapPin className="w-2 h-2 text-brand-orange flex-shrink-0 mt-0.5" />
+                  <MapPin className="w-2 h-2 text-brand-orange shrink-0 mt-0.5" />
                   <div className="flex flex-col">
                     <p className="text-[12px] text-black uppercase tracking-wider leading-none mb-0.5">
                       Location
@@ -248,7 +249,7 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        <div className="h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
 
         {/* Bottom Footer */}
         <div className="py-0.5 sm:py-1">

@@ -37,16 +37,6 @@ const CACHE_LIMITS = {
 const IMAGE_CACHE_TTL = 30;
 
 /**
- * Get size of all caches
- */
-async function getCacheSize() {
-  if (!navigator.storage || !navigator.storage.estimate) {
-    return null;
-  }
-  return await navigator.storage.estimate();
-}
-
-/**
  * Clean up old cache entries and enforce size limits
  */
 async function cleanupCaches() {
@@ -259,7 +249,7 @@ self.addEventListener("push", (event) => {
   if (event.data) {
     try {
       notificationData = event.data.json();
-    } catch (e) {
+    } catch {
       notificationData.body = event.data.text();
     }
   }

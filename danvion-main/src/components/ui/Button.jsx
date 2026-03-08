@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useResponsive } from "../../hooks/useResponsive";
 
 const Button = React.memo(function Button({
   children,
@@ -9,7 +8,6 @@ const Button = React.memo(function Button({
   className = "",
   ...props
 }) {
-  const { isMobile } = useResponsive();
   const variants = {
     default:
       "bg-brand-orange text-brand-black hover:bg-orange-600 shadow-lg hover:shadow-xl hover:scale-105",

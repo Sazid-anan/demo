@@ -64,8 +64,12 @@ export class PerformanceMonitor {
   logPageLoadTime() {
     if (typeof window === "undefined" || !window.performance) return;
 
-    const perfData = window.performance.timing;
-    const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+    // Use modern PerformanceNavigationTiming API
+    const navEntries = window.performance.getEntriesByType("navigation");
+    if (navEntries.length === 0) return;
+
+    const perfData = navEntries[0] as PerformanceNavigationTiming;
+    const pageLoadTime = perfData.loadEventEnd - perfData.startTime;
 
     this.logMetric("Page Load Time", pageLoadTime, "ms", { threshold: 3000 });
 
@@ -73,12 +77,15 @@ export class PerformanceMonitor {
       "DNS Lookup": perfData.domainLookupEnd - perfData.domainLookupStart,
       "TCP Connection": perfData.connectEnd - perfData.connectStart,
       "Server Response": perfData.responseEnd - perfData.requestStart,
-      "DOM Processing": perfData.domComplete - perfData.domLoading,
-      "Resource Loading": perfData.loadEventEnd - perfData.loadEventStart,
+      "DOM Processing": perfData.domComplete - perfData.responseEnd,
+      "Resource Loading": perfData.loadEventEnd - perfData.domComplete,
     };
 
     Object.entries(metrics).forEach(([name, time]) => {
-      this.logMetric(name, time, "ms");
+      // Ensure time is positive (some browsers might report 0 for immediate events)
+      if (time >= 0) {
+        this.logMetric(name, time, "ms");
+      }
     });
   }
 

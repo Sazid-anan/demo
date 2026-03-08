@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
+import React, { useState } from "react";
 import { Lightbulb, Cpu, Layers, Activity, Box, Factory } from "lucide-react";
 import Container from "./common/Container";
 
@@ -9,7 +10,7 @@ const phases = [
     number: "01",
     title: "Concept Phase",
     icon: Lightbulb,
-    color: "bg-blue-500",
+    color: "bg-blue-700",
     darkColor: "bg-blue-700",
     description:
       "The first step in any design process is to describe and define the functional scope of the product. We will work with you.",
@@ -19,7 +20,7 @@ const phases = [
     number: "02",
     title: "Schematic Capture",
     icon: Cpu,
-    color: "bg-cyan-500",
+    color: "bg-cyan-700",
     darkColor: "bg-cyan-700",
     description:
       "We use industry standard circuit simulation tools such as KiCad PSpice and LTSpice to design your schematic and capture it in Altium Designer.",
@@ -29,7 +30,7 @@ const phases = [
     number: "03",
     title: "PCB Design",
     icon: Layers,
-    color: "bg-purple-500",
+    color: "bg-purple-700",
     darkColor: "bg-purple-700",
     description:
       "We design PCBs using Altium Designer, KiCad. Whether it's a high-current, low-noise analog or high-density digital board.",
@@ -39,7 +40,7 @@ const phases = [
     number: "04",
     title: "Simulation",
     icon: Activity,
-    color: "bg-pink-500",
+    color: "bg-pink-700",
     darkColor: "bg-pink-700",
     description:
       "Simulations are an integral part of our design process. We use both industry standard and open-source simulation tools to model complex systems.",
@@ -49,7 +50,7 @@ const phases = [
     number: "05",
     title: "Mechanical Design",
     icon: Box,
-    color: "bg-orange-500",
+    color: "bg-orange-700",
     darkColor: "bg-orange-700",
     description:
       "Our mechanical design workflow brings together all of our expertise from simulations and electronics design.",
@@ -59,7 +60,7 @@ const phases = [
     number: "06",
     title: "Prototyping",
     icon: Factory,
-    color: "bg-amber-500",
+    color: "bg-amber-700",
     darkColor: "bg-amber-700",
     description:
       "Designing hardware requires building and testing hardware. We provide both prototype assembly and testing in-house.",
@@ -83,7 +84,7 @@ const PhaseCard = ({ process, index }) => {
     >
       {/* Optimized Card Container - Professional Sizes */}
       <div
-        className={`relative h-full min-h-[180px] sm:min-h-[190px] md:min-h-[200px] lg:min-h-[220px] flex flex-col bg-white rounded-lg md:rounded-xl border-2 p-4 md:p-[18px] lg:p-5 transition-all duration-300 ${isHovered ? "border-orange-500 shadow-2xl shadow-orange-200 transform scale-[1.02] bg-gradient-to-br from-white to-orange-50" : "border-gray-300 shadow-lg hover:shadow-xl"}`}
+        className={`relative h-full min-h-45 sm:min-h-47.5 md:min-h-50 lg:min-h-55 flex flex-col bg-white rounded-lg md:rounded-xl border-2 p-4 md:p-4.5 lg:p-5 transition-all duration-300 ${isHovered ? "border-orange-500 shadow-2xl shadow-orange-200 transform scale-[1.02] bg-linear-to-br from-white to-orange-50" : "border-gray-300 shadow-lg hover:shadow-xl"}`}
       >
         {/* Number Badge - Compact Size */}
         <div
@@ -94,10 +95,10 @@ const PhaseCard = ({ process, index }) => {
 
         {/* Icon Container - Optimized Sizing */}
         <div
-          className={`w-12 h-12 md:w-[52px] md:h-[52px] lg:w-14 lg:h-14 mb-3 ${process.color} rounded-lg md:rounded-xl flex items-center justify-center transition-all duration-300 ${isHovered ? "shadow-2xl scale-110 rotate-3" : "shadow-lg"}`}
+          className={`w-12 h-12 md:w-13 md:h-13 lg:w-14 lg:h-14 mb-3 ${process.color} rounded-lg md:rounded-xl flex items-center justify-center transition-all duration-300 ${isHovered ? "shadow-2xl scale-110 rotate-3" : "shadow-lg"}`}
         >
           <IconComponent
-            className={`w-6 h-6 md:w-[26px] md:h-[26px] lg:w-7 lg:h-7 transition-transform duration-300 ${isHovered ? "scale-110 rotate-12" : ""}`}
+            className={`w-6 h-6 md:w-6.5 md:h-6.5 lg:w-7 lg:h-7 transition-transform duration-300 ${isHovered ? "scale-110 rotate-12" : ""}`}
             strokeWidth={2}
             color="#ffffff"
           />
@@ -145,22 +146,22 @@ const PhaseSection = () => {
           <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-8">
             {/* Left: Headline */}
             <div className="w-full lg:flex-1 flex flex-col items-start text-left">
-              <motion.h1
+              <motion.h2
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.05 }}
-                className="heading-orange text-orange-500 section-heading font-semibold leading-tight tracking-tight text-[22px] sm:text-[26px] md:text-[32px] lg:text-[50px]"
+                className="section-heading-display heading-orange text-orange-700 section-heading font-semibold leading-tight tracking-tight"
               >
                 Our Development Phases
-              </motion.h1>
+              </motion.h2>
             </div>
 
             {/* Right: Description */}
             <div className="w-full lg:flex-[1.5] flex flex-col items-start text-left lg:ml-11">
               <p className="text-gray-800 text-[18px] sm:text-[20px] md:text-[22px] lg:text-[23px] font-medium leading-relaxed text-justify">
-                We streamline your success by handling every detail from initial schematics to
-                in-house prototyping and testing
+                We streamline your success by handling every detail from initial
+                schematics to in-house prototyping and testing
               </p>
             </div>
           </div>

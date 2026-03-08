@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { Calendar } from "lucide-react";
 import Container from "./common/Container";
@@ -16,7 +17,7 @@ export default function HeroTextSection() {
   const prefersReducedMotion = usePrefersReducedMotion();
 
   return (
-    <section className="w-full bg-orange-500 py-6 sm:py-8 md:py-10 lg:py-14 overflow-hidden">
+    <section className="w-full bg-orange-700 py-6 sm:py-8 md:py-10 lg:py-14 overflow-hidden">
       <Container className="content-maxwidth w-full">
         <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-8 mb-0">
           {/* Left: Headline + Button */}
@@ -30,7 +31,7 @@ export default function HeroTextSection() {
             className="w-full lg:flex-1 flex flex-col items-start text-left"
           >
             {/* Headline with colored text */}
-            <h1 className="text-[22px] sm:text-[26px] md:text-[32px] lg:text-[50px] font-bold leading-tight tracking-tighter mb-6 sm:mb-6 md:mb-6 lg:mb-6">
+            <h1 className="section-heading-display font-bold leading-tight tracking-tighter mb-6 sm:mb-6 md:mb-6 lg:mb-6">
               <span className="block text-white">Alchemy</span>
               <span className="block text-white">for the</span>
               <span className="block text-white">Intelligent Age</span>
@@ -47,9 +48,9 @@ export default function HeroTextSection() {
               whileHover={prefersReducedMotion ? {} : { scale: 1.05 }}
               whileTap={prefersReducedMotion ? {} : { scale: 0.95 }}
               onClick={() => window.open(EXTERNAL_LINKS.CALENDLY, "_blank")}
-              className="w-fit px-4 sm:px-5 md:px-6 lg:px-7 py-2.5 sm:py-3 md:py-3.5 lg:py-4 bg-white hover:bg-gray-100 text-orange-500 hover:text-orange-600 font-bold rounded-full transition-all duration-300 shadow-lg flex items-center gap-2 text-xs sm:text-sm md:text-base lg:text-lg"
+              className="w-fit px-4 sm:px-5 md:px-6 lg:px-7 py-2.5 sm:py-3 md:py-3.5 lg:py-4 bg-white hover:bg-gray-100 text-orange-700 hover:text-orange-800 font-bold rounded-full transition-all duration-300 shadow-lg flex items-center gap-2 text-xs sm:text-sm md:text-base lg:text-lg"
             >
-              <Calendar className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+              <Calendar className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
               <span>Book a Free Consultation for 30 Minutes</span>
             </motion.button>
           </motion.div>
@@ -65,9 +66,10 @@ export default function HeroTextSection() {
             className="w-full lg:flex-[1.5] flex flex-col items-start text-left lg:ml-11"
           >
             <p className="text-white text-[18px] sm:text-[20px] md:text-[22px] lg:text-[23px] font-medium leading-relaxed text-justify">
-              At Danvion, we're pushing the boundaries of artificial intelligence at the edge –
-              delivering cutting-edge solutions for the world's most complex challenges. With our
-              expertise in embedded AI, hardware integration, and real-time processing, we're
+              At Danvion, we're pushing the boundaries of artificial
+              intelligence at the edge – delivering cutting-edge solutions for
+              the world's most complex challenges. With our expertise in
+              embedded AI, hardware integration, and real-time processing, we're
               creating smarter, faster, and more efficient products.
             </p>
           </motion.div>

@@ -4,7 +4,8 @@ import { fetchContent } from "../redux/slices/contentSlice";
 import Container from "../components/common/Container";
 import Button from "../components/ui/Button";
 import { Link, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
+// eslint-disable-next-line no-unused-vars
+import { motion, AnimatePresence } from "framer-motion";
 import { renderMarkdown } from "../utils/markdown";
 import { Package } from "lucide-react";
 import { useResponsive } from "../hooks/useResponsive";
@@ -40,7 +41,9 @@ export default function Products() {
   // Get unique categories from products
   const categories = useMemo(() => {
     if (!products || products.length === 0) return [];
-    return Array.from(new Set(products.map((p) => p.category).filter((c) => c))).sort();
+    return Array.from(
+      new Set(products.map((p) => p.category).filter((c) => c)),
+    ).sort();
   }, [products]);
 
   const autoSelectedProduct = useMemo(() => {
@@ -50,14 +53,17 @@ export default function Products() {
 
   const activeProduct =
     selectedProduct ||
-    (productId && String(productId) === String(dismissedProductId) ? null : autoSelectedProduct);
+    (productId && String(productId) === String(dismissedProductId)
+      ? null
+      : autoSelectedProduct);
 
   const normalizedDescription = activeProduct?.description?.trim() || "";
   const normalizedDetails = activeProduct?.details?.trim() || "";
-  const hasDetails = normalizedDetails && normalizedDetails !== normalizedDescription;
+  const hasDetails =
+    normalizedDetails && normalizedDetails !== normalizedDescription;
 
   const buildContactLink = (productName, intent) => {
-    const base = "/contact";
+    const base = "/#contact";
     const params = new URLSearchParams();
     if (productName) params.set("product", productName);
     if (intent) params.set("intent", intent);
@@ -114,7 +120,7 @@ export default function Products() {
             <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-8">
               <div className="w-full lg:flex-1 flex flex-col items-start text-left">
                 <h1
-                  className="heading-orange text-orange-500 font-semibold leading-[1.25] tracking-tight mb-6 sm:mb-6 md:mb-6 lg:mb-6 text-[18px] sm:text-[24px] md:text-[32px] lg:text-[50px]"
+                  className="section-heading-display heading-orange text-orange-500 font-semibold leading-tight tracking-tight mb-6 sm:mb-6 md:mb-6 lg:mb-6"
                   style={{ color: "#f97316" }}
                 >
                   Our Products
@@ -145,10 +151,12 @@ export default function Products() {
             <div className="mb-6 inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-100">
               <Package className="w-10 h-10 text-gray-400" />
             </div>
-            <h2 className="text-h3 font-bold text-brand-black mb-4">Coming Soon</h2>
+            <h2 className="text-h3 font-bold text-brand-black mb-4">
+              Coming Soon
+            </h2>
             <p className="text-gray-600 text-xs sm:text-sm md:text-base lg:text-lg mb-8 leading-relaxed">
-              We're working on some amazing products that will transform your business. Check back
-              soon for exciting announcements!
+              We're working on some amazing products that will transform your
+              business. Check back soon for exciting announcements!
             </p>
             <Link to="/">
               <Button className="mt-4">Back to Home</Button>
@@ -160,17 +168,19 @@ export default function Products() {
           {/* Loading State - Show Skeletons */}
           {loading ? (
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-              {Array.from({ length: isMobile ? 6 : isTablet ? 8 : 9 }).map((_, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05, duration: 0.4 }}
-                  className="bg-white rounded-2xl overflow-hidden shadow-lg border-2 border-gray-200"
-                >
-                  <SkeletonCard />
-                </motion.div>
-              ))}
+              {Array.from({ length: isMobile ? 6 : isTablet ? 8 : 9 }).map(
+                (_, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.05, duration: 0.4 }}
+                    className="bg-white rounded-2xl overflow-hidden shadow-lg border-2 border-gray-200"
+                  >
+                    <SkeletonCard />
+                  </motion.div>
+                ),
+              )}
             </div>
           ) : (
             <>
@@ -211,14 +221,17 @@ export default function Products() {
                 </motion.div>
               )}
 
-              {displayProducts.length === 0 && filteredProducts.length === 0 && !hasNoProducts ? (
+              {displayProducts.length === 0 &&
+              filteredProducts.length === 0 &&
+              !hasNoProducts ? (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="text-center py-8 sm:py-12 px-4 text-gray-600"
                 >
                   <p className="text-xs sm:text-xs md:text-sm lg:text-base">
-                    No products found in this category. Try selecting a different one.
+                    No products found in this category. Try selecting a
+                    different one.
                   </p>
                 </motion.div>
               ) : null}
@@ -236,13 +249,17 @@ export default function Products() {
                     onClick={() => {
                       setSelectedProduct(product);
                       setDismissedProductId(null);
-                      analyticsService.trackProductInteraction(product.id, product.name, "click");
+                      analyticsService.trackProductInteraction(
+                        product.id,
+                        product.name,
+                        "click",
+                      );
                     }}
                     className="bg-white rounded-2xl overflow-hidden shadow-lg cursor-pointer relative group border-2 border-gray-200 orange-pop-hover"
                     style={{ willChange: "transform" }}
                   >
                     {/* Glass effect overlay on hover - simplified for mobile */}
-                    <span className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/40 to-gray-100/60 opacity-0 md:group-hover:opacity-100 md:backdrop-blur-[1px] border border-white/60 md:shadow-2xl transition-opacity duration-300 z-10 pointer-events-none"></span>
+                    <span className="absolute inset-0 rounded-2xl bg-linear-to-br from-white/40 to-gray-100/60 opacity-0 md:group-hover:opacity-100 md:backdrop-blur-[1px] border border-white/60 md:shadow-2xl transition-opacity duration-300 z-10 pointer-events-none"></span>
 
                     {/* Product Image */}
                     <div className="relative overflow-hidden h-48 sm:h-52 md:h-56">
@@ -252,14 +269,16 @@ export default function Products() {
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         loading="lazy"
                         decoding="async"
+                        width="400"
+                        height="300"
                       />
                     </div>
 
                     {/* Product Info */}
                     <div className="p-4 sm:p-5 md:p-6 relative z-20">
-                      <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-brand-black mb-2">
+                      <h2 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-brand-black mb-2">
                         {product.name}
-                      </h3>
+                      </h2>
                       <p className="text-gray-600 text-xs sm:text-xs md:text-sm lg:text-base mb-3 sm:mb-4 line-clamp-2">
                         {product.description}
                       </p>
@@ -281,7 +300,10 @@ export default function Products() {
                         >
                           Learn More
                         </Button>
-                        <Link to={buildContactLink(product.name, "inquiry")} className="flex-1">
+                        <Link
+                          to={buildContactLink(product.name, "inquiry")}
+                          className="flex-1"
+                        >
                           <Button
                             size="sm"
                             variant="outline"
@@ -306,7 +328,9 @@ export default function Products() {
                   className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-2 mt-8 sm:mt-12"
                 >
                   <button
-                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(prev - 1, 1))
+                    }
                     disabled={currentPage === 1}
                     className="w-full sm:w-auto px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-xs sm:text-xs md:text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-gray-100 text-brand-black hover:bg-brand-orange hover:text-white"
                   >
@@ -314,23 +338,27 @@ export default function Products() {
                   </button>
 
                   <div className="flex gap-1.5 sm:gap-2 overflow-x-auto max-w-full pb-2 sm:pb-0">
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                      <button
-                        key={page}
-                        onClick={() => setCurrentPage(page)}
-                        className={`min-w-[32px] sm:min-w-[36px] md:min-w-[40px] h-8 sm:h-9 md:h-10 rounded-lg font-medium text-xs sm:text-xs md:text-sm transition-all flex-shrink-0 ${
-                          currentPage === page
-                            ? "bg-brand-orange text-white shadow-lg"
-                            : "bg-gray-100 text-brand-black hover:bg-gray-200"
-                        }`}
-                      >
-                        {page}
-                      </button>
-                    ))}
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                      (page) => (
+                        <button
+                          key={page}
+                          onClick={() => setCurrentPage(page)}
+                          className={`min-w-8 sm:min-w-9 md:min-w-10 h-8 sm:h-9 md:h-10 rounded-lg font-medium text-xs sm:text-xs md:text-sm transition-all shrink-0 ${
+                            currentPage === page
+                              ? "bg-brand-orange text-white shadow-lg"
+                              : "bg-gray-100 text-brand-black hover:bg-gray-200"
+                          }`}
+                        >
+                          {page}
+                        </button>
+                      ),
+                    )}
                   </div>
 
                   <button
-                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                    }
                     disabled={currentPage === totalPages}
                     className="w-full sm:w-auto px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-xs sm:text-xs md:text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-gray-100 text-brand-black hover:bg-brand-orange hover:text-white"
                   >
@@ -344,121 +372,135 @@ export default function Products() {
       )}
 
       {/* Product Detail Modal */}
-      {activeProduct && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={() => {
-            setSelectedProduct(null);
-            if (productId) setDismissedProductId(productId);
-          }}
-          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-2 sm:p-4"
-        >
+      <AnimatePresence>
+        {activeProduct && (
           <motion.div
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0.9 }}
-            onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-lg max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => {
+              setSelectedProduct(null);
+              if (productId) setDismissedProductId(productId);
+            }}
+            className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-2 sm:p-4"
           >
-            <div className="sticky top-0 bg-white border-b border-gray-200 flex justify-between items-center p-4 sm:p-6 z-10">
-              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-brand-black pr-4">
-                {activeProduct.name}
-              </h2>
-              <button
-                onClick={() => {
-                  setSelectedProduct(null);
-                  if (productId) setDismissedProductId(productId);
-                }}
-                type="button"
-                aria-label="Close product details"
-                className="text-gray-600 hover:text-brand-black text-2xl sm:text-3xl flex-shrink-0"
-              >
-                ×
-              </button>
-            </div>
-
-            <div className="p-4 sm:p-6">
-              <img
-                src={activeProduct.image_url}
-                alt={activeProduct.name || "Danvion product details"}
-                className="w-full h-48 sm:h-64 md:h-80 lg:h-96 object-cover rounded-lg mb-4 sm:mb-6"
-              />
-
-              <div className="mb-4 sm:mb-6">
-                <h3 className="text-sm sm:text-base md:text-lg font-bold text-brand-black mb-2">
-                  Description
-                </h3>
-                <p className="text-gray-600 text-xs sm:text-sm md:text-base leading-relaxed">
-                  {activeProduct.description}
-                </p>
+            <motion.div
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.9 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white rounded-lg max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto"
+            >
+              <div className="sticky top-0 bg-white border-b border-gray-200 flex justify-between items-center p-4 sm:p-6 z-10">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-brand-black pr-4">
+                  {activeProduct.name}
+                </h2>
+                <button
+                  onClick={() => {
+                    setSelectedProduct(null);
+                    if (productId) setDismissedProductId(productId);
+                  }}
+                  type="button"
+                  aria-label="Close product details"
+                  className="text-gray-600 hover:text-brand-black text-2xl sm:text-3xl shrink-0"
+                >
+                  ×
+                </button>
               </div>
 
-              {hasDetails && (
+              <div className="p-4 sm:p-6">
+                <img
+                  src={activeProduct.image_url}
+                  alt={activeProduct.name || "Danvion product details"}
+                  className="w-full h-48 sm:h-64 md:h-80 lg:h-96 object-cover rounded-lg mb-4 sm:mb-6"
+                  loading="lazy"
+                  decoding="async"
+                  width="800"
+                  height="600"
+                />
+
                 <div className="mb-4 sm:mb-6">
-                  <h3 className="text-base sm:text-lg font-bold text-brand-black mb-2">Details</h3>
-                  <div
-                    className="markdown-content text-xs sm:text-sm md:text-base"
-                    dangerouslySetInnerHTML={{
-                      __html: renderMarkdown(activeProduct.details),
-                    }}
-                  />
+                  <h3 className="text-sm sm:text-base md:text-lg font-bold text-brand-black mb-2">
+                    Description
+                  </h3>
+                  <p className="text-gray-600 text-xs sm:text-sm md:text-base leading-relaxed">
+                    {activeProduct.description}
+                  </p>
                 </div>
-              )}
 
-              <div className="bg-gray-50 p-4 sm:p-6 rounded-lg mb-4 sm:mb-6">
-                <h3 className="text-sm sm:text-base md:text-lg font-bold text-brand-black mb-2">
-                  Contact Information
-                </h3>
-                <p className="text-gray-600 text-xs sm:text-sm md:text-base break-all">
-                  Email:{" "}
-                  <a
-                    href={`mailto:${activeProduct.contact_info}`}
-                    className="text-brand-orange hover:underline"
-                  >
-                    {activeProduct.contact_info}
-                  </a>
-                </p>
-              </div>
+                {hasDetails && (
+                  <div className="mb-4 sm:mb-6">
+                    <h3 className="text-base sm:text-lg font-bold text-brand-black mb-2">
+                      Details
+                    </h3>
+                    <div
+                      className="markdown-content text-xs sm:text-sm md:text-base"
+                      dangerouslySetInnerHTML={{
+                        __html: renderMarkdown(activeProduct.details),
+                      }}
+                    />
+                  </div>
+                )}
 
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                <Link to={buildContactLink(activeProduct?.name, "demo")} className="flex-1">
-                  <Button
-                    size="lg"
-                    className="w-full"
-                    onClick={() => {
-                      setSelectedProduct(null);
-                      if (productId) setDismissedProductId(productId);
-                      analyticsService.trackConversion("demo_request", 1, {
-                        product: activeProduct?.name,
-                      });
-                    }}
+                <div className="bg-gray-50 p-4 sm:p-6 rounded-lg mb-4 sm:mb-6">
+                  <h3 className="text-sm sm:text-base md:text-lg font-bold text-brand-black mb-2">
+                    Contact Information
+                  </h3>
+                  <p className="text-gray-600 text-xs sm:text-sm md:text-base break-all">
+                    Email:{" "}
+                    <a
+                      href={`mailto:${activeProduct.contact_info}`}
+                      className="text-brand-orange hover:underline"
+                    >
+                      {activeProduct.contact_info}
+                    </a>
+                  </p>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                  <Link
+                    to={buildContactLink(activeProduct?.name, "demo")}
+                    className="flex-1"
                   >
-                    Request Demo
-                  </Button>
-                </Link>
-                <Link to={buildContactLink(activeProduct?.name, "inquiry")} className="flex-1">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="w-full"
-                    onClick={() => {
-                      setSelectedProduct(null);
-                      if (productId) setDismissedProductId(productId);
-                      analyticsService.trackConversion("inquiry_request", 1, {
-                        product: activeProduct?.name,
-                      });
-                    }}
+                    <Button
+                      size="lg"
+                      className="w-full"
+                      onClick={() => {
+                        setSelectedProduct(null);
+                        if (productId) setDismissedProductId(productId);
+                        analyticsService.trackConversion("demo_request", 1, {
+                          product: activeProduct?.name,
+                        });
+                      }}
+                    >
+                      Request Demo
+                    </Button>
+                  </Link>
+                  <Link
+                    to={buildContactLink(activeProduct?.name, "inquiry")}
+                    className="flex-1"
                   >
-                    Send Inquiry
-                  </Button>
-                </Link>
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => {
+                        setSelectedProduct(null);
+                        if (productId) setDismissedProductId(productId);
+                        analyticsService.trackConversion("inquiry_request", 1, {
+                          product: activeProduct?.name,
+                        });
+                      }}
+                    >
+                      Send Inquiry
+                    </Button>
+                  </Link>
+                </div>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      )}
+        )}
+      </AnimatePresence>
     </div>
   );
 }

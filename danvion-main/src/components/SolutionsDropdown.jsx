@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import { Cpu, CircuitBoard, Code, Wifi, Zap, Box, Network, Hammer, Lightbulb } from "lucide-react";
 import { EXTERNAL_LINKS } from "../config/links";
@@ -87,9 +88,9 @@ export default function SolutionsDropdown({ isVisible = true, onClose }) {
                 className="space-y-4"
               >
                 {/* Category Header */}
-                <h3 className="text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">
+                <h2 className="text-xs sm:text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">
                   {category.name}
-                </h3>
+                </h2>
 
                 {/* Items */}
                 <div className="space-y-3">
@@ -97,9 +98,9 @@ export default function SolutionsDropdown({ isVisible = true, onClose }) {
                     const IconComponent = item.icon;
                     return (
                       <div key={itemIdx} className="flex items-start gap-2">
-                        <IconComponent className="w-4 h-4 text-gray-700 flex-shrink-0 mt-1" />
+                        <IconComponent className="w-4 h-4 text-gray-700 shrink-0 mt-1" />
                         <div className="flex-1 max-w-sm">
-                          <h4 className="text-sm font-bold text-gray-900 mb-0.5">{item.title}</h4>
+                          <h3 className="text-sm font-bold text-gray-900 mb-0.5">{item.title}</h3>
                           <p className="text-xs text-gray-600 leading-snug">{item.description}</p>
                         </div>
                       </div>
@@ -120,7 +121,7 @@ export default function SolutionsDropdown({ isVisible = true, onClose }) {
             <div className="h-full p-3 sm:p-4 bg-white border-2 border-gray-200 rounded-2xl flex flex-col justify-between">
               <div>
                 {/* Header */}
-                <h3 className="consultation-heading text-2xl lg:text-3xl font-bold text-gray-900 mb-2 leading-tight break-words">
+                <h3 className="consultation-heading text-2xl lg:text-3xl font-bold text-gray-900 mb-2 leading-tight wrap-break-word">
                   Book a free 30 minute consultation
                 </h3>
 
@@ -134,7 +135,7 @@ export default function SolutionsDropdown({ isVisible = true, onClose }) {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-full px-3 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl text-xs sm:text-sm tracking-wide uppercase flex items-center justify-center gap-1.5"
+                className="w-full px-3 py-2.5 bg-orange-700 hover:bg-orange-800 text-white font-bold rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl text-xs sm:text-sm tracking-wide uppercase flex items-center justify-center gap-1.5"
                 onClick={() => window.open(EXTERNAL_LINKS.CALENDLY, "_blank")}
               >
                 <span>Book now</span>

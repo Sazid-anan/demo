@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 
 export function useResponsive() {
-  const [windowSize, setWindowSize] = useState({
+  const [windowSize, setWindowSize] = useState(() => ({
     width: typeof window !== "undefined" ? window.innerWidth : 0,
     height: typeof window !== "undefined" ? window.innerHeight : 0,
-  });
+  }));
 
   useEffect(() => {
     // Handler to call on window resize
@@ -18,23 +18,20 @@ export function useResponsive() {
     // Add event listener
     window.addEventListener("resize", handleResize);
 
-    // Call handler right away so state gets updated with initial window size
-    handleResize();
-
     // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // Device type detection - synced with Tailwind breakpoints
-  const isMobile = windowSize.width < 576; // Mobile: <576px
-  const isTablet = windowSize.width >= 576 && windowSize.width < 992; // sm-md: 576px-991px
-  const isDesktop = windowSize.width >= 992; // lg+: 992px+
+  const isMobile = windowSize.width < 640; // Mobile: <640px
+  const isTablet = windowSize.width >= 640 && windowSize.width < 1024; // sm-md: 640px-1023px
+  const isDesktop = windowSize.width >= 1024; // lg+: 1024px+
 
   // Precise breakpoint detection - synced with Tailwind config
   const getBreakpoint = () => {
-    if (windowSize.width < 576) return "xs"; // Mobile
-    if (windowSize.width < 750) return "sm"; // Tablet start
-    if (windowSize.width < 992) return "md"; // Tablet mid
+    if (windowSize.width < 640) return "xs"; // Mobile
+    if (windowSize.width < 768) return "sm"; // Tablet start
+    if (windowSize.width < 1024) return "md"; // Tablet mid
     return "lg"; // Desktop and up
   };
 
@@ -56,13 +53,11 @@ export function useResponsive() {
  * @returns {boolean} - Whether the media query matches
  */
 export function useMediaQuery(query) {
-  const [matches, setMatches] = useState(false);
+  const [matches, setMatches] = useState(() => (typeof window !== "undefined" ? window.matchMedia(query).matches : false));
 
   useEffect(() => {
     const media = window.matchMedia(query);
 
-    // Set initial value
-    setMatches(media.matches);
 
     // Define listener
     const listener = (e) => setMatches(e.matches);

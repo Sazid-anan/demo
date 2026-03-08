@@ -1,10 +1,9 @@
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import { Phone, Mail, Linkedin, Calendar } from "lucide-react";
 import { useState } from "react";
 import { EXTERNAL_LINKS } from "../../config/links";
 import { SITE_CONTENT } from "../../config/content";
-import { useResponsive } from "../../hooks/useResponsive";
-
 /**
  * StickyContactBar Component
  * Fixed contact buttons on the right side of the screen
@@ -15,7 +14,6 @@ import { useResponsive } from "../../hooks/useResponsive";
  */
 export default function StickyContactBar() {
   const [hoveredItem, setHoveredItem] = useState(null);
-  const { isMobile, isTablet } = useResponsive();
 
   const contactItems = [
     // {
@@ -142,7 +140,7 @@ export default function StickyContactBar() {
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: 20, scale: 0.8 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
-                  className="hidden lg:block absolute right-8 top-1/2 -translate-y-1/2 bg-gradient-to-br from-orange-400 via-orange-300 to-orange-400 backdrop-blur-xl text-white px-2 py-1.5 rounded-lg whitespace-nowrap pointer-events-none shadow-[0_4px_16px_rgba(255,140,0,0.3)] border-2 border-orange-300/60"
+                  className="hidden lg:block absolute right-8 top-1/2 -translate-y-1/2 bg-linear-to-br from-orange-400 via-orange-300 to-orange-400 backdrop-blur-xl text-white px-2 py-1.5 rounded-lg whitespace-nowrap pointer-events-none shadow-[0_4px_16px_rgba(255,140,0,0.3)] border-2 border-orange-300/60"
                 >
                   <div className="flex items-center gap-1.5 mb-0.5">
                     <div className="w-1 h-1 rounded-full bg-white animate-pulse" />
@@ -156,7 +154,7 @@ export default function StickyContactBar() {
                     </p>
                   )}
                   {/* Orange accent bar */}
-                  <div className="absolute top-0 left-0 w-0.5 h-full bg-gradient-to-b from-white via-orange-200 to-white rounded-l-lg opacity-70" />
+                  <div className="absolute top-0 left-0 w-0.5 h-full bg-linear-to-b from-white via-orange-200 to-white rounded-l-lg opacity-70" />
                 </motion.div>
               )}
             </AnimatePresence>

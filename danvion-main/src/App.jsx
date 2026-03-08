@@ -103,33 +103,35 @@ function App() {
           <ScrollToTop />
           <PageViewTracker />
           <Header />
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  <Home />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/products"
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  <Products />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/blogs"
-              element={
-                <Suspense fallback={<PageLoader />}>
-                  <Blogs />
-                </Suspense>
-              }
-            />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+          <main>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Suspense fallback={<PageLoader />}>
+                    <Home />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/products"
+                element={
+                  <Suspense fallback={<PageLoader />}>
+                    <Products />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/blogs"
+                element={
+                  <Suspense fallback={<PageLoader />}>
+                    <Blogs />
+                  </Suspense>
+                }
+              />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </main>
           <Footer />
           <div className="block sm:hidden">
             <MobileNavPill theme="light" />

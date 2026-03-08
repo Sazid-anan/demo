@@ -12,15 +12,50 @@ function crittersInlinePlugin() {
       const htmlPath = path.resolve(process.cwd(), "dist/index.html");
 
       try {
-        const html = await readFile(htmlPath, "utf8");
+        let html = await readFile(htmlPath, "utf8");
+
+        // Run critters for critical CSS inlining and preload strategy
         const critters = new Critters({
           path: path.resolve(process.cwd(), "dist"),
-          preload: "swap",
+          preload: "swap", // This converts stylesheet to preload
+          pruneSource: false,
+          compress: true,
         });
-        const optimizedHtml = await critters.process(html);
+        let optimizedHtml = await critters.process(html);
+
+        // Clean up: Remove duplicate stylesheet links (critters creates preload, we don't need the original)
+        // Keep only preload links, remove blocking stylesheet links for same file
+        const cssLinks =
+          optimizedHtml.match(/<link[^>]*\/assets\/[^"]+\.css[^>]*>/g) || [];
+        const cssFiles = new Set();
+
+        cssLinks.forEach((link) => {
+          const match = link.match(/href="([^"]+)"/);
+          if (match) cssFiles.add(match[1]);
+        });
+
+        // For each CSS file, keep only the preload version
+        cssFiles.forEach((file) => {
+          // Remove blocking stylesheet link if preload exists
+          const hasPreload = optimizedHtml.includes(
+            `<link rel="preload" as="style" href="${file}"`,
+          );
+          if (hasPreload) {
+            // Remove any blocking stylesheet link for the same file
+            optimizedHtml = optimizedHtml.replace(
+              new RegExp(
+                `<link[^>]*rel=["']stylesheet["'][^>]*href=["']${file.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}["'][^>]*>`,
+                "g",
+              ),
+              "",
+            );
+          }
+        });
+
         await writeFile(htmlPath, optimizedHtml, "utf8");
-      } catch {
-        // Skip critical CSS inlining when dist output is missing.
+        console.log("✅ Critical CSS inlined + non-blocking preload applied");
+      } catch (error) {
+        console.warn("⚠️ CSS optimization:", error.message);
       }
     },
   };
@@ -48,7 +83,10 @@ export default defineConfig({
         // Optimized code splitting - separate chunks by type
         manualChunks(id) {
           // Vendor: React ecosystem (core)
-          if (id.includes("node_modules/react") || id.includes("node_modules/react-dom")) {
+          if (
+            id.includes("node_modules/react") ||
+            id.includes("node_modules/react-dom")
+          ) {
             return "vendor-react";
           }
           // Vendor: State management

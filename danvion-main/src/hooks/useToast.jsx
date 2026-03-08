@@ -1,5 +1,7 @@
+/* eslint-disable react-refresh/only-export-components */
 import { useState, useCallback, createContext, useContext } from "react";
 import { X, CheckCircle, AlertCircle, Info } from "lucide-react";
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 
 const ToastContext = createContext(null);
@@ -17,7 +19,7 @@ export function ToastProvider({ children }) {
 
     if (duration > 0) {
       setTimeout(() => {
-        removeToast(id);
+        setToasts((prev) => prev.filter((t) => t.id !== id));
       }, duration);
     }
 
@@ -102,7 +104,7 @@ export function ToastContainer({ toasts, removeToast }) {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-[9999] max-w-sm w-full px-4 pointer-events-none">
+    <div className="fixed bottom-4 right-4 z-9999 max-w-sm w-full px-4 pointer-events-none">
       <AnimatePresence>
         {toasts.map((toast) => (
           <motion.div
@@ -113,11 +115,11 @@ export function ToastContainer({ toasts, removeToast }) {
             transition={{ duration: 0.3 }}
             className={`mb-3 border rounded-lg p-4 flex items-start gap-3 shadow-lg ${getColors(toast.type)} pointer-events-auto`}
           >
-            <div className="flex-shrink-0 mt-0.5">{getIcon(toast.type)}</div>
+            <div className="shrink-0 mt-0.5">{getIcon(toast.type)}</div>
             <p className="flex-1 text-sm font-medium">{toast.message}</p>
             <button
               onClick={() => removeToast(toast.id)}
-              className="flex-shrink-0 ml-2 hover:opacity-70"
+              className="shrink-0 ml-2 hover:opacity-70"
               aria-label="Close notification"
             >
               <X className="w-4 h-4" />

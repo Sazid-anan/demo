@@ -28,3 +28,15 @@ export const INTERNAL_LINKS = {
   // SERVICES: "#services",
   // ABOUT: "#about",
 };
+
+/**
+ * Header Configuration
+ * Logo path and branding elements
+ */
+export const HEADER_CONFIG = {
+  LOGO_PATH: "/logo.webp",
+  LOGO_FALLBACK: "/logo-optimized.png",
+  LOGO_ALT: "Danvion Logo",
+  COMPANY_NAME: "Danvion",
+  CONTACT_SECTION_ID: "contact",
+};

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="icon" type="image/png" href="/logo-optimized.png" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5, user-scalable=yes"
@@ -23,7 +23,10 @@
     <!-- PWA Meta Tags -->
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
     <meta name="apple-mobile-web-app-title" content="Danvion" />
 
     <!-- Open Graph Tags -->
@@ -35,9 +38,6 @@
     <meta name="msvalidate.01" content="" />
 
     <!-- Performance optimizations -->
-    <!-- DNS prefetch for Firebase -->
-    <link rel="dns-prefetch" href="https://firebaseapp.com" />
-    <link rel="dns-prefetch" href="https://googleapis.com" />
     <!-- Preconnect to Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -60,7 +60,8 @@
     <link rel="prefetch" href="/sitemap.xml" />
 
     <!-- Google Analytics 4 (deferred to avoid blocking critical rendering) -->
-    <script>
+    <script type="module">
+      // Load GA after page is fully loaded to optimize Core Web Vitals
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
@@ -69,12 +70,14 @@
 
       window.addEventListener("load", function () {
         setTimeout(function () {
-          var measurementId = window.__VITE_GA_MEASUREMENT_ID__ || "";
+          const measurementId = import.meta.env.VITE_FIREBASE_MEASUREMENT_ID;
           if (!measurementId) return;
 
-          var script = document.createElement("script");
-          script.src = "https://www.googletagmanager.com/gtag/js?id=" + measurementId;
+          const script = document.createElement("script");
+          script.src =
+            "https://www.googletagmanager.com/gtag/js?id=" + measurementId;
           script.async = true;
+          script.defer = true;
           script.onload = function () {
             gtag("config", measurementId, {
               page_path: window.location.pathname,
@@ -93,7 +96,10 @@
 
     <!-- Service Worker registration for caching -->
     <script>
-      if ("serviceWorker" in navigator && !window.location.hash.includes("no-sw")) {
+      if (
+        "serviceWorker" in navigator &&
+        !window.location.hash.includes("no-sw")
+      ) {
         window.addEventListener("load", () => {
           navigator.serviceWorker.register("/sw.js").catch(() => {
             // Silently fail if service worker registration fails

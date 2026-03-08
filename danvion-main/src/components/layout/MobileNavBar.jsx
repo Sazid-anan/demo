@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
+// eslint-disable-next-line no-unused-vars
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import {
   Home,

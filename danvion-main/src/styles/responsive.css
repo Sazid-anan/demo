@@ -626,6 +626,7 @@ select {
     text-overflow: ellipsis !important;
     display: -webkit-box !important;
     -webkit-line-clamp: 2 !important;
+    line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
   }
 
@@ -824,14 +825,14 @@ select {
   }
 
   .capabilities-content .aspect-square svg {
-    width: 1.3rem !important;
-    height: 1.3rem !important;
+    width: 1.1rem !important;
+    height: 1.1rem !important;
     flex-shrink: 0 !important;
   }
 
   .capabilities-content .aspect-square h3 {
-    font-size: 0.62rem !important;
-    line-height: 1.2 !important;
+    font-size: 0.5rem !important;
+    line-height: 1.15 !important;
     text-align: center !important;
     margin: 0 !important;
     word-break: break-word !important;
@@ -940,8 +941,8 @@ select {
 
   /* Show full text on 720p view */
   .capabilities-content .aspect-square h3 {
-    font-size: 0.875rem !important;
-    line-height: 1.35 !important;
+    font-size: 0.68rem !important;
+    line-height: 1.25 !important;
     overflow: visible !important;
     text-overflow: clip !important;
     display: block !important;
@@ -968,7 +969,9 @@ select {
   }
 
   /* Individual capability cards - reduce size for iPad Pro */
-  .capabilities-content .grid[class*="grid-cols-8"] div[class*="border-gray-200"],
+  .capabilities-content
+    .grid[class*="grid-cols-8"]
+    div[class*="border-gray-200"],
   .capabilities-content .aspect-square {
     padding: 0.875rem !important;
     border-radius: 0.6rem !important;
@@ -985,7 +988,10 @@ select {
   }
 
   /* Icons in capability cards - optimized size for iPad Pro */
-  .capabilities-content .grid[class*="grid-cols-8"] div[class*="border-gray-200"] svg,
+  .capabilities-content
+    .grid[class*="grid-cols-8"]
+    div[class*="border-gray-200"]
+    svg,
   .capabilities-content .aspect-square svg {
     width: 2.25rem !important;
     height: 2.25rem !important;
@@ -993,18 +999,21 @@ select {
   }
 
   /* Capability card titles - optimized font */
-  .capabilities-content .grid[class*="grid-cols-8"] div[class*="border-gray-200"] h3,
+  .capabilities-content
+    .grid[class*="grid-cols-8"]
+    div[class*="border-gray-200"]
+    h3,
   .capabilities-content .aspect-square h3 {
-    font-size: 0.75rem !important;
-    line-height: 1.25 !important;
+    font-size: 0.58rem !important;
+    line-height: 1.2 !important;
     margin: 0 !important;
-    margin-top: 0.375rem !important;
+    margin-top: 0.3rem !important;
     word-break: break-word !important;
     overflow: visible !important;
     text-overflow: clip !important;
     display: block !important;
     max-width: 100% !important;
-    padding: 0 0.25rem !important;
+    padding: 0 0.2rem !important;
     text-align: center !important;
     white-space: normal !important;
   }
@@ -1187,9 +1196,9 @@ select {
   /* Capability card titles */
   .capabilities-content .card.border.border-gray-200 h3,
   .capabilities-content .aspect-square h3 {
-    font-size: 0.7rem !important;
-    line-height: 1.25 !important;
-    padding: 0 0.25rem !important;
+    font-size: 0.56rem !important;
+    line-height: 1.2 !important;
+    padding: 0 0.2rem !important;
     text-align: center !important;
   }
 
@@ -1535,21 +1544,39 @@ select {
     min-width: 0 !important;
   }
 
-  .topbanner .hero-topbanner-content > div > div.flex.flex-wrap > div:first-child {
+  .topbanner
+    .hero-topbanner-content
+    > div
+    > div.flex.flex-wrap
+    > div:first-child {
     max-width: 21.5rem !important;
   }
 
-  .topbanner .hero-topbanner-content > div > div.flex.flex-wrap > div:first-child button {
+  .topbanner
+    .hero-topbanner-content
+    > div
+    > div.flex.flex-wrap
+    > div:first-child
+    button {
     margin-top: 0.12rem !important;
   }
 
-  .topbanner .hero-topbanner-content > div > div.flex.flex-wrap > div:last-child {
+  .topbanner
+    .hero-topbanner-content
+    > div
+    > div.flex.flex-wrap
+    > div:last-child {
     margin-top: 0 !important;
     padding-right: 0 !important;
     max-width: 100% !important;
   }
 
-  .topbanner .hero-topbanner-content > div > div.flex.flex-wrap > div:last-child p {
+  .topbanner
+    .hero-topbanner-content
+    > div
+    > div.flex.flex-wrap
+    > div:last-child
+    p {
     font-size: 0.9375rem !important;
     line-height: 1.5 !important;
     text-wrap: pretty;
@@ -1778,17 +1805,25 @@ select {
     margin-bottom: 1.5rem !important;
   }
 
-  section.w-full.bg-black.font-sans .content-maxwidth.w-full > div[class*="mb-"] > .flex {
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > div[class*="mb-"]
+    > .flex {
     gap: 1.5rem !important;
   }
 
-  section.w-full.bg-black.font-sans .content-maxwidth.w-full .animated-gradient-text {
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    .animated-gradient-text {
     font-size: clamp(1.75rem, 7vw, 2.25rem) !important;
     margin-bottom: 0.75rem !important;
     line-height: 1.2 !important;
   }
 
-  section.w-full.bg-black.font-sans .content-maxwidth.w-full > div[class*="mb-"] p {
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > div[class*="mb-"]
+    p {
     font-size: 1rem !important;
     line-height: 1.5 !important;
     margin-bottom: 0 !important;
@@ -1796,7 +1831,10 @@ select {
   }
 
   /* Phase card container */
-  section.w-full.bg-black.font-sans .content-maxwidth.w-full .group.h-full.w-full > div.relative {
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    .group.h-full.w-full
+    > div.relative {
     min-height: 180px !important;
     padding: 1rem !important;
     border-radius: 1rem !important;
@@ -1831,14 +1869,20 @@ select {
   }
 
   /* Phase card title */
-  section.w-full.bg-black.font-sans .content-maxwidth.w-full .group.h-full.w-full h3 {
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    .group.h-full.w-full
+    h3 {
     font-size: 1.125rem !important;
     line-height: 1.3 !important;
     font-weight: 700 !important;
   }
 
   /* Phase card description */
-  section.w-full.bg-black.font-sans .content-maxwidth.w-full .group.h-full.w-full p {
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    .group.h-full.w-full
+    p {
     font-size: 0.9375rem !important;
     line-height: 1.5 !important;
     display: -webkit-box;
@@ -1850,7 +1894,10 @@ select {
   }
 
   /* Phase card icons */
-  section.w-full.bg-black.font-sans .content-maxwidth.w-full .group.h-full.w-full svg {
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    .group.h-full.w-full
+    svg {
     width: 1.5rem !important;
     height: 1.5rem !important;
     min-width: 1.5rem !important;
@@ -1994,7 +2041,9 @@ select {
     padding-top: 0 !important;
   }
 
-  .image-slider-content > .text-left.mb-8.sm\:mb-10.md\:mb-12.lg\:mb-16 > .flex {
+  .image-slider-content
+    > .text-left.mb-8.sm\:mb-10.md\:mb-12.lg\:mb-16
+    > .flex {
     gap: 0.85rem !important;
   }
 
@@ -2015,7 +2064,8 @@ select {
     margin-bottom: 0 !important;
   }
 
-  .image-slider-content .overflow-hidden.relative.rounded-xl.md\:rounded-2xl.group {
+  .image-slider-content
+    .overflow-hidden.relative.rounded-xl.md\:rounded-2xl.group {
     border-radius: 0.72rem !important;
     padding-bottom: 0.75rem !important;
   }
@@ -2088,13 +2138,21 @@ select {
     h1.animated-gradient-text {
     font-size: clamp(1.85rem, 3.5vw, 2.35rem) !important;
     line-height: 1.15 !important;
-    background: linear-gradient(90deg, #ffb66f 0%, #ff7a12 50%, #ffd6a7 100%) !important;
+    background: linear-gradient(
+      90deg,
+      #ffb66f 0%,
+      #ff7a12 50%,
+      #ffd6a7 100%
+    ) !important;
     background-clip: text !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
   }
 
-  section.w-full.bg-black.font-sans .content-maxwidth.w-full > .mb-4.sm\:mb-5.md\:mb-6.lg\:mb-7 p {
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > .mb-4.sm\:mb-5.md\:mb-6.lg\:mb-7
+    p {
     font-size: 1.375rem !important;
     line-height: 1.5 !important;
     margin: 0 !important;
@@ -2107,7 +2165,10 @@ select {
     margin-bottom: 0.9rem !important;
   }
 
-  section.w-full.bg-black.font-sans .content-maxwidth.w-full > div:first-child > .flex {
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > div:first-child
+    > .flex {
     display: flex !important;
     flex-direction: row !important;
     flex-wrap: nowrap !important;
@@ -2143,7 +2204,10 @@ select {
     margin-bottom: 0.35rem !important;
   }
 
-  section.w-full.bg-black.font-sans .content-maxwidth.w-full > div:first-child p {
+  section.w-full.bg-black.font-sans
+    .content-maxwidth.w-full
+    > div:first-child
+    p {
     font-size: 1.375rem !important;
     line-height: 1.45 !important;
     margin: 0 !important;
@@ -2367,12 +2431,18 @@ select {
 }
 
 @media (min-width: 768px) {
-  section.bg-black .content-maxwidth.w-full > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 h3 {
+  section.bg-black
+    .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    h3 {
     font-size: clamp(1rem, 0.9rem + 0.4vw, 1.125rem) !important;
     line-height: 1.2 !important;
   }
 
-  section.bg-black .content-maxwidth.w-full > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 p {
+  section.bg-black
+    .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    p {
     font-size: 0.875rem !important;
     line-height: 1.55 !important;
   }
@@ -3161,7 +3231,10 @@ section:has(.image-slider-content) {
   }
 
   /* Phase card styling - website style */
-  .content-maxwidth.w-full > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 .group.h-full > div {
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    .group.h-full
+    > div {
     min-height: 115px !important;
     padding: 0.5rem !important;
     border-radius: 0.75rem !important;
@@ -3208,7 +3281,9 @@ section:has(.image-slider-content) {
   }
 
   /* Phase card title */
-  .content-maxwidth.w-full > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 h3 {
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    h3 {
     font-size: 0.6rem !important;
     line-height: 1.15 !important;
     margin-bottom: 0.1rem !important;
@@ -3216,7 +3291,9 @@ section:has(.image-slider-content) {
   }
 
   /* Phase card description */
-  .content-maxwidth.w-full > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 p {
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    p {
     font-size: 0.42rem !important;
     line-height: 1.3 !important;
     margin-top: 0.1rem !important;
@@ -3224,7 +3301,9 @@ section:has(.image-slider-content) {
   }
 
   /* Underline decoration */
-  .content-maxwidth.w-full > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 .h-0\.5 {
+  .content-maxwidth.w-full
+    > .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3
+    .h-0\.5 {
     height: 1.5px !important;
     width: 1rem !important;
     margin-top: 0.1rem !important;
@@ -3262,7 +3341,8 @@ section:has(.image-slider-content) {
     line-height: 1.4 !important;
   }
 
-  .image-slider-content .overflow-hidden.relative.rounded-xl.md\:rounded-2xl.group {
+  .image-slider-content
+    .overflow-hidden.relative.rounded-xl.md\:rounded-2xl.group {
     border-radius: 0.6rem !important;
     padding-bottom: 1rem !important;
   }
@@ -3874,14 +3954,14 @@ footer.footer-uniform-text .h-px + div {
   }
 
   .capabilities-content .capability-icon {
-    width: clamp(1.4rem, 5.5vw, 1.85rem) !important;
-    height: clamp(1.4rem, 5.5vw, 1.85rem) !important;
+    width: clamp(1.2rem, 4.5vw, 1.6rem) !important;
+    height: clamp(1.2rem, 4.5vw, 1.6rem) !important;
     flex-shrink: 0 !important;
   }
 
   .capabilities-content .capability-title {
-    font-size: clamp(0.7rem, 2.8vw, 0.9rem) !important;
-    line-height: 1.25 !important;
+    font-size: clamp(0.55rem, 2.2vw, 0.7rem) !important;
+    line-height: 1.2 !important;
     margin: 0 !important;
     text-align: center !important;
     max-width: 100% !important;
@@ -3892,6 +3972,30 @@ footer.footer-uniform-text .h-px + div {
   }
 }
 
+/* ===== TABLET CAPABILITIES OPTIMIZATION (768px - 1023px) ===== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .capabilities-content .capability-title {
+    font-size: clamp(0.65rem, 1.5vw, 0.72rem) !important;
+    line-height: 1.25 !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+}
+
+/* ===== DESKTOP CAPABILITIES OPTIMIZATION (1024px+) ===== */
+@media (min-width: 1024px) {
+  .capabilities-content .capability-title {
+    font-size: clamp(0.7rem, 0.9vw, 0.75rem) !important;
+    line-height: 1.25 !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+}
+
 @media (max-width: 380px) {
   .capabilities-content .capabilities-grid {
     gap: 0.45rem !important;
@@ -3899,17 +4003,131 @@ footer.footer-uniform-text .h-px + div {
   }
 
   .capabilities-content .capability-card {
-    padding: 0.6rem !important;
-    gap: 0.4rem !important;
+    padding: 0.55rem !important;
+    gap: 0.35rem !important;
   }
 
   .capabilities-content .capability-icon {
-    width: 1.25rem !important;
-    height: 1.25rem !important;
+    width: 1.1rem !important;
+    height: 1.1rem !important;
   }
 
   .capabilities-content .capability-title {
-    font-size: 0.65rem !important;
-    line-height: 1.2 !important;
+    font-size: 0.5rem !important;
+    line-height: 1.15 !important;
+  }
+}
+
+/* Preserve intended capabilities intro typography across responsive overrides */
+.capabilities-content > div:first-child p.capabilities-description-copy,
+.capabilities-content [class*="flex-"] p.capabilities-description-copy,
+.capabilities-content .flex-\[1\.5\] p.capabilities-description-copy {
+  font-size: 18px !important;
+  line-height: 1.625 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: justify !important;
+}
+
+@media (min-width: 640px) {
+  .capabilities-content > div:first-child p.capabilities-description-copy,
+  .capabilities-content [class*="flex-"] p.capabilities-description-copy,
+  .capabilities-content .flex-\[1\.5\] p.capabilities-description-copy {
+    font-size: 20px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .capabilities-content > div:first-child p.capabilities-description-copy,
+  .capabilities-content [class*="flex-"] p.capabilities-description-copy,
+  .capabilities-content .flex-\[1\.5\] p.capabilities-description-copy {
+    font-size: 22px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .capabilities-content > div:first-child p.capabilities-description-copy,
+  .capabilities-content [class*="flex-"] p.capabilities-description-copy,
+  .capabilities-content .flex-\[1\.5\] p.capabilities-description-copy {
+    font-size: 23px !important;
+  }
+}
+
+/* Keep header solutions button typography from being reduced by global touch rules */
+button.header-solutions-btn {
+  font-size: 0.875rem !important;
+  padding: 0.375rem 0.5rem !important;
+}
+
+@media (min-width: 640px) {
+  button.header-solutions-btn {
+    font-size: 1rem !important;
+    padding: 0.5rem 0.75rem !important;
+  }
+}
+
+@media (min-width: 768px) {
+  button.header-solutions-btn {
+    font-size: 1.125rem !important;
+    padding: 0.5rem 1rem !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  button.header-solutions-btn {
+    font-size: 1.25rem !important;
+    padding: 0.5rem 1rem !important;
+  }
+}
+
+/* Final heading normalization for section-level titles.
+   The repeated class raises specificity to beat legacy override blocks above. */
+.section-heading-display.section-heading-display.section-heading-display.section-heading-display.section-heading-display {
+  font-size: 22px !important;
+  line-height: 1.2 !important;
+}
+
+@media (min-width: 576px) {
+  .section-heading-display.section-heading-display.section-heading-display.section-heading-display.section-heading-display {
+    font-size: 26px !important;
+  }
+}
+
+@media (min-width: 750px) {
+  .section-heading-display.section-heading-display.section-heading-display.section-heading-display.section-heading-display {
+    font-size: 32px !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .section-heading-display.section-heading-display.section-heading-display.section-heading-display.section-heading-display {
+    font-size: 50px !important;
+  }
+}
+
+#contact
+  .section-heading-display.section-heading-display.section-heading-display {
+  font-size: 22px !important;
+  line-height: 1.2 !important;
+}
+
+@media (min-width: 576px) {
+  #contact
+    .section-heading-display.section-heading-display.section-heading-display {
+    font-size: 26px !important;
+  }
+}
+
+@media (min-width: 750px) {
+  #contact
+    .section-heading-display.section-heading-display.section-heading-display {
+    font-size: 32px !important;
+  }
+}
+
+@media (min-width: 992px) {
+  #contact
+    .section-heading-display.section-heading-display.section-heading-display {
+    font-size: 50px !important;
   }
 }

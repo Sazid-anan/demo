@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import { useResponsive } from "../../hooks/useResponsive";
 
@@ -17,7 +18,7 @@ export default function BackToTop() {
   const [isVisible, setIsVisible] = useState(false);
   const { isMobile } = useResponsive();
 
-  const toggleVisibility = () => {
+  const toggleVisibility = useCallback(() => {
     // Show button earlier on mobile (200px) vs desktop (300px)
     const threshold = isMobile ? SCROLL_THRESHOLD.MOBILE : SCROLL_THRESHOLD.DESKTOP;
     if (window.scrollY > threshold) {
@@ -25,7 +26,7 @@ export default function BackToTop() {
     } else {
       setIsVisible(false);
     }
-  };
+  }, [isMobile]);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -39,7 +40,7 @@ export default function BackToTop() {
     return () => {
       window.removeEventListener("scroll", toggleVisibility);
     };
-  }, []);
+  }, [toggleVisibility]);
 
   return (
     <AnimatePresence>
