@@ -5,25 +5,31 @@
 
 /* ===== CONSULTATION BOX HEADING ===== */
 .consultation-heading {
-  font-size: 20px !important;
+  font-size: 18px !important;
   line-height: 1.2 !important;
 }
 
 @media (min-width: 640px) {
   .consultation-heading {
-    font-size: 24px !important;
+    font-size: 22px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .consultation-heading {
+    font-size: 26px !important;
   }
 }
 
 @media (min-width: 1280px) {
   .consultation-heading {
-    font-size: 30px !important;
+    font-size: 28px !important;
   }
 }
 
 /* ===== ORANGE HEADING ===== */
 .heading-orange {
-  color: #ea580c !important;
+  color: var(--brand) !important;
 }
 
 /* Shared responsive scale for all primary section headings */
@@ -62,6 +68,7 @@
   display: flex;
   width: 100%;
   align-items: flex-start;
+  background: linear-gradient(135deg, #111111 0%, #1a1a1a 60%, #2a1500 100%);
   padding-top: 25px;
   padding-bottom: 25px;
   padding-left: 0;
@@ -69,6 +76,10 @@
   margin: 0;
   border: 0;
   min-height: auto;
+}
+
+.hero-logo-gradient {
+  background: linear-gradient(135deg, #111111 0%, #1a1a1a 60%, #2a1500 100%);
 }
 
 .topbanner p {
@@ -135,9 +146,9 @@
   background: linear-gradient(
     90deg,
     #030213 0%,
-    #f37106 25%,
-    #ff8c42 50%,
-    #f37106 75%,
+    var(--brand) 25%,
+    var(--brand-soft) 50%,
+    var(--brand) 75%,
     #030213 100%
   );
   background-size: 200% 100%;
@@ -165,9 +176,9 @@
   background: linear-gradient(
     90deg,
     #ffffff 0%,
-    #f37106 25%,
-    #ff8c42 50%,
-    #f37106 75%,
+    var(--brand) 25%,
+    var(--brand-soft) 50%,
+    var(--brand) 75%,
     #ffffff 100%
   );
   background-size: 200% 100%;
@@ -181,11 +192,11 @@
 .animated-gradient-text-orange {
   background: linear-gradient(
     90deg,
-    #f37106 0%,
-    #ff8c42 25%,
+    var(--brand) 0%,
+    var(--brand-soft) 25%,
     #ffa566 50%,
-    #ff8c42 75%,
-    #f37106 100%
+    var(--brand-soft) 75%,
+    var(--brand) 100%
   );
   background-size: 200% 100%;
   background-clip: text;
@@ -207,9 +218,9 @@
     90deg,
     #4a4a4a 0%,
     #888888 25%,
-    #f37106 50%,
-    #ff8c42 60%,
-    #f37106 70%,
+    var(--brand) 50%,
+    var(--brand-soft) 60%,
+    var(--brand) 70%,
     #888888 85%,
     #4a4a4a 100%
   );
@@ -242,7 +253,7 @@ a:hover {
   border-radius: inherit;
   background: linear-gradient(
     135deg,
-    rgba(243, 113, 6, 0.637),
+    rgba(232, 90, 12, 0.637),
     rgba(167, 73, 36, 0.03)
   );
   opacity: 0;
@@ -252,6 +263,67 @@ a:hover {
 
 .orange-pop-hover:hover::before {
   opacity: 1;
+}
+
+/* Hero primary consultation CTA */
+.hero-consultation-cta {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid rgba(232, 90, 12, 0.24);
+  color: var(--brand-strong);
+  background:
+    linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(255, 242, 233, 0.98)
+    ),
+    #ffffff;
+  box-shadow:
+    0 10px 30px rgba(3, 2, 19, 0.2),
+    0 2px 8px rgba(232, 90, 12, 0.22);
+}
+
+.hero-consultation-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(
+    120deg,
+    var(--brand),
+    #ff7b2f 55%,
+    var(--brand-soft)
+  );
+  opacity: 0;
+  transition: opacity 320ms ease;
+}
+
+.hero-consultation-cta:hover {
+  color: #ffffff;
+  border-color: rgba(255, 142, 77, 0.82);
+  box-shadow:
+    0 14px 36px rgba(3, 2, 19, 0.25),
+    0 0 0 1px rgba(255, 180, 138, 0.2) inset,
+    0 0 28px rgba(232, 90, 12, 0.45);
+}
+
+.hero-consultation-cta:hover::before {
+  opacity: 1;
+}
+
+.hero-consultation-cta:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.95),
+    0 0 0 6px var(--focus-ring),
+    0 14px 36px rgba(3, 2, 19, 0.24);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-consultation-cta::before {
+    transition: none;
+  }
 }
 
 button.orange-pop-hover::before,
@@ -355,10 +427,10 @@ a.orange-pop-hover:hover::before {
 /* Primary Button - Solid Fill (Get Started) */
 .btn-primary {
   position: relative;
-  background: linear-gradient(135deg, #f37106 0%, #ff8c42 100%);
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-soft) 100%);
   color: #ffffff;
   border: none;
-  box-shadow: 0 0.5rem 1.25rem rgba(243, 113, 6, 0.3);
+  box-shadow: 0 0.5rem 1.25rem rgba(232, 90, 12, 0.3);
   transform: translate3d(0, 0, 0);
   overflow: hidden;
   min-height: 2.75rem;
@@ -373,15 +445,15 @@ a.orange-pop-hover:hover::before {
 /* Mobile: Active state (no hover on touch devices) */
 .btn-primary:active {
   transform: translateY(2px);
-  box-shadow: 0 0.25rem 0.75rem rgba(243, 113, 6, 0.2);
+  box-shadow: 0 0.25rem 0.75rem rgba(232, 90, 12, 0.2);
 }
 
 /* Desktop: Hover state (min-width: 769px) */
 @media (min-width: 769px) {
   .btn-primary:hover {
     box-shadow:
-      0 0.75rem 2rem rgba(243, 113, 6, 0.5),
-      0 0 1.25rem rgba(243, 113, 6, 0.3);
+      0 0.75rem 2rem rgba(232, 90, 12, 0.5),
+      0 0 1.25rem rgba(232, 90, 12, 0.3);
     transform: translateY(-3px);
   }
 }
@@ -440,12 +512,12 @@ a.orange-pop-hover:hover::before {
   position: relative;
   background: linear-gradient(
     135deg,
-    rgba(243, 113, 6, 0.08) 0%,
-    rgba(255, 140, 66, 0.04) 100%
+    rgba(232, 90, 12, 0.08) 0%,
+    rgba(255, 142, 77, 0.04) 100%
   );
-  color: #f37106;
-  border: 2px solid #f37106;
-  box-shadow: 0 0.25rem 0.75rem rgba(243, 113, 6, 0.15);
+  color: var(--brand);
+  border: 2px solid var(--brand);
+  box-shadow: 0 0.25rem 0.75rem rgba(232, 90, 12, 0.15);
   transform: translate3d(0, 0, 0);
   min-height: 2.75rem;
   padding: 0.75rem 1.5rem;
@@ -460,8 +532,8 @@ a.orange-pop-hover:hover::before {
 .btn-tertiary:active {
   background: linear-gradient(
     135deg,
-    rgba(243, 113, 6, 0.2) 0%,
-    rgba(255, 140, 66, 0.15) 100%
+    rgba(232, 90, 12, 0.2) 0%,
+    rgba(255, 142, 77, 0.15) 100%
   );
   transform: translateY(2px);
 }
@@ -471,13 +543,13 @@ a.orange-pop-hover:hover::before {
   .btn-tertiary:hover {
     background: linear-gradient(
       135deg,
-      rgba(243, 113, 6, 0.15) 0%,
-      rgba(255, 140, 66, 0.1) 100%
+      rgba(232, 90, 12, 0.15) 0%,
+      rgba(255, 142, 77, 0.1) 100%
     );
-    border-color: #f37106;
+    border-color: var(--brand);
     box-shadow:
-      0 0.5rem 1.5rem rgba(243, 113, 6, 0.3),
-      0 0 0.9375rem rgba(243, 113, 6, 0.2);
+      0 0.5rem 1.5rem rgba(232, 90, 12, 0.3),
+      0 0 0.9375rem rgba(232, 90, 12, 0.2);
     transform: translateY(-2px);
   }
 }
@@ -486,8 +558,8 @@ a.orange-pop-hover:hover::before {
 .linkedin-button {
   position: relative;
   background: transparent;
-  color: #f37106;
-  border: 1.5px solid #f37106;
+  color: var(--brand);
+  border: 1.5px solid var(--brand);
   box-shadow: none;
   transform: translate3d(0, 0, 0);
   min-height: 2.75rem;
@@ -496,14 +568,14 @@ a.orange-pop-hover:hover::before {
 
 @media (min-width: 769px) {
   .linkedin-button:hover {
-    background: rgba(243, 113, 6, 0.08);
-    border-color: #f37106;
-    box-shadow: 0 0.125rem 0.5rem rgba(243, 113, 6, 0.15);
+    background: rgba(232, 90, 12, 0.08);
+    border-color: var(--brand);
+    box-shadow: 0 0.125rem 0.5rem rgba(232, 90, 12, 0.15);
   }
 }
 
 .linkedin-button:active {
-  background: rgba(243, 113, 6, 0.12);
+  background: rgba(232, 90, 12, 0.12);
 }
 
 .linkedin-button::before {
@@ -514,9 +586,9 @@ a.orange-pop-hover:hover::before {
 .phase-arrow {
   width: 40px;
   height: 48px;
-  color: #ff8c42;
+  color: var(--brand-soft);
   opacity: 0.9;
-  filter: drop-shadow(0 2px 6px rgba(255, 140, 66, 0.45));
+  filter: drop-shadow(0 2px 6px rgba(255, 142, 77, 0.45));
   stroke-linecap: round;
   stroke-linejoin: round;
   transition:
@@ -537,9 +609,9 @@ a.orange-pop-hover:hover::before {
 .phase-flow-arrow {
   width: 1.5rem !important;
   height: 1.5rem !important;
-  color: #ff8c42 !important;
+  color: var(--brand-soft) !important;
   opacity: 0.95 !important;
-  filter: drop-shadow(0 2px 6px rgba(255, 140, 66, 0.45)) !important;
+  filter: drop-shadow(0 2px 6px rgba(255, 142, 77, 0.45)) !important;
   stroke-linecap: round !important;
   stroke-linejoin: round !important;
   animation: pulse-arrow 2s ease-in-out infinite;
@@ -776,7 +848,7 @@ a.orange-pop-hover:hover::before {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #f37106;
+  background-color: var(--brand);
   border-radius: 7px;
 }
 
@@ -787,34 +859,40 @@ a.orange-pop-hover:hover::before {
 /* Firefox scrollbar */
 * {
   scrollbar-width: auto;
-  scrollbar-color: #f37106 #f3f3f5;
+  scrollbar-color: var(--brand) #f3f3f5;
 }
 
 /* Sticky contact bar styles */
+.sticky-contact-bar {
+  padding: 0;
+  margin: 0;
+}
+
 .sticky-contact-bar__button {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 0.75rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.625rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #ff6a00 0%, #ff7a1a 100%);
-  border: 1.5px solid rgba(255, 140, 0, 0.4);
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-soft) 100%);
+  border: 1.5px solid rgba(232, 90, 12, 0.4);
   box-shadow:
-    0 8px 24px rgba(255, 106, 0, 0.35),
+    0 8px 24px rgba(232, 90, 12, 0.35),
     inset 0 1px 2px rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
+  flex-shrink: 0;
 }
 
 .sticky-contact-bar__button:hover {
   box-shadow:
-    0 12px 32px rgba(255, 106, 0, 0.45),
+    0 12px 32px rgba(232, 90, 12, 0.45),
     inset 0 1px 2px rgba(255, 255, 255, 0.2);
 }
 
 .sticky-contact-bar__icon {
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 1.125rem;
+  height: 1.125rem;
   color: #ffffff;
 }
 
@@ -876,7 +954,8 @@ a.orange-pop-hover:hover::before {
 .capabilities-content .card h3 {
   color: #1a1a1a !important;
   letter-spacing: 0.3px !important;
-  word-break: break-word !important;
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
   line-height: 1.3 !important;
 }
 /* ===== IMAGE SLIDER TOUCH OPTIMIZATION ===== */
@@ -920,4 +999,21 @@ a.orange-pop-hover:hover::before {
   touch-action: manipulation;
   -webkit-user-select: none;
   user-select: none;
+}
+
+/* Solutions dropdown: avoid global grid utility selector collisions */
+.solutions-categories-grid {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+@media (min-width: 640px) {
+  .solutions-categories-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .solutions-categories-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }

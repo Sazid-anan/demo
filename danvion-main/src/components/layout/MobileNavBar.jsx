@@ -119,7 +119,7 @@ export function MobileNavPill({ theme = "dark" }) {
           rounded-none sm:rounded-full px-4 py-2.5
           flex items-center justify-center gap-3
           shadow-2xl border
-          w-[calc(100vw-1rem)] max-w-[420px]
+          w-[calc(100vw-1rem)] max-w-105
         `}
       >
         {navItems.map((item) => {
@@ -136,7 +136,11 @@ export function MobileNavPill({ theme = "dark" }) {
               : { to: item.path };
 
           return (
-            <LinkComponent key={item.path} {...linkProps} className="flex-1 flex justify-center">
+            <LinkComponent
+              key={item.path}
+              {...linkProps}
+              className="flex-1 flex justify-center"
+            >
               <motion.div
                 whileTap={{ scale: 0.9 }}
                 whileHover={{ scale: 1.05 }}
@@ -147,7 +151,7 @@ export function MobileNavPill({ theme = "dark" }) {
                     p-2 rounded-none sm:rounded-full transition-all
                     ${
                       active
-                        ? "bg-[#ff6600] text-white shadow-lg"
+                        ? "bg-(--brand) text-white shadow-lg"
                         : isDark
                           ? "text-gray-400 hover:bg-gray-800/50"
                           : "text-gray-600 hover:bg-gray-200/70"
@@ -159,7 +163,7 @@ export function MobileNavPill({ theme = "dark" }) {
                 <span
                   className={`
                     text-xs leading-tight font-semibold transition-colors
-                    ${active ? "text-[#ff6600]" : isDark ? "text-gray-400" : "text-gray-600"}
+                    ${active ? "text-(--brand)" : isDark ? "text-gray-400" : "text-gray-600"}
                   `}
                 >
                   {item.label}
@@ -217,10 +221,10 @@ export function MobileNavWithProfile({ theme = "dark" }) {
                   p-3 rounded-none sm:rounded-full transition-all
                   ${
                     active
-                      ? "bg-[#ff6600] text-white shadow-lg"
+                      ? "bg-(--brand) text-white shadow-lg"
                       : isDark
                         ? "text-gray-400 hover:bg-gray-800 hover:text-white"
-                        : "text-gray-700 hover:bg-gray-100 hover:text-[#ff6600]"
+                        : "text-gray-700 hover:bg-gray-100 hover:text-(--brand)"
                   }
                 `}
               >
@@ -242,10 +246,10 @@ export function MobileNavWithProfile({ theme = "dark" }) {
               transition-all
               ${
                 profileActive
-                  ? "bg-[#ff6600] text-white shadow-lg"
+                  ? "bg-(--brand) text-white shadow-lg"
                   : isDark
                     ? "bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-[#ff6600]"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-(--brand)"
               }
             `}
           >
@@ -304,7 +308,7 @@ export function MobileNavWithLabels({ theme = "dark" }) {
                     p-2 rounded-none sm:rounded-full transition-all
                     ${
                       active
-                        ? "bg-[#ff6600] text-white shadow-lg"
+                        ? "bg-(--brand) text-white shadow-lg"
                         : isDark
                           ? "text-gray-400"
                           : "text-gray-700"
@@ -316,7 +320,7 @@ export function MobileNavWithLabels({ theme = "dark" }) {
                 <span
                   className={`
                     text-xs font-semibold transition-colors
-                    ${active ? "text-[#ff6600]" : isDark ? "text-gray-400" : "text-gray-600"}
+                    ${active ? "text-(--brand)" : isDark ? "text-gray-400" : "text-gray-600"}
                   `}
                 >
                   {item.label}
@@ -375,10 +379,10 @@ export function MobileNavCompact({ theme = "dark" }) {
                   p-2.5 rounded-none sm:rounded-full transition-all relative
                   ${
                     active
-                      ? "bg-[#ff6600] text-white shadow-lg"
+                      ? "bg-(--brand) text-white shadow-lg"
                       : isDark
                         ? "text-gray-500 hover:text-white hover:bg-gray-800"
-                        : "text-gray-700 hover:text-[#ff6600] hover:bg-gray-100"
+                        : "text-gray-700 hover:text-(--brand) hover:bg-gray-100"
                   }
                 `}
               >

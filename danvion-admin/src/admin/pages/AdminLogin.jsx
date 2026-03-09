@@ -125,7 +125,7 @@ export default function AdminLogin() {
           >
             <button
               type="submit"
-              className="w-full px-8 py-4 text-lg font-bold rounded-xl transition-all duration-300 cursor-pointer !bg-brand-orange !text-brand-black hover:shadow-xl hover:-translate-y-0.5 orange-pop-hover"
+              className="w-full px-8 py-4 text-lg font-bold rounded-xl transition-all duration-300 cursor-pointer bg-brand-orange! text-brand-black! hover:shadow-xl hover:-translate-y-0.5 orange-pop-hover"
             >
               Sign In
             </button>

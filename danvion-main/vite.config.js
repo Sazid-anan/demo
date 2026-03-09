@@ -14,48 +14,50 @@ function crittersInlinePlugin() {
       try {
         let html = await readFile(htmlPath, "utf8");
 
+        // Inject modulepreload for entry JS chunk to break dependency chain
+        const entryJsMatch = html.match(/src="(\/assets\/index-[^"]+\.js)"/);
+        if (entryJsMatch) {
+          const entryJs = entryJsMatch[1];
+          html = html.replace(
+            "</head>",
+            `<link rel="modulepreload" href="${entryJs}">\n</head>`,
+          );
+        }
+
         // Run critters for critical CSS inlining and preload strategy
         const critters = new Critters({
           path: path.resolve(process.cwd(), "dist"),
-          preload: "swap", // This converts stylesheet to preload
-          pruneSource: false,
+          preload: "swap",
+          pruneSource: true,
           compress: true,
+          mergeStylesheets: true,
         });
         let optimizedHtml = await critters.process(html);
 
-        // Clean up: Remove duplicate stylesheet links (critters creates preload, we don't need the original)
-        // Keep only preload links, remove blocking stylesheet links for same file
-        const cssLinks =
-          optimizedHtml.match(/<link[^>]*\/assets\/[^"]+\.css[^>]*>/g) || [];
-        const cssFiles = new Set();
+        // Remove existing asset CSS noscript fallbacks first to avoid nested noscript tags.
+        optimizedHtml = optimizedHtml.replace(
+          /<noscript>\s*<link[^>]*href=["']((?:\/)?assets\/[^"']+\.css)["'][^>]*>\s*<\/noscript>/g,
+          "",
+        );
 
-        cssLinks.forEach((link) => {
-          const match = link.match(/href="([^"]+)"/);
-          if (match) cssFiles.add(match[1]);
-        });
+        // Force any remaining asset stylesheet links to non-blocking preload pattern.
+        optimizedHtml = optimizedHtml.replace(
+          /<link([^>]*?)rel=["']stylesheet["']([^>]*?)href=["']((?:\/)?assets\/[^"']+\.css)["']([^>]*)>/g,
+          (_match, before, between, href, after) => {
+            const attrs = `${before} ${between} ${after}`;
+            const hasCrossorigin = /\bcrossorigin\b/.test(attrs);
+            const crossorigin = hasCrossorigin ? " crossorigin" : "";
 
-        // For each CSS file, keep only the preload version
-        cssFiles.forEach((file) => {
-          // Remove blocking stylesheet link if preload exists
-          const hasPreload = optimizedHtml.includes(
-            `<link rel="preload" as="style" href="${file}"`,
-          );
-          if (hasPreload) {
-            // Remove any blocking stylesheet link for the same file
-            optimizedHtml = optimizedHtml.replace(
-              new RegExp(
-                `<link[^>]*rel=["']stylesheet["'][^>]*href=["']${file.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}["'][^>]*>`,
-                "g",
-              ),
-              "",
-            );
-          }
-        });
+            return `<link rel="preload" as="style" href="${href}"${crossorigin} onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="${href}"${crossorigin}></noscript>`;
+          },
+        );
 
         await writeFile(htmlPath, optimizedHtml, "utf8");
-        console.log("✅ Critical CSS inlined + non-blocking preload applied");
+        console.log(
+          "Critical CSS inlined and non-blocking CSS fallback applied",
+        );
       } catch (error) {
-        console.warn("⚠️ CSS optimization:", error.message);
+        console.warn("CSS optimization:", error.message);
       }
     },
   };
@@ -80,58 +82,19 @@ export default defineConfig({
         entryFileNames: "assets/[name]-[hash].js",
         chunkFileNames: "assets/[name]-[hash].js",
         assetFileNames: "assets/[name]-[hash][extname]",
-        // Optimized code splitting - separate chunks by type
+        // Simplified code splitting - only 2 chunks (entry + vendor)
         manualChunks(id) {
-          // Vendor: React ecosystem (core)
-          if (
-            id.includes("node_modules/react") ||
-            id.includes("node_modules/react-dom")
-          ) {
-            return "vendor-react";
+          // All node_modules go into single vendor chunk
+          if (id.includes("node_modules")) {
+            return "vendor";
           }
-          // Vendor: State management
-          if (id.includes("@reduxjs/toolkit") || id.includes("react-redux")) {
-            return "vendor-state";
-          }
-          // Vendor: Firebase (lazy-loaded)
-          if (id.includes("firebase")) {
-            return "vendor-firebase";
-          }
-          // Vendor: Routing
-          if (id.includes("react-router-dom")) {
-            return "vendor-router";
-          }
-          // Vendor: UI & Animations (heavy - load later)
-          if (id.includes("framer-motion") || id.includes("lucide-react")) {
-            return "vendor-ui";
-          }
-          // Vendor: Utilities (markdown, sanitization)
-          if (id.includes("marked") || id.includes("dompurify")) {
-            return "vendor-utils";
-          }
-          // Admin: Separate chunk - only load when admin section accessed
-          if (id.includes("/admin/")) {
-            return "chunk-admin";
-          }
-          // Pages: Route-specific chunks (don't mix with main)
-          if (id.includes("/pages/")) {
-            const pageName = id.match(/pages\/(\w+)/)?.[1] || "page";
-            return `page-${pageName.toLowerCase()}`;
-          }
-          // Components: Separate UI components
-          if (id.includes("/components/") && !id.includes("ErrorBoundary")) {
-            return "components";
-          }
-          // Redux slices
-          if (id.includes("/redux/slices/")) {
-            return "redux-slices";
-          }
-          // Keep ErrorBoundary, hooks and services near main for critical functionality
+          // All other code stays in main
         },
+        // Prevent automatic chunk splitting
       },
     },
     // Performance tweaks
-    chunkSizeWarningLimit: 600,
+    chunkSizeWarningLimit: 1000,
     cssCodeSplit: true,
     assetsInlineLimit: 4096,
     // Rollup optimizations

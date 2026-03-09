@@ -27,7 +27,10 @@ export function useFormValidation(initialValues, onSubmit, validate) {
     e.preventDefault();
 
     // Mark all fields as touched
-    const allTouched = Object.keys(values).reduce((acc, key) => ({ ...acc, [key]: true }), {});
+    const allTouched = Object.keys(values).reduce(
+      (acc, key) => ({ ...acc, [key]: true }),
+      {},
+    );
     setTouched(allTouched);
 
     // Validate all fields
@@ -58,12 +61,15 @@ export function useFormValidation(initialValues, onSubmit, validate) {
     setErrors,
     touched,
     setTouched,
+    setIsSubmitting,
     handleChange,
     handleBlur,
     handleSubmit,
     isSubmitting,
     reset,
-    setFieldValue: (name, value) => setValues((prev) => ({ ...prev, [name]: value })),
-    setFieldError: (name, error) => setErrors((prev) => ({ ...prev, [name]: error })),
+    setFieldValue: (name, value) =>
+      setValues((prev) => ({ ...prev, [name]: value })),
+    setFieldError: (name, error) =>
+      setErrors((prev) => ({ ...prev, [name]: error })),
   };
 }

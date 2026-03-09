@@ -1,21 +1,15 @@
 // eslint-disable-next-line no-unused-vars
-import { motion } from "framer-motion";
-import { useEffect, useState, lazy, Suspense } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ArrowRight } from "lucide-react";
 import Container from "../components/common/Container";
 import Button from "../components/ui/Button";
 import HeroTextSection from "../components/HeroTextSection";
-
-// Lazy load below-the-fold sections for better performance
-const ImageSliderSection = lazy(
-  () => import("../components/ImageSliderSection"),
-);
-const CapabilitiesSection = lazy(
-  () => import("../components/CapabilitiesSection"),
-);
-const PhasesSection = lazy(() => import("../components/PhasesSection"));
+import ImageSliderSection from "../components/ImageSliderSection";
+import CapabilitiesSection from "../components/CapabilitiesSection";
+import PhasesSection from "../components/PhasesSection";
 import { Link } from "react-router-dom";
 import SEO from "../components/SEO";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
@@ -26,7 +20,7 @@ import { errorLogger } from "../services/errorLogger";
 import { analyticsService } from "../services/analyticsService";
 import { SITE_CONTENT } from "../config/content";
 
-const RATE_LIMIT_MINUTES = 5;
+const RATE_LIMIT_MINUTES = 1;
 
 /**
  * Home Page
@@ -36,6 +30,7 @@ export default function Home() {
   const location = useLocation();
   const { homePage } = useSelector((state) => state.content);
   const toast = useToast();
+  const prefersReducedMotion = useReducedMotion();
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   const validateForm = (values) => {
@@ -128,8 +123,6 @@ export default function Home() {
       form.setTouched({});
       form.setErrors({});
 
-      toast.success("✅ Thank you! We'll get back to you soon.");
-
       setTimeout(() => setFormSubmitted(false), 5000);
     } catch (error) {
       errorLogger.captureException(error, {
@@ -173,6 +166,17 @@ export default function Home() {
     form.setErrors(fieldErrors);
   };
 
+  const hasValidationErrors =
+    Object.keys(form.errors).length > 0 && Object.keys(form.touched).length > 0;
+  const isSuccessState = formSubmitted && !form.isSubmitting;
+  const buttonLabel = form.isSubmitting
+    ? "Sending..."
+    : isSuccessState
+      ? "Message send Successfully"
+      : hasValidationErrors
+        ? "Please fill required fields"
+        : "Send Message";
+
   // Default: show full Home page
   return (
     <div className="min-h-screen">
@@ -209,60 +213,36 @@ export default function Home() {
       {/* Hero Text Section */}
       <HeroTextSection />
 
-      {/* Engineering Capabilities Section - Lazy Loaded */}
-      <Suspense
-        fallback={
-          <div className="min-h-100 flex items-center justify-center">
-            <div className="w-12 h-12 border-4 border-slate-200 border-t-brand-orange rounded-full animate-spin"></div>
-          </div>
-        }
-      >
-        <CapabilitiesSection />
-      </Suspense>
+      {/* Engineering Capabilities Section */}
+      <CapabilitiesSection />
 
-      {/* Phases Section - Lazy Loaded */}
-      <Suspense
-        fallback={
-          <div className="min-h-100 flex items-center justify-center">
-            <div className="w-12 h-12 border-4 border-slate-200 border-t-brand-orange rounded-full animate-spin"></div>
-          </div>
-        }
-      >
-        <PhasesSection />
-      </Suspense>
+      {/* Phases Section */}
+      <PhasesSection />
 
-      {/* Image Slider Section - Lazy Loaded */}
-      <Suspense
-        fallback={
-          <div className="min-h-100 flex items-center justify-center">
-            <div className="w-12 h-12 border-4 border-slate-200 border-t-brand-orange rounded-full animate-spin"></div>
-          </div>
-        }
-      >
-        <ImageSliderSection
-          images={[
-            {
-              src: "/images/IMIG_1.svg",
-              name: "AI-Powered Edge Computing Device",
-            },
-            {
-              src: "/images/IMIG_2.svg",
-              name: "IoT Embedded System Design",
-            },
-            {
-              src: "/images/IMIG_3.svg",
-              name: "Smart Automation Solution",
-            },
-          ]}
-          title="Our Designed Products"
-          autoPlay={true}
-          interval={35000}
-        />
-      </Suspense>
+      {/* Image Slider Section */}
+      <ImageSliderSection
+        images={[
+          {
+            src: "/images/IMIG_1.svg",
+            name: "AI-Powered Edge Computing Device",
+          },
+          {
+            src: "/images/IMIG_2.svg",
+            name: "IoT Embedded System Design",
+          },
+          {
+            src: "/images/IMIG_3.svg",
+            name: "Smart Automation Solution",
+          },
+        ]}
+        title="Our Designed Products"
+        autoPlay={true}
+        interval={35000}
+      />
       {/* Contact Section */}
       <section
         id="contact"
-        className="pt-6 sm:pt-8 md:pt-10 lg:pt-14 pb-6 sm:pb-8 md:pb-10 lg:pb-14 font-sans bg-gray-100"
+        className="pt-6 sm:pt-8 md:pt-10 lg:pt-12 pb-6 sm:pb-8 md:pb-10 lg:pb-12 font-sans bg-gray-100"
       >
         <Container className="content-maxwidth">
           {/* Header */}
@@ -270,16 +250,16 @@ export default function Home() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-left mb-6 sm:mb-7 md:mb-8 lg:mb-10 mt-0 pt-0"
+            className="text-left mb-1.5 sm:mb-2 md:mb-2 lg:mb-2 mt-0 pt-0"
           >
-            <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-8">
+            <div className="flex flex-col lg:flex-row items-center gap-3 lg:gap-5">
               <div className="w-full lg:flex-1 flex flex-col items-start text-left">
-                <h2 className="section-heading-display heading-orange text-orange-700 font-semibold leading-tight tracking-tight mb-6 sm:mb-6 md:mb-6 lg:mb-6">
+                <h2 className="section-heading-display heading-orange text-orange-700 font-semibold leading-tight tracking-tight mb-4 sm:mb-4 md:mb-4 lg:mb-4">
                   Get In Touch
                 </h2>
               </div>
-              <div className="w-full lg:flex-[1.5] flex flex-col items-start text-left lg:ml-11">
-                <p className="text-[18px] sm:text-[20px] md:text-[22px] lg:text-[23px] font-medium text-gray-800 leading-relaxed text-justify">
+              <div className="w-full lg:flex-[1.5] flex flex-col items-start text-left lg:ml-8">
+                <p className="paragraph-display font-medium text-gray-800">
                   {SITE_CONTENT.sharedDescriptions.engineeringSolutions}
                 </p>
               </div>
@@ -287,7 +267,7 @@ export default function Home() {
           </motion.div>
 
           {/* Two Column Layout: Cards + Form */}
-          <div className="grid md:grid-cols-2 gap-6 sm:gap-8 md:gap-6 lg:gap-12">
+          <div className="grid md:grid-cols-2 gap-4 sm:gap-5 md:gap-6 lg:gap-8">
             {/* Left Column: Innovation Message */}
             <motion.div
               initial={{ opacity: 0, x: -40 }}
@@ -298,12 +278,12 @@ export default function Home() {
               <div className="w-full text-left center">
                 <h2
                   className="font-bold leading-[0.9] tracking-tighter text-orange-700"
-                  style={{ fontSize: "clamp(18px, 4.5vw, 70px)" }}
+                  style={{ fontSize: "clamp(18px, 4.5vw, 60px)" }}
                 >
-                  <span className="heading-orange block mb-2">
+                  <span className="heading-orange block mb-0.5">
                     Let's Innovate
                   </span>
-                  <span className="heading-orange block mb-2">With</span>
+                  <span className="heading-orange block mb-0.5">With</span>
                   <span className="heading-orange block">Danvion</span>
                 </h2>
               </div>
@@ -314,12 +294,12 @@ export default function Home() {
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="flex items-start pt-0 sm:pt-0 md:pt-2 lg:pt-0"
+              className="flex items-start pt-0 -mt-1.5 sm:-mt-2 md:-mt-2 lg:-mt-2"
             >
               <div className="w-full">
                 <form
                   onSubmit={handleContactSubmit}
-                  className="space-y-4 sm:space-y-5 md:space-y-4 lg:space-y-5 relative"
+                  className="contact-form space-y-0.5 sm:space-y-1 md:space-y-1.5 lg:space-y-1.5 relative"
                 >
                   {/* Name */}
                   <motion.div
@@ -330,7 +310,7 @@ export default function Home() {
                   >
                     <label
                       htmlFor="name"
-                      className="block text-sm md:text-base lg:text-lg font-semibold text-gray-800 mb-2"
+                      className="block text-base font-semibold text-gray-800 mb-0.5"
                     >
                       Full Name *
                     </label>
@@ -343,17 +323,12 @@ export default function Home() {
                       onChange={form.handleChange}
                       onBlur={handleBlur}
                       placeholder=""
-                      className={`w-full px-2 sm:px-3 md:px-4 py-2 sm:py-2.5 md:py-2 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all duration-300 bg-white text-gray-800 shadow-sm hover:shadow-md text-sm md:text-base placeholder-gray-400 ${
+                      className={`w-full px-2 sm:px-2.5 md:px-3 py-1.5 sm:py-2 md:py-2 border-2 rounded-2xl focus:outline-none focus:ring-2 transition-all duration-300 bg-white text-gray-800 shadow-md hover:shadow-lg text-sm placeholder-gray-400 ${
                         form.touched.name && form.errors.name
                           ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
                           : "border-gray-300 focus:border-orange-500 focus:ring-orange-500/20"
                       }`}
                     />
-                    {form.touched.name && form.errors.name && (
-                      <p className="text-red-400 text-xs sm:text-sm mt-1">
-                        {form.errors.name}
-                      </p>
-                    )}
                   </motion.div>
                   {/* Email */}
                   <motion.div
@@ -364,7 +339,7 @@ export default function Home() {
                   >
                     <label
                       htmlFor="email"
-                      className="block text-sm md:text-base lg:text-lg font-semibold text-gray-800 mb-2"
+                      className="block text-base font-semibold text-gray-800 mb-0.5"
                     >
                       Email Address *
                     </label>
@@ -377,17 +352,12 @@ export default function Home() {
                       onChange={form.handleChange}
                       onBlur={handleBlur}
                       placeholder=""
-                      className={`w-full px-2 sm:px-3 md:px-4 py-2 sm:py-2.5 md:py-2 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all duration-300 bg-white text-gray-800 shadow-sm hover:shadow-md text-sm md:text-base placeholder-gray-400 ${
+                      className={`w-full px-2 sm:px-2.5 md:px-3 py-1.5 sm:py-2 md:py-2 border-2 rounded-2xl focus:outline-none focus:ring-2 transition-all duration-300 bg-white text-gray-800 shadow-md hover:shadow-lg text-sm placeholder-gray-400 ${
                         form.touched.email && form.errors.email
                           ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
                           : "border-gray-300 focus:border-orange-500 focus:ring-orange-500/20"
                       }`}
                     />
-                    {form.touched.email && form.errors.email && (
-                      <p className="text-red-400 text-xs sm:text-sm mt-1">
-                        {form.errors.email}
-                      </p>
-                    )}
                   </motion.div>
                   {/* Phone */}
                   <motion.div
@@ -398,7 +368,7 @@ export default function Home() {
                   >
                     <label
                       htmlFor="phone"
-                      className="block text-sm md:text-base lg:text-lg font-semibold text-gray-800 mb-2"
+                      className="block text-base font-semibold text-gray-800 mb-0.5"
                     >
                       Phone Number (Optional)
                     </label>
@@ -410,7 +380,7 @@ export default function Home() {
                       value={form.values.phone}
                       onChange={form.handleChange}
                       placeholder=""
-                      className="w-full px-2 sm:px-3 md:px-4 py-2 sm:py-2.5 md:py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 bg-white text-gray-800 shadow-sm hover:shadow-md text-sm md:text-base placeholder-gray-400"
+                      className="w-full px-2 sm:px-2.5 md:px-3 py-1.5 sm:py-2 md:py-2 border-2 border-gray-300 rounded-2xl focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 bg-white text-gray-800 shadow-md hover:shadow-lg text-sm placeholder-gray-400"
                     />
                   </motion.div>
                   {/* Message */}
@@ -422,7 +392,7 @@ export default function Home() {
                   >
                     <label
                       htmlFor="message"
-                      className="block text-sm md:text-base lg:text-lg font-semibold text-gray-800 mb-2"
+                      className="block text-base font-semibold text-gray-800 mb-0.5"
                     >
                       Message *
                     </label>
@@ -434,47 +404,52 @@ export default function Home() {
                       onChange={form.handleChange}
                       onBlur={handleBlur}
                       placeholder=""
-                      className={`w-full px-2 sm:px-3 md:px-4 py-2 sm:py-2.5 md:py-2 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all duration-300 bg-white text-gray-800 shadow-sm hover:shadow-md resize-none text-sm md:text-base placeholder-gray-400 ${
+                      className={`w-full px-3 sm:px-4 md:px-5 py-2.5 sm:py-3 md:py-3 border-2 rounded-2xl focus:outline-none focus:ring-2 transition-all duration-300 bg-white text-gray-800 shadow-md hover:shadow-lg resize-none text-sm placeholder-gray-400 ${
                         form.touched.message && form.errors.message
                           ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
                           : "border-gray-300 focus:border-orange-500 focus:ring-orange-500/20"
                       }`}
                     />
-                    {form.touched.message && form.errors.message && (
-                      <p className="text-red-400 text-xs sm:text-sm mt-1">
-                        {form.errors.message}
-                      </p>
-                    )}
                   </motion.div>
                   {/* Submit Button */}
                   <motion.button
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.55, duration: 0.5 }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.98 }}
+                    whileHover={prefersReducedMotion ? {} : { scale: 1.03 }}
+                    whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
                     type="submit"
                     disabled={form.isSubmitting}
-                    className="group w-full bg-orange-700 hover:bg-white border border-orange-700 hover:shadow-lg font-bold rounded-full py-2.5 md:py-2 lg:py-3.5 px-8 transition-all duration-300 disabled:opacity-70 cursor-pointer"
+                    className={`group w-full border font-bold rounded-full py-3 md:py-3 lg:py-3.5 px-8 text-base transition-all duration-300 disabled:opacity-70 cursor-pointer ${
+                      isSuccessState
+                        ? "bg-emerald-600 border-emerald-600 hover:bg-emerald-700 shadow-md shadow-emerald-200/50"
+                        : "bg-orange-700 hover:bg-white border-orange-700 hover:shadow-lg"
+                    }`}
                   >
-                    <span className="text-[12px] sm:text-xs md:text-sm lg:text-base text-white group-hover:text-orange-700 transition-colors duration-300">
-                      {form.isSubmitting ? "Sending..." : "Send Message"}
-                    </span>
-                  </motion.button>
-                  {/* Success Message - Non-overlapping */}
-                  {formSubmitted && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="p-4 bg-green-900 border border-green-700 rounded-lg text-center text-green-200 font-medium mt-4 w-full"
-                      role="status"
+                    <motion.span
+                      key={buttonLabel}
+                      initial={
+                        prefersReducedMotion || !isSuccessState
+                          ? { opacity: 1, y: 0, scale: 1 }
+                          : { opacity: 0.85, y: 2, scale: 0.98 }
+                      }
+                      animate={
+                        prefersReducedMotion || !isSuccessState
+                          ? { opacity: 1, y: 0, scale: 1 }
+                          : { opacity: 1, y: 0, scale: [1, 1.03, 1] }
+                      }
+                      transition={{ duration: prefersReducedMotion ? 0 : 0.35 }}
                       aria-live="polite"
                       aria-atomic="true"
+                      className={`text-[12px] sm:text-xs md:text-sm lg:text-base transition-colors duration-300 ${
+                        isSuccessState
+                          ? "text-emerald-50"
+                          : "text-white group-hover:text-orange-700"
+                      }`}
                     >
-                      Thank you! We'll get back to you soon.
-                    </motion.div>
-                  )}
+                      {buttonLabel}
+                    </motion.span>
+                  </motion.button>
                 </form>
               </div>
             </motion.div>

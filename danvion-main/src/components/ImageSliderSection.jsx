@@ -187,14 +187,14 @@ export default function ImageSliderSection({
           <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-8">
             {/* Left: Headline */}
             <div className="w-full lg:flex-1 flex flex-col items-start text-left">
-              <h1 className="section-heading-display heading-orange text-orange-500 font-semibold leading-tight tracking-tight mb-6 sm:mb-6 md:mb-6 lg:mb-6">
+              <h1 className="section-heading-display heading-orange text-orange-500 font-semibold leading-[1.2] tracking-tight mb-6">
                 {title}
               </h1>
             </div>
 
             {/* Right: Description */}
             <div className="w-full lg:flex-[1.5] flex flex-col items-start text-left lg:ml-11">
-              <p className="text-[18px] sm:text-[20px] md:text-[22px] lg:text-[23px] font-medium text-gray-800 leading-relaxed text-justify">
+              <p className="paragraph-display font-medium text-gray-800 text-justify">
                 Stop worrying about design errors or manufacturing delays. Our
                 comprehensive approach integrates advanced simulation and
                 in-house prototyping to catch issues early, delivering
@@ -264,12 +264,12 @@ export default function ImageSliderSection({
                 />
                 {/* Sliding Overlay on Hover */}
                 {typeof image === "object" && image.name && (
-                  <div className="absolute left-0 right-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-linear-to-t from-orange-700/90 via-orange-500/80 to-transparent text-white text-center py-1.5 sm:py-2 md:py-3 px-1.5 text-xs sm:text-sm md:text-base lg:text-lg font-semibold tracking-wide flex flex-col items-center rounded-b-lg md:rounded-b-xl lg:rounded-b-2xl">
-                    <div className="mb-0.5 sm:mb-1 text-xs sm:text-sm md:text-base lg:text-lg font-bold drop-shadow-lg">
+                  <div className="absolute left-0 right-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-linear-to-t from-orange-700/90 via-orange-500/80 to-transparent text-white text-center py-1.5 sm:py-2 md:py-3 px-1.5 text-xs sm:text-sm md:text-base font-semibold tracking-wide flex flex-col items-center rounded-b-lg md:rounded-b-xl lg:rounded-b-2xl">
+                    <div className="mb-0.5 sm:mb-1 text-xs sm:text-sm md:text-base font-bold drop-shadow-lg">
                       {image.name}
                     </div>
                     {image.description && (
-                      <div className="text-sm md:text-base lg:text-base font-normal drop-shadow-md">
+                      <div className="text-sm md:text-base font-normal drop-shadow-md">
                         {image.description}
                       </div>
                     )}

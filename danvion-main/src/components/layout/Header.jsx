@@ -9,8 +9,8 @@ import { PAGE_ROUTES } from "../../config/routes";
 import { HEADER_CONFIG } from "../../config/links";
 
 /**
- * Header Component (NEW DESIGN)
- * Orange background with white navigation
+ * Header Component
+ * Dark charcoal background with orange accent states
  * Desktop navigation with dropdown menus
  * Mobile uses bottom navigation bar
  */
@@ -30,13 +30,13 @@ const NAVIGATION_ITEMS = [
   },
 ];
 
-// Button style constants
+// Button style constants - Optimized responsive sizing
 const BUTTON_CLASSES =
-  "px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-lg font-medium text-white text-sm sm:text-base md:text-lg lg:text-xl hover:bg-orange-800 transition-all whitespace-nowrap";
+  "px-2.5 sm:px-3 md:px-4 lg:px-5 py-1.5 sm:py-2 rounded-lg font-medium text-white text-xs sm:text-sm md:text-base lg:text-base border border-transparent transition-all whitespace-nowrap";
 
 export default function Header() {
   const location = useLocation();
-  const { isMobile } = useResponsive();
+  const { isMobile, isDesktop } = useResponsive();
   const [showSolutions, setShowSolutions] = useState(false);
 
   const handleSolutionsClick = (e) => {
@@ -73,21 +73,21 @@ export default function Header() {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="sticky top-0 z-50 bg-orange-700 shadow-lg transition-shadow duration-300"
+        className="sticky top-0 z-50 bg-(--surface-strong) shadow-lg transition-shadow duration-300 border-b border-white/10"
       >
         <div className="w-full flex justify-center">
-          <div className="w-full max-w-7xl px-2 sm:px-3 md:px-4 lg:px-6">
-            <div className="flex justify-between items-center h-14 sm:h-16 md:h-18 lg:h-20">
+          <div className="w-full max-w-7xl px-4 sm:px-6 md:px-8 lg:px-10">
+            <div className="flex justify-between items-center h-12 sm:h-14 md:h-16 lg:h-16">
               {/* Logo */}
               <Link
                 to="/"
-                className="flex items-center gap-1 sm:gap-2 md:gap-2 shrink-0"
+                className="flex items-center gap-2 sm:gap-3 shrink-0"
                 onClick={(e) => handleNavClick({ path: PAGE_ROUTES.HOME }, e)}
               >
                 <motion.picture
                   whileHover={!isMobile ? { scale: 1.1, rotate: 5 } : {}}
                   transition={{ duration: 0.3 }}
-                  className="h-7 w-7 sm:h-9 sm:w-9 md:h-10 md:w-10 bg-white rounded-lg p-0.5 sm:p-1 block"
+                  className="flex items-center justify-center shrink-0 h-7 w-7 sm:h-8 sm:w-8 md:h-10 md:w-10 lg:h-10 lg:w-10 bg-white rounded-lg p-1"
                 >
                   <source srcSet={HEADER_CONFIG.LOGO_PATH} type="image/webp" />
                   <img
@@ -99,21 +99,23 @@ export default function Header() {
                   />
                 </motion.picture>
                 <motion.div
-                  whileHover={{ scale: 1.08 }}
-                  className="font-black text-white text-sm sm:text-lg md:text-2xl lg:text-3xl tracking-tight"
+                  whileHover={!isMobile ? { scale: 1.05 } : {}}
+                  className="font-black text-white text-sm sm:text-lg md:text-xl lg:text-xl tracking-tight leading-none"
                 >
                   {HEADER_CONFIG.COMPANY_NAME}
                 </motion.div>
               </Link>
 
               {/* Desktop Navigation */}
-              <div className="hidden sm:flex items-center gap-0.5 sm:gap-1 md:gap-2 lg:gap-4">
+              <div className="hidden md:flex items-center gap-1.5 md:gap-2 lg:gap-3">
                 <nav
-                  className="flex items-center gap-0.5 sm:gap-1 md:gap-2"
+                  className="flex items-center gap-1 md:gap-1.5 lg:gap-2"
                   aria-label="Main navigation"
                 >
                   {NAVIGATION_ITEMS.map((item) =>
-                    item.isSpecial && item.label === "Solutions" ? (
+                    item.isSpecial &&
+                    item.label === "Solutions" &&
+                    isDesktop ? (
                       // Solutions Button (Toggle)
                       <motion.button
                         key={item.label}
@@ -121,7 +123,7 @@ export default function Header() {
                         whileHover={{ scale: 1.05 }}
                         aria-expanded={showSolutions}
                         aria-haspopup="true"
-                        className={`header-solutions-btn ${BUTTON_CLASSES} flex items-center gap-0.5 sm:gap-1 ${showSolutions ? "bg-orange-800" : ""}`}
+                        className={`header-solutions-btn ${BUTTON_CLASSES} flex items-center gap-0.5 sm:gap-1 ${showSolutions ? "bg-(--brand) text-white border-(--brand)" : "hover:text-(--brand) hover:border-(--brand)/60"}`}
                       >
                         {item.label}{" "}
                         <ChevronDown
@@ -138,7 +140,7 @@ export default function Header() {
                       >
                         <motion.div
                           whileHover={{ scale: 1.05 }}
-                          className={BUTTON_CLASSES}
+                          className={`${BUTTON_CLASSES} ${location.pathname === item.path ? "text-(--brand) border-(--brand)/70 bg-(--brand)/10" : "hover:text-(--brand) hover:border-(--brand)/60"}`}
                         >
                           {item.label}
                         </motion.div>
@@ -154,7 +156,7 @@ export default function Header() {
 
       {/* Solutions Dropdown Section */}
       <SolutionsDropdown
-        isVisible={showSolutions}
+        isVisible={isDesktop && showSolutions}
         onClose={() => setShowSolutions(false)}
       />
     </>

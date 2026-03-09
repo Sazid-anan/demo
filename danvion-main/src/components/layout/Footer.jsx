@@ -39,7 +39,7 @@ export default function Footer() {
   };
 
   const linkHoverVariants = {
-    hover: !isMobile ? { x: 4, color: "#FF8C00" } : {}, // Disable on mobile
+    hover: !isMobile ? { x: 4, color: "var(--brand)" } : {}, // Disable on mobile
   };
 
   const socialIconVariants = {
@@ -69,17 +69,17 @@ export default function Footer() {
               whileHover={{ y: -4 }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="text-[12px] font-bold mb-1 sm:mb-1.5 uppercase tracking-widest text-black">
+              <h3 className="text-xs sm:text-sm font-bold mb-1 sm:mb-1.5 uppercase tracking-widest text-black">
                 {SITE_CONTENT.company.name}
               </h3>
               <div className="h-0.5 w-7 sm:w-8 bg-linear-to-r from-brand-orange to-orange-500 mb-1 sm:mb-1.5 rounded-full" />
-              <p className="hidden sm:block text-[12px] text-black leading-tight mb-2 sm:mb-2.5">
+              <p className="hidden sm:block text-xs sm:text-sm text-black leading-tight mb-2 sm:mb-2.5">
                 {SITE_CONTENT.company.tagline}
               </p>
 
               {/* Social Links */}
               <div className="flex items-center gap-1.5 sm:gap-2">
-                <p className="text-[12px] text-black font-semibold">
+                <p className="text-xs sm:text-sm text-black font-semibold">
                   {SITE_CONTENT.footer.connect}
                 </p>
                 <motion.a
@@ -103,7 +103,7 @@ export default function Footer() {
               whileHover={{ y: -4 }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="text-[12px] font-bold mb-1 sm:mb-1.5 uppercase tracking-widest text-black">
+              <h3 className="text-xs sm:text-sm font-bold mb-1 sm:mb-1.5 uppercase tracking-widest text-black">
                 {SITE_CONTENT.footer.sections.navigation.title}
               </h3>
               <div className="h-0.5 w-7 sm:w-8 bg-linear-to-r from-brand-orange to-orange-500 mb-1 sm:mb-1.5 rounded-full" />
@@ -111,10 +111,13 @@ export default function Footer() {
                 <motion.div variants={linkHoverVariants} whileHover="hover">
                   <Link
                     to="/"
-                    className="text-black hover:text-brand-orange text-[12px] transition-colors flex items-center gap-1.5 group"
+                    className="text-black hover:text-brand-orange text-xs sm:text-sm transition-colors flex items-center gap-1.5 group"
                   >
                     <span className="opacity-0 group-hover:opacity-100 transition-opacity">
-                      <ArrowRight className="w-3 h-3 text-brand-orange" strokeWidth={2.5} />
+                      <ArrowRight
+                        className="w-3 h-3 text-brand-orange"
+                        strokeWidth={2.5}
+                      />
                     </span>
                     Home
                   </Link>
@@ -122,7 +125,7 @@ export default function Footer() {
                 <motion.div variants={linkHoverVariants} whileHover="hover">
                   <Link
                     to="/products"
-                    className="text-black hover:text-brand-orange text-[12px] transition-colors flex items-center gap-1.5 group"
+                    className="text-black hover:text-brand-orange text-xs sm:text-sm transition-colors flex items-center gap-1.5 group"
                   >
                     <span className="opacity-0 group-hover:opacity-100 transition-opacity">
                       <ArrowRight className="w-3 h-3" />
@@ -133,7 +136,7 @@ export default function Footer() {
                 <motion.div variants={linkHoverVariants} whileHover="hover">
                   <Link
                     to="/blogs"
-                    className="text-black hover:text-brand-orange text-[12px] transition-colors flex items-center gap-1.5 group"
+                    className="text-black hover:text-brand-orange text-xs sm:text-sm transition-colors flex items-center gap-1.5 group"
                   >
                     <span className="opacity-0 group-hover:opacity-100 transition-opacity">
                       <ArrowRight className="w-3 h-3" />
@@ -146,7 +149,7 @@ export default function Footer() {
                     href={EXTERNAL_LINKS.CALENDLY}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-black hover:text-brand-orange text-[12px] transition-colors flex items-center gap-1.5 group"
+                    className="text-black hover:text-brand-orange text-xs sm:text-sm transition-colors flex items-center gap-1.5 group"
                   >
                     <span className="opacity-0 group-hover:opacity-100 transition-opacity">
                       <ArrowRight className="w-3 h-3" />
@@ -158,7 +161,7 @@ export default function Footer() {
                   <a
                     href={INTERNAL_LINKS.CONTACT}
                     onClick={(event) => handleSectionClick(event, "contact")}
-                    className="text-black hover:text-brand-orange text-[12px] transition-colors flex items-center gap-1.5 group"
+                    className="text-black hover:text-brand-orange text-xs sm:text-sm transition-colors flex items-center gap-1.5 group"
                   >
                     <span className="opacity-0 group-hover:opacity-100 transition-opacity">
                       <ArrowRight className="w-3 h-3" />
@@ -175,7 +178,7 @@ export default function Footer() {
               whileHover={{ y: -4 }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="text-[12px] font-bold mb-1 sm:mb-1.5 uppercase tracking-widest text-black">
+              <h3 className="text-xs sm:text-sm font-bold mb-1 sm:mb-1.5 uppercase tracking-widest text-black">
                 {SITE_CONTENT.footer.sections.resources.title}
               </h3>
               <div className="h-0.5 w-7 sm:w-8 bg-linear-to-r from-brand-orange to-orange-500 mb-1 sm:mb-1.5 rounded-full" />
@@ -184,7 +187,7 @@ export default function Footer() {
                   <a
                     href={INTERNAL_LINKS.CONTACT}
                     onClick={(event) => handleSectionClick(event, "contact")}
-                    className="text-black hover:text-brand-orange text-[12px] transition-colors flex items-center gap-1.5 group"
+                    className="text-black hover:text-brand-orange text-xs sm:text-sm transition-colors flex items-center gap-1.5 group"
                   >
                     <span className="opacity-0 group-hover:opacity-100 transition-opacity">
                       <ArrowRight className="w-3 h-3" />
@@ -195,8 +198,10 @@ export default function Footer() {
                 <motion.div variants={linkHoverVariants} whileHover="hover">
                   <Link
                     to="/"
-                    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                    className="text-black hover:text-brand-orange text-[12px] transition-colors flex items-center gap-1.5 group"
+                    onClick={() =>
+                      window.scrollTo({ top: 0, behavior: "smooth" })
+                    }
+                    className="text-black hover:text-brand-orange text-xs sm:text-sm transition-colors flex items-center gap-1.5 group"
                   >
                     <span className="opacity-0 group-hover:opacity-100 transition-opacity">
                       <ArrowRight className="w-3 h-3" />
@@ -213,19 +218,22 @@ export default function Footer() {
               whileHover={{ y: -4 }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="text-[12px] font-bold mb-1 sm:mb-1.5 uppercase tracking-widest text-black">
+              <h3 className="text-xs sm:text-sm font-bold mb-1 sm:mb-1.5 uppercase tracking-widest text-black">
                 {SITE_CONTENT.footer.sections.getInTouch.title}
               </h3>
               <div className="h-0.5 w-7 sm:w-8 bg-linear-to-r from-brand-orange to-orange-500 mb-1 sm:mb-1.5 rounded-full" />
               <div className="flex flex-col gap-1 sm:gap-1.5">
                 {/* Email */}
-                <a href="mailto:support@danvion.com" className="flex items-start gap-1.5 group">
+                <a
+                  href="mailto:support@danvion.com"
+                  className="flex items-start gap-1.5 group"
+                >
                   <Mail className="w-2 h-2 text-brand-orange shrink-0 mt-0.5" />
                   <div className="flex flex-col">
-                    <p className="text-[12px] text-black uppercase tracking-wider leading-none mb-0.5">
+                    <p className="text-xs text-black uppercase tracking-wider leading-none mb-0.5">
                       Email
                     </p>
-                    <p className="text-[12px] text-black group-hover:text-brand-orange transition-colors leading-tight break-all">
+                    <p className="text-xs sm:text-sm text-black group-hover:text-brand-orange transition-colors leading-tight break-all">
                       support@danvion.com
                     </p>
                   </div>
@@ -235,10 +243,10 @@ export default function Footer() {
                 <div className="flex items-start gap-1.5">
                   <MapPin className="w-2 h-2 text-brand-orange shrink-0 mt-0.5" />
                   <div className="flex flex-col">
-                    <p className="text-[12px] text-black uppercase tracking-wider leading-none mb-0.5">
+                    <p className="text-xs text-black uppercase tracking-wider leading-none mb-0.5">
                       Location
                     </p>
-                    <p className="text-[12px] text-black leading-tight">
+                    <p className="text-xs sm:text-sm text-black leading-tight">
                       128 City Road, London, EC1V 2NX, GB
                     </p>
                   </div>
@@ -254,10 +262,13 @@ export default function Footer() {
         {/* Bottom Footer */}
         <div className="py-0.5 sm:py-1">
           <div className="flex flex-col gap-0.5 sm:gap-1 text-center">
-            <p className="text-[12px] text-black">
-              {SITE_CONTENT.footer.bottom.copyright.replace("{year}", currentYear)}
+            <p className="text-xs sm:text-sm text-black">
+              {SITE_CONTENT.footer.bottom.copyright.replace(
+                "{year}",
+                currentYear,
+              )}
             </p>
-            <div className="flex items-center justify-center gap-1.5 text-[12px] text-black flex-wrap">
+            <div className="flex items-center justify-center gap-1.5 text-xs sm:text-sm text-black flex-wrap">
               <a href="#" className="hover:text-brand-orange transition-colors">
                 {SITE_CONTENT.footer.bottom.privacyPolicy}
               </a>

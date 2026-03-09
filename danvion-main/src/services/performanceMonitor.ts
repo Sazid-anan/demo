@@ -14,6 +14,9 @@ export class PerformanceMonitor {
   initWebVitals() {
     if (!("PerformanceObserver" in window)) return;
 
+    let fidLogged = false; // Only log FID once
+    let clsDebounce: NodeJS.Timeout | null = null;
+
     // Largest Contentful Paint (LCP)
     try {
       const lcpObserver = new PerformanceObserver((list) => {
@@ -28,30 +31,38 @@ export class PerformanceMonitor {
       if (this.isDev) console.warn("LCP monitoring not available:", e);
     }
 
-    // First Input Delay (FID) / Interaction to Next Paint (INP)
+    // First Input Delay (FID) - Only log once
     try {
       const fidObserver = new PerformanceObserver((list) => {
+        if (fidLogged) return; // Prevent multiple logs
         const entries = list.getEntries();
         for (const entry of entries) {
           const entryAny = entry as any;
           const delay = entryAny.processingStart - entry.startTime;
           this.vitals.FID = delay;
           this.logMetric("FID", delay, "ms", { threshold: 100 });
+          fidLogged = true;
+          break;
         }
       });
-      fidObserver.observe({ entryTypes: ["first-input", "event"] });
+      fidObserver.observe({ entryTypes: ["first-input"] });
     } catch (e) {
       if (this.isDev) console.warn("FID monitoring not available:", e);
     }
 
-    // Cumulative Layout Shift (CLS)
+    // Cumulative Layout Shift (CLS) - Debounced logging
     try {
       const clsObserver = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
           const entryAny = entry as any;
           if (!entryAny.hadRecentInput) {
             this.vitals.CLS = (this.vitals.CLS || 0) + entryAny.value;
-            this.logMetric("CLS", this.vitals.CLS, "", { threshold: 0.1 });
+
+            // Debounce CLS logging to reduce console spam
+            if (clsDebounce) clearTimeout(clsDebounce);
+            clsDebounce = setTimeout(() => {
+              this.logMetric("CLS", this.vitals.CLS, "", { threshold: 0.1 });
+            }, 500);
           }
         }
       });

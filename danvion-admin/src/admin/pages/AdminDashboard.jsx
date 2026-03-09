@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -21,19 +21,79 @@ import {
 import { logoutAdmin } from "../../redux/slices/authSlice";
 import { setActiveTab } from "../../redux/slices/adminSlice";
 import { fetchContent } from "../../redux/slices/contentSlice";
-import EditProductsTab from "../components/EditProductsTab";
-import EditTeamTab from "../components/EditTeamTab";
-import MessagesTab from "../components/MessagesTab";
-import AnalyticsWidget from "../components/AnalyticsWidget";
-import TestimonialsTab from "../components/TestimonialsTab";
-import BlogsTab from "../components/BlogsTab";
-import SiteSettingsTab from "../components/SiteSettingsTab";
-import EmailTemplatesTab from "../components/EmailTemplatesTab";
-import ActivityLogsTab from "../components/ActivityLogsTab";
-import MediaLibraryTab from "../components/MediaLibraryTab";
-import ContentSchedulerTab from "../components/ContentSchedulerTab";
-import ThemeCustomizerTab from "../components/ThemeCustomizerTab";
-import SEOManagerTab from "../components/SEOManagerTab";
+const EditProductsTab = lazy(() => import("../components/EditProductsTab"));
+const EditTeamTab = lazy(() => import("../components/EditTeamTab"));
+const MessagesTab = lazy(() => import("../components/MessagesTab"));
+const AnalyticsWidget = lazy(() => import("../components/AnalyticsWidget"));
+const TestimonialsTab = lazy(() => import("../components/TestimonialsTab"));
+const BlogsTab = lazy(() => import("../components/BlogsTab"));
+const SiteSettingsTab = lazy(() => import("../components/SiteSettingsTab"));
+const EmailTemplatesTab = lazy(() => import("../components/EmailTemplatesTab"));
+const ActivityLogsTab = lazy(() => import("../components/ActivityLogsTab"));
+const MediaLibraryTab = lazy(() => import("../components/MediaLibraryTab"));
+const ContentSchedulerTab = lazy(() => import("../components/ContentSchedulerTab"));
+const ThemeCustomizerTab = lazy(() => import("../components/ThemeCustomizerTab"));
+const SEOManagerTab = lazy(() => import("../components/SEOManagerTab"));
+
+const TABS = [
+  { id: "analytics", label: "Analytics", icon: BarChart3 },
+  { id: "products", label: "Products", icon: Package },
+  { id: "blogs", label: "Blog Posts", icon: FileText },
+  { id: "team", label: "Leadership Team", icon: Users },
+  { id: "testimonials", label: "Testimonials", icon: Star },
+  { id: "media", label: "Media Library", icon: ImageIcon },
+  { id: "scheduler", label: "Content Scheduler", icon: Calendar },
+  { id: "theme", label: "Theme Customizer", icon: Palette },
+  { id: "seo", label: "SEO Manager", icon: Search },
+  { id: "settings", label: "Settings", icon: Settings },
+  { id: "email", label: "Email Templates", icon: Mail },
+  { id: "activity", label: "Activity Logs", icon: History },
+];
+
+const TAB_GROUPS = [
+  {
+    title: "Dashboard",
+    items: ["analytics"],
+  },
+  {
+    title: "Content",
+    items: ["products", "blogs", "team", "testimonials"],
+  },
+  {
+    title: "Tools",
+    items: ["media", "scheduler"],
+  },
+  {
+    title: "Advanced",
+    items: ["theme", "seo"],
+  },
+  {
+    title: "Administration",
+    items: ["settings", "email", "activity"],
+  },
+];
+
+const TAB_COMPONENTS = {
+  analytics: AnalyticsWidget,
+  products: EditProductsTab,
+  blogs: BlogsTab,
+  team: EditTeamTab,
+  testimonials: TestimonialsTab,
+  messages: MessagesTab,
+  media: MediaLibraryTab,
+  scheduler: ContentSchedulerTab,
+  theme: ThemeCustomizerTab,
+  seo: SEOManagerTab,
+  settings: SiteSettingsTab,
+  email: EmailTemplatesTab,
+  activity: ActivityLogsTab,
+};
+
+const TabLoader = () => (
+  <div className="admin-section admin-section--soft p-8 text-center text-gray-600">
+    Loading tab content...
+  </div>
+);
 
 export default function AdminDashboard() {
   const dispatch = useDispatch();
@@ -43,6 +103,10 @@ export default function AdminDashboard() {
   const storageBucket =
     import.meta.env.VITE_FIREBASE_STORAGE_BUCKET ||
     "danvion-ltd.firebasestorage.app";
+  const tabById = useMemo(() => {
+    return Object.fromEntries(TABS.map((tab) => [tab.id, tab]));
+  }, []);
+  const ActiveTabComponent = TAB_COMPONENTS[activeTab];
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -53,60 +117,21 @@ export default function AdminDashboard() {
 
   // Fetch content on mount
   useEffect(() => {
-    dispatch(fetchContent());
-  }, [dispatch]);
+    if (isLoggedIn) {
+      dispatch(fetchContent());
+    }
+  }, [dispatch, isLoggedIn]);
 
   const handleLogout = () => {
     dispatch(logoutAdmin());
     navigate("/login");
   };
 
-  const tabs = [
-    { id: "analytics", label: "Analytics", icon: BarChart3 },
-    { id: "products", label: "Products", icon: Package },
-    { id: "blogs", label: "Blog Posts", icon: FileText },
-    { id: "team", label: "Leadership Team", icon: Users },
-    { id: "testimonials", label: "Testimonials", icon: Star },
-    { id: "media", label: "Media Library", icon: ImageIcon },
-    { id: "scheduler", label: "Content Scheduler", icon: Calendar },
-    { id: "theme", label: "Theme Customizer", icon: Palette },
-    { id: "seo", label: "SEO Manager", icon: Search },
-    { id: "settings", label: "Settings", icon: Settings },
-    { id: "email", label: "Email Templates", icon: Mail },
-    { id: "activity", label: "Activity Logs", icon: History },
-  ];
-
-  const tabGroups = [
-    {
-      title: "Dashboard",
-      items: ["analytics"],
-    },
-    {
-      title: "Content",
-      items: ["products", "blogs", "team", "testimonials"],
-    },
-    {
-      title: "Tools",
-      items: ["media", "scheduler"],
-    },
-    {
-      title: "Advanced",
-      items: ["theme", "seo"],
-    },
-    {
-      title: "Administration",
-      items: ["settings", "email", "activity"],
-    },
-  ];
-
   if (!isLoggedIn) return null;
 
   return (
     <div
       className="min-h-screen admin-area text-brand-black"
-      style={{
-        fontFamily: "Inter",
-      }}
     >
       {/* Main Content */}
       <div className="w-full mx-auto px-4 py-12">
@@ -154,12 +179,12 @@ export default function AdminDashboard() {
                 </p>
               </div>
               <div className="space-y-4">
-                {tabGroups.map((group) => (
+                {TAB_GROUPS.map((group) => (
                   <div key={group.title}>
                     <p className="admin-group-title mb-2">{group.title}</p>
                     <div className="space-y-2">
                       {group.items.map((id) => {
-                        const tab = tabs.find((item) => item.id === id);
+                        const tab = tabById[id];
                         if (!tab) return null;
                         return (
                           <motion.button
@@ -217,7 +242,7 @@ export default function AdminDashboard() {
               transition={{ delay: 0.1 }}
               className="flex lg:hidden gap-3 mb-6 overflow-x-auto pb-2"
             >
-              {tabs.map((tab) => (
+              {TABS.map((tab) => (
                 <motion.button
                   key={tab.id}
                   whileHover={{ y: -2 }}
@@ -244,19 +269,9 @@ export default function AdminDashboard() {
               transition={{ duration: 0.3 }}
               className="admin-panel rounded-3xl p-8 md:p-12"
             >
-              {activeTab === "analytics" && <AnalyticsWidget />}
-              {activeTab === "products" && <EditProductsTab />}
-              {activeTab === "blogs" && <BlogsTab />}
-              {activeTab === "team" && <EditTeamTab />}
-              {activeTab === "testimonials" && <TestimonialsTab />}
-              {activeTab === "messages" && <MessagesTab />}
-              {activeTab === "media" && <MediaLibraryTab />}
-              {activeTab === "scheduler" && <ContentSchedulerTab />}
-              {activeTab === "theme" && <ThemeCustomizerTab />}
-              {activeTab === "seo" && <SEOManagerTab />}
-              {activeTab === "settings" && <SiteSettingsTab />}
-              {activeTab === "email" && <EmailTemplatesTab />}
-              {activeTab === "activity" && <ActivityLogsTab />}
+              <Suspense fallback={<TabLoader />}>
+                {ActiveTabComponent ? <ActiveTabComponent /> : <TabLoader />}
+              </Suspense>
             </motion.div>
           </div>
         </div>

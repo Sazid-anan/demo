@@ -25,7 +25,10 @@ const Products = lazy(() => import("./pages/Products"));
 const Blogs = lazy(() => import("./pages/Blogs"));
 
 const PageLoader = () => (
-  <div className="min-h-screen flex items-center justify-center">
+  <div
+    className="min-h-screen flex items-center justify-center"
+    style={{ minHeight: "100vh" }}
+  >
     <div className="w-12 h-12 border-4 border-slate-200 border-t-brand-orange rounded-full animate-spin"></div>
   </div>
 );
@@ -55,10 +58,11 @@ function App() {
     dispatch(fetchContent());
   }, [dispatch]);
 
-  // Real-time Firebase listeners — lazy loaded after page load
+  // Real-time Firebase listeners — deferred after page is interactive
   useEffect(() => {
     let isActive = true;
     let unsubscribers = [];
+    let debounceTimer = null;
 
     const setupListeners = async () => {
       if (!isActive) return;
@@ -70,8 +74,12 @@ function App() {
 
       if (!isActive) return;
 
+      // Debounced refresh to prevent excessive updates
       const refresh = () => {
-        if (isActive) dispatch(fetchContent({ force: true }));
+        if (debounceTimer) clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          if (isActive) dispatch(fetchContent({ force: true }));
+        }, 500); // 500ms debounce
       };
 
       unsubscribers = [
@@ -82,16 +90,30 @@ function App() {
       ];
     };
 
+    // Defer until browser is idle (better FID)
     if (document.readyState === "complete") {
-      setTimeout(setupListeners, 3000);
+      if ("requestIdleCallback" in window) {
+        requestIdleCallback(() => setupListeners(), { timeout: 5000 });
+      } else {
+        setTimeout(setupListeners, 3000);
+      }
     } else {
-      window.addEventListener("load", () => setTimeout(setupListeners, 3000), {
-        once: true,
-      });
+      window.addEventListener(
+        "load",
+        () => {
+          if ("requestIdleCallback" in window) {
+            requestIdleCallback(() => setupListeners(), { timeout: 5000 });
+          } else {
+            setTimeout(setupListeners, 3000);
+          }
+        },
+        { once: true },
+      );
     }
 
     return () => {
       isActive = false;
+      if (debounceTimer) clearTimeout(debounceTimer);
       unsubscribers.forEach((unsubscribe) => unsubscribe());
     };
   }, [dispatch]);
@@ -103,7 +125,7 @@ function App() {
           <ScrollToTop />
           <PageViewTracker />
           <Header />
-          <main>
+          <main style={{ minHeight: "50vh" }}>
             <Routes>
               <Route
                 path="/"

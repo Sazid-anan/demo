@@ -1,27 +1,103 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&display=swap");
 
 /* Admin panel base styles */
+:root {
+  --admin-bg-1: #f6f9ff;
+  --admin-bg-2: #e9f1ff;
+  --admin-bg-3: #fff2e4;
+  --admin-text: #1a2433;
+  --admin-border: #dbe5f1;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
 body {
-  font-family: "Inter", sans-serif;
-  background-color: #f9fafb;
+  font-family: "Comfortaa", "Segoe UI", sans-serif;
+  color: var(--admin-text);
+  background:
+    radial-gradient(900px 600px at 12% -6%, rgba(255, 153, 64, 0.2), transparent 62%),
+    radial-gradient(1200px 700px at 90% -18%, rgba(79, 129, 255, 0.2), transparent 58%),
+    linear-gradient(180deg, var(--admin-bg-1) 0%, var(--admin-bg-2) 46%, var(--admin-bg-3) 100%);
 }
 
 /* Keep admin-specific styles from original */
 .admin-area {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  background: transparent;
 }
 .admin-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--admin-border);
+  box-shadow: 0 24px 60px rgba(24, 42, 71, 0.14);
+  backdrop-filter: blur(4px);
 }
 .admin-card-lite {
   background: white;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--admin-border);
   border-radius: 0.75rem;
 }
 .admin-section {
   background: white;
   border-radius: 0.75rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--admin-border);
   padding: 1.5rem;
+}
+
+.admin-section--soft {
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+}
+
+.admin-panel {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--admin-border);
+  box-shadow: 0 20px 40px rgba(28, 52, 84, 0.08);
+}
+
+.admin-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid #d9e3f2;
+  border-radius: 999px;
+  padding: 0.45rem 0.8rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: #fff;
+  color: #2b3c55;
+}
+
+.admin-group-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #5a6d88;
+  text-transform: uppercase;
+}
+
+.admin-nav-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.orange-pop-hover {
+  position: relative;
+  isolation: isolate;
+}
+
+.orange-pop-hover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, rgba(255, 166, 77, 0), rgba(255, 166, 77, 0.25), rgba(255, 166, 77, 0));
+  transform: translateX(-120%);
+  transition: transform 360ms ease;
+  z-index: -1;
+}
+
+.orange-pop-hover:hover::before {
+  transform: translateX(120%);
 }

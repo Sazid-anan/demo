@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./services/firebaseClient";
 import { setAuthUser } from "./redux/slices/authSlice";
-import { fetchContent } from "./redux/slices/contentSlice";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ToastProvider } from "./hooks/useToast";
 
@@ -25,11 +24,6 @@ const PageLoader = () => (
 function App() {
   const dispatch = useDispatch();
   const isAdminLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-
-  // Fetch all content for admin to edit
-  useEffect(() => {
-    dispatch(fetchContent());
-  }, [dispatch]);
 
   // Firebase Auth listener
   useEffect(() => {

@@ -42,12 +42,21 @@ export default {
         "soft-gray": "#f5f5f5",
         "light-gray": "#e8e8e8",
         "edge-blue": "#0066cc",
-        "brand-orange": "#ff6600",
-        "brand-black": "#1a1a1a",
+        "brand-orange": "var(--brand)",
+        "brand-black": "var(--surface-strong)",
         "brand-white": "#ffffff",
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
+        sans: [
+          "Inter",
+          "ui-sans-serif",
+          "system-ui",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Segoe UI",
+          "Roboto",
+          "sans-serif",
+        ],
       },
       fontSize: {
         /* Standard Typography Scale - Mobile-First Responsive */

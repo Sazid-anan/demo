@@ -1,5 +1,4 @@
 import { getApp, getApps, initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
 import { initializeFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
@@ -15,12 +14,16 @@ const firebaseConfig = {
 
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
-export const auth = getAuth(app);
+// Lazy load Firebase Auth only when needed (e.g., admin login)
+// This prevents loading auth iframe and 36 Google cookies on every page load
+export const getAuthInstance = () => {
+  const { getAuth } = require("firebase/auth");
+  return getAuth(app);
+};
 
 // Initialize Firestore with optimized settings
 export const db = initializeFirestore(app, {
   cache: { kind: "persistent" },
-  experimentalForceLongPolling: true, // Fallback for QUIC protocol issues
 });
 
 export const storage = getStorage(app);

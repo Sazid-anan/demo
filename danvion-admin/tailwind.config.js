@@ -4,10 +4,6 @@ export default {
     "./index.html",
     "./src/**/*.{js,jsx,ts,tsx,mdx}",
     "./public/**/*.html",
-    "./src/**/**/*.js",
-    "./src/**/**/*.jsx",
-    "./src/**/**/*.ts",
-    "./src/**/**/*.tsx",
   ],
   theme: {
     extend: {
@@ -47,7 +43,7 @@ export default {
         "brand-white": "#ffffff",
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
+        sans: ["Comfortaa", "Segoe UI", "system-ui", "sans-serif"],
       },
       fontSize: {
         /* Standard Typography Scale - Mobile-First Responsive */

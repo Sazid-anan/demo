@@ -119,10 +119,7 @@ export default function Products() {
           >
             <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-8">
               <div className="w-full lg:flex-1 flex flex-col items-start text-left">
-                <h1
-                  className="section-heading-display heading-orange text-orange-500 font-semibold leading-tight tracking-tight mb-6 sm:mb-6 md:mb-6 lg:mb-6"
-                  style={{ color: "#f97316" }}
-                >
+                <h1 className="section-heading-display heading-orange text-orange-500 font-semibold leading-tight tracking-tight mb-6 sm:mb-6 md:mb-6 lg:mb-6">
                   Our Products
                 </h1>
               </div>
@@ -154,7 +151,7 @@ export default function Products() {
             <h2 className="text-h3 font-bold text-brand-black mb-4">
               Coming Soon
             </h2>
-            <p className="text-gray-600 text-xs sm:text-sm md:text-base lg:text-lg mb-8 leading-relaxed">
+            <p className="paragraph-content text-gray-600 mb-8">
               We're working on some amazing products that will transform your
               business. Check back soon for exciting announcements!
             </p>
@@ -229,7 +226,7 @@ export default function Products() {
                   animate={{ opacity: 1 }}
                   className="text-center py-8 sm:py-12 px-4 text-gray-600"
                 >
-                  <p className="text-xs sm:text-xs md:text-sm lg:text-base">
+                  <p className="paragraph-small">
                     No products found in this category. Try selecting a
                     different one.
                   </p>
@@ -279,7 +276,7 @@ export default function Products() {
                       <h2 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-brand-black mb-2">
                         {product.name}
                       </h2>
-                      <p className="text-gray-600 text-xs sm:text-xs md:text-sm lg:text-base mb-3 sm:mb-4 line-clamp-2">
+                      <p className="paragraph-small text-gray-600 mb-3 sm:mb-4 line-clamp-2">
                         {product.description}
                       </p>
 
@@ -423,7 +420,7 @@ export default function Products() {
                   <h3 className="text-sm sm:text-base md:text-lg font-bold text-brand-black mb-2">
                     Description
                   </h3>
-                  <p className="text-gray-600 text-xs sm:text-sm md:text-base leading-relaxed">
+                  <p className="paragraph-content text-gray-600">
                     {activeProduct.description}
                   </p>
                 </div>
@@ -434,7 +431,7 @@ export default function Products() {
                       Details
                     </h3>
                     <div
-                      className="markdown-content text-xs sm:text-sm md:text-base"
+                      className="markdown-content paragraph-content"
                       dangerouslySetInnerHTML={{
                         __html: renderMarkdown(activeProduct.details),
                       }}

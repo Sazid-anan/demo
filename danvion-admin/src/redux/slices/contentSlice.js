@@ -21,8 +21,11 @@ const sanitizePayload = (payload) => {
 const normalizeHomePageBranding = (homePage) => {
   if (!homePage) return homePage;
 
-  const legacyToNew = "Alchemy for the Intelligent Age";
-  const legacyHeadlineValues = new Set(["Edge AI Solutions", "Edge AI Excellence"]);
+  const legacyToNew = "Vision Precision Intelligence";
+  const legacyHeadlineValues = new Set([
+    "Edge AI Solutions",
+    "Edge AI Excellence",
+  ]);
 
   const normalized = { ...homePage };
 
@@ -45,16 +48,25 @@ export const fetchContent = createAsyncThunk(
   "content/fetchContent",
   async (_, { rejectWithValue }) => {
     try {
-      const [homeDoc, aboutDoc, servicesDoc, productsSnap, teamSnap, blogsSnap] = await Promise.all(
-        [
-          getDoc(doc(dbLite, "home_page", "singleton")),
-          getDoc(doc(dbLite, "about_page", "singleton")),
-          getDoc(doc(dbLite, "services_page", "singleton")),
-          getDocs(query(collection(dbLite, "products"), orderBy("name"))),
-          getDocs(query(collection(dbLite, "team_members"), orderBy("display_order"))),
-          getDocs(query(collection(dbLite, "blogs"), orderBy("published_date", "desc"))),
-        ],
-      );
+      const [
+        homeDoc,
+        aboutDoc,
+        servicesDoc,
+        productsSnap,
+        teamSnap,
+        blogsSnap,
+      ] = await Promise.all([
+        getDoc(doc(dbLite, "home_page", "singleton")),
+        getDoc(doc(dbLite, "about_page", "singleton")),
+        getDoc(doc(dbLite, "services_page", "singleton")),
+        getDocs(query(collection(dbLite, "products"), orderBy("name"))),
+        getDocs(
+          query(collection(dbLite, "team_members"), orderBy("display_order")),
+        ),
+        getDocs(
+          query(collection(dbLite, "blogs"), orderBy("published_date", "desc")),
+        ),
+      ]);
 
       const products = productsSnap.docs.map((docSnap) => ({
         id: docSnap.id,
@@ -70,12 +82,18 @@ export const fetchContent = createAsyncThunk(
       }));
 
       return {
-        homePage: homeDoc.exists() ? [{ id: homeDoc.id, ...homeDoc.data() }] : [],
+        homePage: homeDoc.exists()
+          ? [{ id: homeDoc.id, ...homeDoc.data() }]
+          : [],
         products,
-        aboutPage: aboutDoc.exists() ? [{ id: aboutDoc.id, ...aboutDoc.data() }] : [],
+        aboutPage: aboutDoc.exists()
+          ? [{ id: aboutDoc.id, ...aboutDoc.data() }]
+          : [],
         teamMembers,
         blogs,
-        servicesPage: servicesDoc.exists() ? [{ id: servicesDoc.id, ...servicesDoc.data() }] : [],
+        servicesPage: servicesDoc.exists()
+          ? [{ id: servicesDoc.id, ...servicesDoc.data() }]
+          : [],
       };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -164,7 +182,8 @@ export const saveProduct = createAsyncThunk(
   "content/saveProduct",
   async (payload, { rejectWithValue }) => {
     try {
-      const isNewProduct = !payload.id || (typeof payload.id === "number" && payload.id < 1000000);
+      const isNewProduct =
+        !payload.id || (typeof payload.id === "number" && payload.id < 1000000);
 
       if (isNewProduct) {
         const { id: _id, ...productData } = payload;
@@ -179,7 +198,11 @@ export const saveProduct = createAsyncThunk(
 
       const { id, ...productData } = payload;
       const ref = doc(dbLite, "products", String(id));
-      await setDoc(ref, { ...productData, updated_at: new Date().toISOString() }, { merge: true });
+      await setDoc(
+        ref,
+        { ...productData, updated_at: new Date().toISOString() },
+        { merge: true },
+      );
       return { id: String(id), ...productData };
     } catch (err) {
       return rejectWithValue(err.message || String(err));
@@ -219,7 +242,11 @@ export const saveTeamMember = createAsyncThunk(
 
       const { id, ...memberData } = payload;
       const ref = doc(dbLite, "team_members", String(id));
-      await setDoc(ref, { ...memberData, updated_at: new Date().toISOString() }, { merge: true });
+      await setDoc(
+        ref,
+        { ...memberData, updated_at: new Date().toISOString() },
+        { merge: true },
+      );
       return { id: String(id), ...memberData };
     } catch (err) {
       return rejectWithValue(err.message || String(err));
@@ -245,7 +272,8 @@ export const saveBlog = createAsyncThunk(
   "content/saveBlog",
   async (payload, { rejectWithValue }) => {
     try {
-      const isNewBlog = !payload.id || (typeof payload.id === "number" && payload.id < 1000000);
+      const isNewBlog =
+        !payload.id || (typeof payload.id === "number" && payload.id < 1000000);
 
       if (isNewBlog) {
         const { id: _id, ...blogData } = payload;
@@ -260,7 +288,11 @@ export const saveBlog = createAsyncThunk(
 
       const { id, ...blogData } = payload;
       const ref = doc(dbLite, "blogs", String(id));
-      await setDoc(ref, { ...blogData, updated_at: new Date().toISOString() }, { merge: true });
+      await setDoc(
+        ref,
+        { ...blogData, updated_at: new Date().toISOString() },
+        { merge: true },
+      );
       return { id: String(id), ...blogData };
     } catch (err) {
       return rejectWithValue(err.message || String(err));
@@ -289,7 +321,7 @@ const contentSlice = createSlice({
   name: "content",
   initialState: {
     homePage: {
-      headline: "Alchemy for the Intelligent Age",
+      headline: "Vision Precision Intelligence",
       description: "Transform your products with intelligent edge computing",
       heroImages: [],
       hero_image_details: "",
@@ -402,7 +434,8 @@ const contentSlice = createSlice({
         state.aboutPage = action.payload.aboutPage[0] || state.aboutPage;
         state.teamMembers = action.payload.teamMembers || [];
         state.blogs = action.payload.blogs || [];
-        state.servicesPage = action.payload.servicesPage[0] || state.servicesPage;
+        state.servicesPage =
+          action.payload.servicesPage[0] || state.servicesPage;
       })
       .addCase(fetchContent.rejected, (state, action) => {
         state.loading = false;
@@ -494,7 +527,9 @@ const contentSlice = createSlice({
       })
       .addCase(deleteTeamMember.fulfilled, (state, action) => {
         state.loading = false;
-        state.teamMembers = state.teamMembers.filter((m) => m.id !== action.payload);
+        state.teamMembers = state.teamMembers.filter(
+          (m) => m.id !== action.payload,
+        );
       })
       .addCase(deleteTeamMember.rejected, (state, action) => {
         state.loading = false;

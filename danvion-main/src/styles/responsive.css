@@ -1,3 +1,28 @@
+/* ...existing code... */
+/* ...existing code... */
+/* Move media queries after global rules */
+/* Ensure Solutions button font matches other header buttons for all display sizes */
+@media (max-width: 480px) {
+  .header-solutions-btn {
+    font-size: 0.875rem !important; /* 14px */
+  }
+}
+@media (min-width: 481px) and (max-width: 768px) {
+  .header-solutions-btn {
+    font-size: 1rem !important; /* 16px */
+  }
+}
+@media (min-width: 769px) and (max-width: 1280px) {
+  .header-solutions-btn {
+    font-size: 1rem !important; /* 16px */
+  }
+}
+@media (min-width: 1281px) {
+  .header-solutions-btn {
+    font-size: 1rem !important; /* 16px */
+  }
+}
+
 /**
  * RESPONSIVE STYLES
  * All media queries and responsive breakpoint styles
@@ -23,7 +48,7 @@ textarea {
 
 /* Links are tappable but allow text selection in content */
 a[href]:not(.btn):not([role="button"]) {
-  -webkit-tap-highlight-color: rgba(243, 113, 6, 0.1);
+  -webkit-tap-highlight-color: rgba(232, 90, 12, 0.1);
 }
 
 /* Improve form input tap experience */
@@ -63,10 +88,8 @@ select {
   }
 
   /* Optimize sidebar/sticky contact bar on mobile */
-  .fixed.right-0\.5,
-  .fixed.right-1,
-  .fixed.right-4 {
-    right: 0.125rem !important; /* Closer to edge on mobile */
+  .sticky-contact-bar {
+    display: none !important;
   }
 
   /* Better spacing on contact bar icons */
@@ -128,7 +151,7 @@ select {
   }
 
   a:focus {
-    outline: 2px solid #f37106;
+    outline: 2px solid var(--brand);
     outline-offset: 2px;
   }
 
@@ -227,7 +250,7 @@ select {
   input:focus,
   select:focus,
   textarea:focus {
-    outline: 2px solid #f37106;
+    outline: 2px solid var(--brand);
     outline-offset: 2px;
   }
 
@@ -282,6 +305,11 @@ select {
   /* Reduce blur effects slightly on tablets */
   .backdrop-blur-md {
     backdrop-filter: blur(8px) !important;
+  }
+
+  /* Sticky contact bar on tablet - hidden */
+  .sticky-contact-bar {
+    display: none !important;
   }
 
   /* ===== 540x720 VIEW - REDUCE CARD SIZE ===== */
@@ -436,22 +464,12 @@ select {
   /* ===== HEADER/NAVBAR OPTIMIZATION ===== */
   header,
   .topbanner {
-    padding-left: 1.25rem !important;
-    padding-right: 1.25rem !important;
     border-radius: 0 !important;
   }
 
   header > div,
   header > div > div {
     border-radius: 0 !important;
-  }
-
-  /* Compact header spacing */
-  header nav,
-  .topbanner nav,
-  .navbar {
-    padding-top: 0.5rem !important;
-    padding-bottom: 0.5rem !important;
   }
 
   /* Mobile menu optimization */
@@ -534,16 +552,6 @@ select {
   }
 
   /* ===== CARD & COMPONENT OPTIMIZATION ===== */
-  /* Reduce card padding on mobile - targeted rules only */
-  [class*="rounded-"]:not(.rounded-none) {
-    border-radius: clamp(0.375rem, 2vw, 0.75rem) !important;
-  }
-
-  /* Only apply padding to actual card components, not all bg- classes */
-  .card {
-    padding: clamp(0.75rem, 3vw, 1.5rem) !important;
-  }
-
   /* ===== FLEX LAYOUT OPTIMIZATION ===== */
   /* NOTE: Removed aggressive flex-row override that broke layouts */
   /* Let Tailwind's responsive utilities handle flex direction */
@@ -582,15 +590,10 @@ select {
   textarea,
   select {
     font-size: 16px !important; /* Prevent iOS zoom */
-    padding: 0.75rem !important;
-    border-radius: 0.375rem !important;
     width: 100%;
   }
 
-  /* Form group spacing */
-  [class*="form"] > * {
-    margin-bottom: 1rem !important;
-  }
+  /* Form spacing is handled by component-level Tailwind classes */
 
   /* ===== SPACING UTILITIES ===== */
   /* NOTE: Removed aggressive global spacing overrides - let Tailwind handle responsive spacing */
@@ -620,14 +623,14 @@ select {
     gap: 0.75rem !important;
   }
 
-  /* Limit text on mobile view only */
+  /* Allow text wrapping on mobile without line clamping */
   .capabilities-content .aspect-square h3 {
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    display: -webkit-box !important;
-    -webkit-line-clamp: 2 !important;
-    line-clamp: 2 !important;
-    -webkit-box-orient: vertical !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    display: block !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
   }
 
   /* Phase Section */
@@ -835,7 +838,8 @@ select {
     line-height: 1.15 !important;
     text-align: center !important;
     margin: 0 !important;
-    word-break: break-word !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
   }
 }
 
@@ -899,9 +903,9 @@ select {
 .phase-arrow {
   width: 40px;
   height: 48px;
-  color: #ff8c42;
+  color: var(--brand-soft);
   opacity: 0.9;
-  filter: drop-shadow(0 2px 6px rgba(255, 140, 66, 0.45));
+  filter: drop-shadow(0 2px 6px rgba(255, 142, 77, 0.45));
   stroke-linecap: round;
   stroke-linejoin: round;
   transition:
@@ -919,6 +923,23 @@ select {
 
 /* Desktop arrows - keep original size */
 @media (min-width: 1024px) {
+  /* Desktop sticky contact bar - no gaps */
+  .sticky-contact-bar {
+    right: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .sticky-contact-bar__button {
+    width: 2.75rem !important;
+    height: 2.75rem !important;
+  }
+
+  .sticky-contact-bar__icon {
+    width: 1.125rem !important;
+    height: 1.125rem !important;
+  }
+
   .phase-arrow {
     width: 40px !important;
     height: 48px !important;
@@ -946,7 +967,8 @@ select {
     overflow: visible !important;
     text-overflow: clip !important;
     display: block !important;
-    word-wrap: break-word !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
     white-space: normal !important;
   }
 
@@ -1005,10 +1027,11 @@ select {
     h3,
   .capabilities-content .aspect-square h3 {
     font-size: 0.58rem !important;
-    line-height: 1.2 !important;
+    line-height: 1.3 !important;
     margin: 0 !important;
     margin-top: 0.3rem !important;
-    word-break: break-word !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
     overflow: visible !important;
     text-overflow: clip !important;
     display: block !important;
@@ -1071,6 +1094,11 @@ select {
   [class*="max-w-"] {
     padding-left: 1.25rem !important;
     padding-right: 1.25rem !important;
+  }
+
+  .solutions-dropdown-shell {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
   /* Sticky contact bar positioning on iPad Pro */
@@ -1197,9 +1225,11 @@ select {
   .capabilities-content .card.border.border-gray-200 h3,
   .capabilities-content .aspect-square h3 {
     font-size: 0.56rem !important;
-    line-height: 1.2 !important;
+    line-height: 1.3 !important;
     padding: 0 0.2rem !important;
     text-align: center !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
   }
 
   /* Grid layout - 7 columns to fit all capability boxes */
@@ -1240,8 +1270,12 @@ select {
 /* Specific optimization for iPad mini 7.9" portrait (767x858) */
 @media (min-width: 744px) and (max-width: 833px) {
   .capabilities-content .grid[class*="grid-cols"] {
-    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
-    gap: 0.4rem !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 0.7rem !important;
+  }
+  .capabilities-content [class*="flex-"] p {
+    font-size: 1.375rem !important; /* 22px */
+    text-align: justify !important;
   }
 }
 
@@ -1311,36 +1345,7 @@ select {
   }
 
   /* Contact Section - Let's Innovate With Danvion */
-  #contact .animated-gradient-text,
-  #contact .animated-gradient-text-orange {
-    font-size: 2.5rem !important;
-    line-height: 1.1 !important;
-  }
-
-  #contact h2[style*="clamp"] {
-    font-size: 2.5rem !important;
-  }
-
-  /* Contact form styling */
-  #contact .grid.md\:grid-cols-2 {
-    gap: 2rem !important;
-  }
-
-  #contact .grid.md\:grid-cols-2 > div:first-child {
-    overflow: hidden !important;
-    max-width: 100% !important;
-  }
-
-  #contact .grid.md\:grid-cols-2 > div:first-child > div {
-    max-width: 100% !important;
-    overflow: hidden !important;
-  }
-
-  #contact .grid.md\:grid-cols-2 > div:first-child h2 {
-    max-width: 100% !important;
-    word-wrap: break-word !important;
-    overflow-wrap: break-word !important;
-  }
+  /* Styling handled by responsive Tailwind classes in JSX */
 
   /* Footer - 4 columns for tablet */
   footer .grid {
@@ -1378,29 +1383,16 @@ select {
     max-width: none !important;
   }
 
-  header .max-w-\[1280px\] {
-    padding-left: 0.45rem !important;
-    padding-right: 0.45rem !important;
+  /* Mobile-specific header compact adjustments */
+  header .max-w-7xl {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
   }
 
-  header .h-16 {
-    height: 3.05rem !important;
-  }
-
-  header img[alt="Danvion Logo"] {
-    width: 1.72rem !important;
-    height: 1.72rem !important;
-  }
-
-  header .font-bold.text-brand-black {
-    font-size: 0.8rem !important;
-    letter-spacing: 0.01em;
-    line-height: 1 !important;
-  }
-
-  header a.flex.items-center {
-    gap: 0.42rem !important;
-    min-height: 1.85rem !important;
+  /* Logo fine-tuning for small screens */
+  header picture {
+    width: 1.85rem !important;
+    height: 1.85rem !important;
   }
 
   header button[aria-label*="menu"] {
@@ -1411,8 +1403,8 @@ select {
     padding: 0.24rem !important;
     gap: 0.2rem !important;
     border-radius: 0.62rem !important;
-    background: rgba(255, 111, 0, 0.05) !important;
-    border: 1px solid rgba(255, 111, 0, 0.18) !important;
+    background: rgba(232, 90, 12, 0.05) !important;
+    border: 1px solid rgba(232, 90, 12, 0.18) !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -1426,7 +1418,7 @@ select {
     padding: 0 !important;
     margin: 0 !important;
     border-radius: 2px !important;
-    background: #ff6f00 !important;
+    background: var(--brand) !important;
     transform-origin: center !important;
     transition:
       transform 0.22s ease,
@@ -1710,7 +1702,7 @@ select {
     height: 2.5rem !important;
     border-radius: 0.6rem !important;
     box-shadow:
-      0 8px 24px rgba(255, 106, 0, 0.35),
+      0 8px 24px rgba(232, 90, 12, 0.35),
       inset 0 1px 2px rgba(255, 255, 255, 0.2) !important;
   }
 
@@ -1728,24 +1720,66 @@ select {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #ff6a00 0%, #ff7a1a 100%);
-  border: 1.5px solid rgba(255, 140, 0, 0.4);
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-soft) 100%);
+  border: 1.5px solid rgba(232, 90, 12, 0.4);
   box-shadow:
-    0 8px 24px rgba(255, 106, 0, 0.35),
+    0 8px 24px rgba(232, 90, 12, 0.35),
     inset 0 1px 2px rgba(255, 255, 255, 0.2);
-  transition: all 0.3s ease;
+  transform: translate3d(0, 0, 0);
+  transition:
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.32s ease,
+    border-color 0.32s ease;
+}
+
+.sticky-contact-bar__button::before {
+  content: "";
+  position: absolute;
+  inset: -25%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 20%,
+    rgba(255, 255, 255, 0.35) 48%,
+    rgba(255, 255, 255, 0) 76%
+  );
+  transform: translateX(-120%) rotate(8deg);
+  transition: transform 0.55s ease;
+  pointer-events: none;
 }
 
 .sticky-contact-bar__button:hover {
+  transform: translateY(-3px) scale(1.04);
+  border-color: rgba(232, 90, 12, 0.55);
   box-shadow:
-    0 12px 32px rgba(255, 106, 0, 0.45),
+    0 14px 30px rgba(232, 90, 12, 0.5),
     inset 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+.sticky-contact-bar__button:hover::before {
+  transform: translateX(120%) rotate(8deg);
 }
 
 .sticky-contact-bar__icon {
   width: 1rem;
   height: 1rem;
   color: #ffffff;
+  transition: transform 0.3s ease;
+}
+
+.sticky-contact-bar__button:hover .sticky-contact-bar__icon {
+  transform: scale(1.08);
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .sticky-contact-bar__button:hover {
+    transform: none;
+  }
+
+  .sticky-contact-bar__button::before {
+    display: none;
+  }
 }
 
 @media (max-width: 767px) {
@@ -1766,10 +1800,14 @@ select {
     width: 2.3rem !important;
     height: 2.3rem !important;
     border-radius: 0.6rem !important;
-    border: 1.5px solid rgba(255, 140, 0, 0.4) !important;
-    background: linear-gradient(135deg, #ff6a00 0%, #ff7a1a 100%) !important;
+    border: 1.5px solid rgba(232, 90, 12, 0.4) !important;
+    background: linear-gradient(
+      135deg,
+      var(--brand) 0%,
+      var(--brand-soft) 100%
+    ) !important;
     box-shadow:
-      0 6px 16px rgba(255, 106, 0, 0.35),
+      0 6px 16px rgba(232, 90, 12, 0.35),
       inset 0 1px 2px rgba(255, 255, 255, 0.15) !important;
     padding: 0 !important;
   }
@@ -2380,36 +2418,6 @@ select {
   .image-slider-content > .text-left.mb-8.sm\:mb-10.md\:mb-12.lg\:mb-16 {
     margin-bottom: 0.38rem !important;
   }
-
-  #contact {
-    padding-top: 0.35rem !important;
-    padding-bottom: 1rem !important;
-    margin-top: 0 !important;
-  }
-
-  #contact .text-left.mb-6.sm\:mb-6.md\:mb-6.mt-0.pt-0 {
-    margin-bottom: 0.75rem !important;
-  }
-
-  #contact .text-left.mb-6.sm\:mb-6.md\:mb-6.mt-0.pt-0 > .flex {
-    gap: 0.9rem !important;
-  }
-
-  #contact .text-left.mb-6.sm\:mb-6.md\:mb-6.mt-0.pt-0 h1 {
-    margin-bottom: 0.35rem !important;
-    line-height: 1.12 !important;
-  }
-
-  #contact .text-left.mb-6.sm\:mb-6.md\:mb-6.mt-0.pt-0 .flex-\[1\.5\] {
-    margin-top: 0 !important;
-  }
-
-  #contact .text-left.mb-6.sm\:mb-6.md\:mb-6.mt-0.pt-0 .flex-\[1\.5\] p {
-    margin-bottom: 0 !important;
-    font-size: 0.9375rem !important;
-    line-height: 1.38 !important;
-    text-align: justify !important;
-  }
 }
 
 /* Global section padding: keep top/bottom symmetric across all sections */
@@ -2627,14 +2635,16 @@ section:has(.image-slider-content) {
 .phase-flow-arrow {
   width: 1.5rem !important;
   height: 1.5rem !important;
-  color: #ff8c42 !important;
+  color: var(--brand-soft) !important;
   opacity: 0.95 !important;
-  filter: drop-shadow(0 2px 6px rgba(255, 140, 66, 0.45)) !important;
+  filter: drop-shadow(0 2px 6px rgba(255, 142, 77, 0.45)) !important;
   stroke-linecap: round !important;
   stroke-linejoin: round !important;
   animation: pulse-arrow 2s ease-in-out infinite;
   transition: all 0.3s ease;
 }
+
+/* Final contact section - Let Tailwind control spacing */
 
 /* Override arrow size for tablet and desktop views */
 @media (min-width: 768px) {
@@ -2935,14 +2945,6 @@ section:has(.image-slider-content) {
     padding-right: 0.9rem !important;
   }
 
-  /* Contact form optimization */
-  .contact-form input,
-  .contact-form textarea {
-    padding: 0.65rem 0.9rem !important;
-    font-size: 1rem !important;
-    line-height: 1.5 !important;
-  }
-
   /* Reduce section margins */
   section {
     padding-top: 25px !important;
@@ -2968,14 +2970,10 @@ section:has(.image-slider-content) {
     gap: 0.9rem !important;
   }
 
-  /* Sticky header optimization */
+  /* Sticky header optimization for small mobile */
   header {
-    padding-top: 0.5rem !important;
-    padding-bottom: 0.5rem !important;
-  }
-
-  header .h-16 {
-    height: 3rem !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
   }
 
   /* Mobile menu width optimization */
@@ -3043,29 +3041,15 @@ section:has(.image-slider-content) {
   }
 
   /* ===== HEADER ===== */
-  header .max-w-\[1280px\] {
-    padding-left: 0.75rem !important;
-    padding-right: 0.75rem !important;
+  header .max-w-7xl {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
   }
 
-  header .h-16 {
-    height: 3.25rem !important;
-  }
-
-  header img[alt="Danvion Logo"] {
-    width: 2rem !important;
-    height: 2rem !important;
-  }
-
-  header .font-bold.text-brand-black {
-    font-size: 0.9rem !important;
-    letter-spacing: 0.02em !important;
-  }
-
-  header button[aria-label*="menu"] {
+  /* Logo optimization for iPhone 14 Pro Max */
+  header picture {
     width: 2.25rem !important;
     height: 2.25rem !important;
-    border-radius: 0.5rem !important;
   }
 
   /* ===== CAPABILITIES SECTION ===== */
@@ -3197,7 +3181,8 @@ section:has(.image-slider-content) {
     padding: 0 !important;
     font-weight: 600 !important;
     text-align: center !important;
-    word-break: break-word !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
   }
 
   /* ===== DEVELOPMENT PHASES SECTION ===== */
@@ -3432,48 +3417,6 @@ section:has(.image-slider-content) {
     font-size: 0.9rem !important;
     margin-bottom: 0.5rem !important;
     text-align: center !important;
-  }
-
-  #contact form {
-    gap: 0.4rem !important;
-  }
-
-  #contact form .space-y-5,
-  #contact form .space-y-6 {
-    gap: 0.4rem !important;
-  }
-
-  #contact form > div {
-    margin-top: 0.35rem !important;
-  }
-
-  #contact label {
-    font-size: 0.55rem !important;
-    margin-bottom: 0.2rem !important;
-  }
-
-  #contact input,
-  #contact textarea {
-    padding: 0.45rem 0.6rem !important;
-    font-size: 0.6rem !important;
-    border-radius: 0.4rem !important;
-    border-width: 1px !important;
-  }
-
-  #contact textarea {
-    min-height: 60px !important;
-  }
-
-  #contact button[type="submit"] {
-    padding: 0.5rem 1rem !important;
-    font-size: 0.6rem !important;
-    border-radius: 9999px !important;
-    min-height: auto !important;
-    margin-top: 0.4rem !important;
-  }
-
-  #contact button[type="submit"] span {
-    font-size: 0.6rem !important;
   }
 
   /* ===== FOOTER ===== */
@@ -3797,9 +3740,30 @@ footer.footer-uniform-text .h-px + div {
 /* ===== IPAD MINI & AIR: CAPABILITY CARD WIDTH OVERRIDE ===== */
 /* iPad mini: 744px - 833px */
 @media (min-width: 744px) and (max-width: 833px) {
-  .capabilities-content .grid[class*="grid-cols"] {
-    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
-    gap: 0.4rem !important;
+  .capabilities-content .capabilities-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 0.55rem !important;
+  }
+
+  .capabilities-content .capability-card,
+  .capabilities-content .aspect-square {
+    aspect-ratio: auto !important;
+    height: 8.6rem !important;
+    min-height: 8.6rem !important;
+    padding: 0.45rem !important;
+    gap: 0.3rem !important;
+    border-radius: 0.7rem !important;
+  }
+
+  .capabilities-content .capability-icon {
+    width: 1.1rem !important;
+    height: 1.1rem !important;
+  }
+
+  .capabilities-content .capability-title,
+  .capabilities-content .aspect-square h3 {
+    font-size: 0.56rem !important;
+    line-height: 1.15 !important;
   }
 
   .topbanner {
@@ -3865,7 +3829,8 @@ footer.footer-uniform-text .h-px + div {
   overflow: visible !important;
   text-overflow: clip !important;
   display: block !important;
-  word-wrap: break-word !important;
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
   white-space: normal !important;
 }
 
@@ -3924,6 +3889,18 @@ footer.footer-uniform-text .h-px + div {
   }
 }
 
+/* Final positioning guard: keep sticky contact bar pinned to the right side */
+.sticky-contact-bar {
+  left: auto !important;
+  right: 0.5rem !important;
+}
+
+@media (max-width: 767px) {
+  .sticky-contact-bar {
+    right: 0.25rem !important;
+  }
+}
+
 /* ===== FINAL SCOPED MOBILE CAPABILITIES OPTIMIZATION ===== */
 @media (max-width: 767px) {
   .capabilities-content .capabilities-grid {
@@ -3960,14 +3937,14 @@ footer.footer-uniform-text .h-px + div {
   }
 
   .capabilities-content .capability-title {
-    font-size: clamp(0.55rem, 2.2vw, 0.7rem) !important;
-    line-height: 1.2 !important;
+    font-size: clamp(0.6rem, 2.4vw, 0.75rem) !important;
+    line-height: 1.3 !important;
     margin: 0 !important;
     text-align: center !important;
     max-width: 100% !important;
-    overflow-wrap: anywhere !important;
-    word-break: break-word !important;
-    hyphens: auto !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+    hyphens: none !important;
     font-weight: 600 !important;
   }
 }
@@ -3975,24 +3952,26 @@ footer.footer-uniform-text .h-px + div {
 /* ===== TABLET CAPABILITIES OPTIMIZATION (768px - 1023px) ===== */
 @media (min-width: 768px) and (max-width: 1023px) {
   .capabilities-content .capability-title {
-    font-size: clamp(0.65rem, 1.5vw, 0.72rem) !important;
-    line-height: 1.25 !important;
+    font-size: clamp(0.7rem, 1.5vw, 0.8rem) !important;
+    line-height: 1.3 !important;
     font-weight: 600 !important;
     text-align: center !important;
-    overflow-wrap: anywhere !important;
-    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+    hyphens: none !important;
   }
 }
 
 /* ===== DESKTOP CAPABILITIES OPTIMIZATION (1024px+) ===== */
 @media (min-width: 1024px) {
   .capabilities-content .capability-title {
-    font-size: clamp(0.7rem, 0.9vw, 0.75rem) !important;
-    line-height: 1.25 !important;
+    font-size: clamp(0.75rem, 0.9vw, 0.85rem) !important;
+    line-height: 1.3 !important;
     font-weight: 600 !important;
     text-align: center !important;
-    overflow-wrap: anywhere !important;
-    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+    hyphens: none !important;
   }
 }
 
@@ -4022,112 +4001,61 @@ footer.footer-uniform-text .h-px + div {
 .capabilities-content > div:first-child p.capabilities-description-copy,
 .capabilities-content [class*="flex-"] p.capabilities-description-copy,
 .capabilities-content .flex-\[1\.5\] p.capabilities-description-copy {
-  font-size: 18px !important;
-  line-height: 1.625 !important;
+  font-size: clamp(1.0625rem, 0.95rem + 0.4vw, 1.25rem) !important;
+  line-height: 1.6 !important;
   margin: 0 !important;
   padding: 0 !important;
-  text-align: justify !important;
-}
-
-@media (min-width: 640px) {
-  .capabilities-content > div:first-child p.capabilities-description-copy,
-  .capabilities-content [class*="flex-"] p.capabilities-description-copy,
-  .capabilities-content .flex-\[1\.5\] p.capabilities-description-copy {
-    font-size: 20px !important;
-  }
-}
-
-@media (min-width: 768px) {
-  .capabilities-content > div:first-child p.capabilities-description-copy,
-  .capabilities-content [class*="flex-"] p.capabilities-description-copy,
-  .capabilities-content .flex-\[1\.5\] p.capabilities-description-copy {
-    font-size: 22px !important;
-  }
-}
-
-@media (min-width: 1024px) {
-  .capabilities-content > div:first-child p.capabilities-description-copy,
-  .capabilities-content [class*="flex-"] p.capabilities-description-copy,
-  .capabilities-content .flex-\[1\.5\] p.capabilities-description-copy {
-    font-size: 23px !important;
-  }
-}
-
-/* Keep header solutions button typography from being reduced by global touch rules */
-button.header-solutions-btn {
-  font-size: 0.875rem !important;
-  padding: 0.375rem 0.5rem !important;
-}
-
-@media (min-width: 640px) {
-  button.header-solutions-btn {
-    font-size: 1rem !important;
-    padding: 0.5rem 0.75rem !important;
-  }
-}
-
-@media (min-width: 768px) {
-  button.header-solutions-btn {
-    font-size: 1.125rem !important;
-    padding: 0.5rem 1rem !important;
-  }
-}
-
-@media (min-width: 1024px) {
-  button.header-solutions-btn {
-    font-size: 1.25rem !important;
-    padding: 0.5rem 1rem !important;
-  }
+  text-align: left !important;
 }
 
 /* Final heading normalization for section-level titles.
    The repeated class raises specificity to beat legacy override blocks above. */
 .section-heading-display.section-heading-display.section-heading-display.section-heading-display.section-heading-display {
-  font-size: 22px !important;
+  font-size: 20px !important;
   line-height: 1.2 !important;
 }
 
 @media (min-width: 576px) {
   .section-heading-display.section-heading-display.section-heading-display.section-heading-display.section-heading-display {
-    font-size: 26px !important;
+    font-size: 24px !important;
   }
 }
 
 @media (min-width: 750px) {
   .section-heading-display.section-heading-display.section-heading-display.section-heading-display.section-heading-display {
-    font-size: 32px !important;
+    font-size: 30px !important;
   }
 }
 
 @media (min-width: 992px) {
   .section-heading-display.section-heading-display.section-heading-display.section-heading-display.section-heading-display {
-    font-size: 50px !important;
+    font-size: 42px !important;
   }
 }
 
 #contact
   .section-heading-display.section-heading-display.section-heading-display {
-  font-size: 22px !important;
+  font-size: 20px !important;
   line-height: 1.2 !important;
 }
 
 @media (min-width: 576px) {
   #contact
     .section-heading-display.section-heading-display.section-heading-display {
-    font-size: 26px !important;
+    font-size: 24px !important;
   }
 }
 
 @media (min-width: 750px) {
   #contact
     .section-heading-display.section-heading-display.section-heading-display {
-    font-size: 32px !important;
+    font-size: 30px !important;
   }
 }
 
 @media (min-width: 992px) {
   #contact
     .section-heading-display.section-heading-display.section-heading-display {
-    font-size: 50px !important;
+    font-size: 42px !important;
   }
 }

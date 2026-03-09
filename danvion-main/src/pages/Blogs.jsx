@@ -92,10 +92,7 @@ export default function Blogs() {
           >
             <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-8">
               <div className="w-full lg:flex-1 flex flex-col items-start text-left">
-                <h1
-                  className="section-heading-display heading-orange text-orange-500 font-semibold leading-tight tracking-tight mb-6 sm:mb-6 md:mb-6 lg:mb-6"
-                  style={{ color: "#f97316" }}
-                >
+                <h1 className="section-heading-display heading-orange text-orange-500 font-semibold leading-tight tracking-tight mb-6 sm:mb-6 md:mb-6 lg:mb-6">
                   Blogs
                 </h1>
               </div>
@@ -128,7 +125,7 @@ export default function Blogs() {
               <h2 className="text-h3 font-bold text-foreground mb-4">
                 Coming Soon
               </h2>
-              <p className="text-gray-600 text-xs sm:text-sm md:text-base lg:text-lg mb-8 leading-relaxed">
+              <p className="paragraph-content text-gray-600 mb-8">
                 We're crafting insightful articles and resources on Edge AI,
                 product development, and technology innovation. Stay tuned for
                 exciting content!
@@ -264,7 +261,7 @@ export default function Blogs() {
                             <h2 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-foreground mb-2 sm:mb-3 group-hover:text-brand-orange transition-colors">
                               {blog.title}
                             </h2>
-                            <p className="text-xs sm:text-xs md:text-sm lg:text-base text-muted-foreground mb-3 sm:mb-4 line-clamp-3">
+                            <p className="paragraph-small text-muted-foreground mb-3 sm:mb-4 line-clamp-3">
                               {blog.excerpt || blog.description}
                             </p>
                             {blog.author && (

@@ -2,36 +2,66 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Anyone can READ public content
-    match /products/{id} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-    match /blogs/{id} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-    match /home_page/{id} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-    match /services_page/{id} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-    match /team_members/{id} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-    match /about_page/{id} {
-      allow read: if true;
-      allow write: if request.auth != null;
+    // Helper functions
+    function isAdmin() {
+      // TODO: Replace with actual admin UID list after setting up authentication
+      // For now, allows any authenticated user to admin (REMOVE THIS IN PRODUCTION)
+      return request.auth != null;
     }
 
-    // Contact form: anyone can submit, only admin can read
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Public READ collections - no WRITE by guests
+    match /products/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /blogs/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /home_page/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /services_page/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /team_members/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /about_page/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Contact form: GUESTS can submit only (create), ADMINS can read/manage
     match /contact_messages/{id} {
-      allow create: if true;
-      allow read, update, delete: if request.auth != null;
+      allow create: if request.resource.data.keys().hasAll(['name', 'email', 'message']) &&
+                       request.resource.data.name is string &&
+                       request.resource.data.email is string &&
+                       request.resource.data.message is string;
+      allow get, list, update, delete: if isAdmin();
+    }
+    
+    // Admin panel data - ADMINS only
+    match /admin_settings/{id} {
+      allow read, write: if isAdmin();
+    }
+    
+    // User profiles (if needed in future)
+    match /users/{uid} {
+      allow read, write: if isAuthenticated() && request.auth.uid == uid;
+      allow read: if isAdmin();
     }
   }
 }
