@@ -1,19 +1,35 @@
 import { useState, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Camera, Plus, Save, X, Edit2, Trash2, RotateCcw } from "lucide-react";
-import {
-  collection,
-  addDoc,
-  deleteDoc,
-  doc,
-  getDocs,
-  orderBy,
-  query,
-  setDoc,
-} from "firebase/firestore/lite";
-import { dbLite } from "../../services/firebaseLiteClient";
+import { Camera, Plus, Save, X, Edit2, Trash2 } from "lucide-react";
+import apiClient from "../../services/apiClient";
 import { uploadImage } from "../../services/storage";
 import Button from "../../components/ui/Button";
+
+const API_URL = import.meta.env.VITE_API_URL || "https://danvion.com/api";
+
+const fetchWithAuth = async (path, options = {}) => {
+  const token = apiClient.getToken();
+  const headers = {
+    "Content-Type": "application/json",
+    ...(options.headers || {}),
+  };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  const response = await fetch(`${API_URL}${path}`, {
+    ...options,
+    headers,
+  });
+
+  const payload = await response.json();
+  if (!response.ok || !payload?.success) {
+    throw new Error(payload?.message || "Request failed");
+  }
+
+  return payload;
+};
 
 export default function TestimonialsTab() {
   const [testimonials, setTestimonials] = useState([]);
@@ -22,7 +38,6 @@ export default function TestimonialsTab() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [saveSuccess, setSaveSuccess] = useState(false);
-  const [lastDeleted, setLastDeleted] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
   const [formData, setFormData] = useState({
@@ -38,12 +53,12 @@ export default function TestimonialsTab() {
     setLoading(true);
     setError("");
     try {
-      const snap = await getDocs(
-        query(collection(dbLite, "testimonials"), orderBy("created_at", "desc")),
-      );
-      const data = snap.docs.map((docSnap) => ({
-        id: docSnap.id,
-        ...docSnap.data(),
+      const response = await fetchWithAuth("/admin/testimonials.php", {
+        method: "GET",
+      });
+      const data = (response?.data || []).map((item) => ({
+        ...item,
+        id: String(item.id),
       }));
       setTestimonials(data);
     } catch (err) {
@@ -96,12 +111,18 @@ export default function TestimonialsTab() {
       };
 
       if (editingId) {
-        await setDoc(doc(dbLite, "testimonials", editingId), data, {
-          merge: true,
+        await fetchWithAuth("/admin/testimonials.php", {
+          method: "PUT",
+          body: JSON.stringify({
+            id: Number(editingId),
+            ...data,
+          }),
         });
       } else {
-        data.created_at = new Date().toISOString();
-        await addDoc(collection(dbLite, "testimonials"), data);
+        await fetchWithAuth("/admin/testimonials.php", {
+          method: "POST",
+          body: JSON.stringify(data),
+        });
       }
 
       setFormData({
@@ -127,23 +148,21 @@ export default function TestimonialsTab() {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this testimonial?")) return;
     try {
-      const deleted = testimonials.find((t) => t.id === id);
-      await deleteDoc(doc(dbLite, "testimonials", id));
+      await fetchWithAuth(`/admin/testimonials.php?id=${id}`, {
+        method: "DELETE",
+      });
       setTestimonials((prev) => prev.filter((t) => t.id !== id));
-      if (deleted) {
-        setLastDeleted({ id, data: deleted });
-      }
     } catch (err) {
       setError(err?.message || "Failed to delete testimonial");
     }
   };
 
-  const handleUndo = async () => {
-    if (!lastDeleted?.id || !lastDeleted?.data) return;
+  const handleUndo = async (testimonial) => {
     try {
-      const { id, data } = lastDeleted;
-      await setDoc(doc(dbLite, "testimonials", id), data);
-      setLastDeleted(null);
+      await fetchWithAuth("/admin/testimonials.php", {
+        method: "POST",
+        body: JSON.stringify(testimonial),
+      });
       await loadTestimonials();
     } catch (err) {
       setError(err?.message || "Failed to restore testimonial");
@@ -189,8 +208,12 @@ export default function TestimonialsTab() {
     >
       <div className="flex flex-wrap justify-between items-start gap-4">
         <div>
-          <h2 className="text-xl font-bold text-brand-black mb-2">Testimonials</h2>
-          <p className="text-gray-600 text-sm">Manage customer testimonials and reviews</p>
+          <h2 className="text-xl font-bold text-brand-black mb-2">
+            Testimonials
+          </h2>
+          <p className="text-gray-600 text-sm">
+            Manage customer testimonials and reviews
+          </p>
         </div>
         {!showForm && (
           <Button onClick={() => setShowForm(true)} size="md" variant="default">
@@ -220,16 +243,6 @@ export default function TestimonialsTab() {
         </motion.div>
       )}
 
-      {lastDeleted && (
-        <div className="admin-section admin-section--soft p-4 text-gray-700 border border-gray-200 flex flex-wrap items-center justify-between gap-3">
-          <span>Testimonial deleted. You can undo this action.</span>
-          <Button onClick={handleUndo} size="md" variant="outline">
-            <RotateCcw className="h-4 w-4" />
-            Undo
-          </Button>
-        </div>
-      )}
-
       {/* Add/Edit Form */}
       {showForm && (
         <motion.div
@@ -257,7 +270,9 @@ export default function TestimonialsTab() {
 
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-brand-black mb-2">Role/Title</label>
+              <label className="block text-sm font-medium text-brand-black mb-2">
+                Role/Title
+              </label>
               <input
                 type="text"
                 name="role"
@@ -268,7 +283,9 @@ export default function TestimonialsTab() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-brand-black mb-2">Company</label>
+              <label className="block text-sm font-medium text-brand-black mb-2">
+                Company
+              </label>
               <input
                 type="text"
                 name="company"
@@ -281,7 +298,9 @@ export default function TestimonialsTab() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-brand-black mb-2">Testimonial *</label>
+            <label className="block text-sm font-medium text-brand-black mb-2">
+              Testimonial *
+            </label>
             <textarea
               name="content"
               value={formData.content}
@@ -298,12 +317,18 @@ export default function TestimonialsTab() {
             {imagePreview && (
               <div className="mb-4">
                 <div className="w-32 h-32 rounded overflow-hidden">
-                  <img src={imagePreview} alt="preview" className="w-full h-full object-cover" />
+                  <img
+                    src={imagePreview}
+                    alt="preview"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
             )}
             <div>
-              <label className="block text-sm font-medium text-brand-black mb-2">Upload file</label>
+              <label className="block text-sm font-medium text-brand-black mb-2">
+                Upload file
+              </label>
               <div className="relative">
                 <input
                   type="file"
@@ -361,7 +386,9 @@ export default function TestimonialsTab() {
 
       {/* Testimonials List */}
       {loading ? (
-        <div className="p-8 text-center text-gray-600">Loading testimonials...</div>
+        <div className="p-8 text-center text-gray-600">
+          Loading testimonials...
+        </div>
       ) : testimonials.length === 0 ? (
         <div className="admin-section admin-section--soft p-8 text-center text-gray-600">
           No testimonials yet. Add one to get started!
@@ -378,7 +405,9 @@ export default function TestimonialsTab() {
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
-                  <h4 className="font-bold text-brand-black">{testimonial.name}</h4>
+                  <h4 className="font-bold text-brand-black">
+                    {testimonial.name}
+                  </h4>
                   {testimonial.role && (
                     <p className="text-sm text-brand-orange">
                       {testimonial.role}
@@ -399,9 +428,15 @@ export default function TestimonialsTab() {
                 </button>
               </div>
 
-              <p className="text-gray-700 text-sm line-clamp-3">"{testimonial.content}"</p>
+              <p className="text-gray-700 text-sm line-clamp-3">
+                "{testimonial.content}"
+              </p>
 
-              <Button onClick={() => handleEdit(testimonial)} size="sm" variant="outline">
+              <Button
+                onClick={() => handleEdit(testimonial)}
+                size="sm"
+                variant="outline"
+              >
                 <Edit2 className="h-4 w-4" />
                 Edit
               </Button>

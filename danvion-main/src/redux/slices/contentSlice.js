@@ -1,16 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  orderBy,
-  query,
-  setDoc,
-} from "firebase/firestore/lite";
-import { dbLite } from "../../services/firebaseLiteClient";
+import apiClient from "../../services/apiClient";
 
 const sanitizePayload = (payload) => {
   return Object.fromEntries(
@@ -41,62 +30,40 @@ const normalizeHomePageBranding = (homePage) => {
 };
 
 /**
- * Async thunk to fetch content from Firebase
+ * Async thunk to fetch content from PHP API
  * Fetches home page, products, and about us content
  */
 export const fetchContent = createAsyncThunk(
   "content/fetchContent",
   async (_, { rejectWithValue }) => {
     try {
-      const [
-        homeDoc,
-        aboutDoc,
-        servicesDoc,
-        productsSnap,
-        teamSnap,
-        blogsSnap,
-      ] = await Promise.all([
-        getDoc(doc(dbLite, "home_page", "singleton")),
-        getDoc(doc(dbLite, "about_page", "singleton")),
-        getDoc(doc(dbLite, "services_page", "singleton")),
-        getDocs(query(collection(dbLite, "products"), orderBy("name"))),
-        getDocs(
-          query(collection(dbLite, "team_members"), orderBy("display_order")),
-        ),
-        getDocs(
-          query(collection(dbLite, "blogs"), orderBy("published_date", "desc")),
-        ),
-      ]);
+      const [homeRes, aboutRes, servicesRes, productsRes, blogsRes, teamRes] =
+        await Promise.all([
+          apiClient.get("/public/home.php"),
+          apiClient.get("/public/about.php"),
+          apiClient.get("/public/services.php"),
+          apiClient.get("/public/products.php"),
+          apiClient.get("/public/blogs.php"),
+          apiClient.get("/public/team.php"),
+        ]);
 
-      const products = productsSnap.docs.map((docSnap) => ({
-        id: docSnap.id,
-        ...docSnap.data(),
-      }));
-      const teamMembers = teamSnap.docs.map((docSnap) => ({
-        id: docSnap.id,
-        ...docSnap.data(),
-      }));
-      const blogs = blogsSnap.docs.map((docSnap) => ({
-        id: docSnap.id,
-        ...docSnap.data(),
-      }));
+      const homePage = homeRes.data || {};
+      const aboutPage = aboutRes.data || {};
+      const servicesPage = servicesRes.data || {};
+      const products = productsRes.data || [];
+      const blogs = blogsRes.data || [];
+      const teamMembers = teamRes.data || [];
 
       return {
-        homePage: homeDoc.exists()
-          ? [{ id: homeDoc.id, ...homeDoc.data() }]
-          : [],
+        homePage: homePage ? [homePage] : [],
         products,
-        aboutPage: aboutDoc.exists()
-          ? [{ id: aboutDoc.id, ...aboutDoc.data() }]
-          : [],
+        aboutPage: aboutPage ? [aboutPage] : [],
         teamMembers,
         blogs,
-        servicesPage: servicesDoc.exists()
-          ? [{ id: servicesDoc.id, ...servicesDoc.data() }]
-          : [],
+        servicesPage: servicesPage ? [servicesPage] : [],
       };
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.message || "Failed to fetch content");
     }
   },
   {
@@ -114,63 +81,57 @@ export const fetchContent = createAsyncThunk(
   },
 );
 
-// Persist home page content to Firebase
+// Persist home page content to PHP API
 export const saveHomePage = createAsyncThunk(
   "content/saveHomePage",
   async (payload, { rejectWithValue }) => {
     try {
-      const { id: _id, ...rest } = payload || {};
-      const payloadWithUpdatedAt = sanitizePayload({
-        ...rest,
-        updated_at: new Date().toISOString(),
-      });
+      const cleanPayload = sanitizePayload(payload);
+      const response = await apiClient.put("/admin/home.php", cleanPayload);
 
-      const ref = doc(dbLite, "home_page", "singleton");
-      await setDoc(ref, payloadWithUpdatedAt, { merge: true });
+      if (response.success && response.data) {
+        return response.data;
+      }
 
-      return { id: "singleton", ...payloadWithUpdatedAt };
+      throw new Error(response.message || "Failed to save home page");
     } catch (err) {
       return rejectWithValue(err.message || String(err));
     }
   },
 );
 
-// Persist about page content in Firebase
+// Persist about page content to PHP API
 export const saveAboutPage = createAsyncThunk(
   "content/saveAboutPage",
   async (payload, { rejectWithValue }) => {
     try {
-      const { id: _id, ...rest } = payload || {};
-      const payloadWithUpdatedAt = sanitizePayload({
-        ...rest,
-        updated_at: new Date().toISOString(),
-      });
+      const cleanPayload = sanitizePayload(payload);
+      const response = await apiClient.put("/admin/about.php", cleanPayload);
 
-      const ref = doc(dbLite, "about_page", "singleton");
-      await setDoc(ref, payloadWithUpdatedAt, { merge: true });
+      if (response.success && response.data) {
+        return response.data;
+      }
 
-      return { id: "singleton", ...payloadWithUpdatedAt };
+      throw new Error(response.message || "Failed to save about page");
     } catch (err) {
       return rejectWithValue(err.message || String(err));
     }
   },
 );
 
-// Persist services page content in Firebase
+// Persist services page content to PHP API
 export const saveServicesPage = createAsyncThunk(
   "content/saveServicesPage",
   async (payload, { rejectWithValue }) => {
     try {
-      const { id: _id, ...rest } = payload || {};
-      const payloadWithUpdatedAt = sanitizePayload({
-        ...rest,
-        updated_at: new Date().toISOString(),
-      });
+      const cleanPayload = sanitizePayload(payload);
+      const response = await apiClient.put("/admin/services.php", cleanPayload);
 
-      const ref = doc(dbLite, "services_page", "singleton");
-      await setDoc(ref, payloadWithUpdatedAt, { merge: true });
+      if (response.success && response.data) {
+        return response.data;
+      }
 
-      return { id: "singleton", ...payloadWithUpdatedAt };
+      throw new Error(response.message || "Failed to save services page");
     } catch (err) {
       return rejectWithValue(err.message || String(err));
     }
@@ -182,28 +143,29 @@ export const saveProduct = createAsyncThunk(
   "content/saveProduct",
   async (payload, { rejectWithValue }) => {
     try {
-      const isNewProduct =
-        !payload.id || (typeof payload.id === "number" && payload.id < 1000000);
+      const isNewProduct = !payload.id || payload.id === "NEW";
 
       if (isNewProduct) {
         const { id: _id, ...productData } = payload;
-        const now = new Date().toISOString();
-        const docRef = await addDoc(collection(dbLite, "products"), {
-          ...productData,
-          created_at: now,
-          updated_at: now,
-        });
-        return { id: docRef.id, ...productData };
+        const response = await apiClient.post(
+          "/admin/products.php",
+          productData,
+        );
+
+        if (response.success && response.data) {
+          return response.data;
+        }
+
+        throw new Error(response.message || "Failed to create product");
       }
 
-      const { id, ...productData } = payload;
-      const ref = doc(dbLite, "products", String(id));
-      await setDoc(
-        ref,
-        { ...productData, updated_at: new Date().toISOString() },
-        { merge: true },
-      );
-      return { id: String(id), ...productData };
+      const response = await apiClient.put("/admin/products.php", payload);
+
+      if (response.success && response.data) {
+        return response.data;
+      }
+
+      throw new Error(response.message || "Failed to update product");
     } catch (err) {
       return rejectWithValue(err.message || String(err));
     }
@@ -215,7 +177,10 @@ export const deleteProduct = createAsyncThunk(
   "content/deleteProduct",
   async (id, { rejectWithValue }) => {
     try {
-      await deleteDoc(doc(dbLite, "products", String(id)));
+      const response = await apiClient.del(`/admin/products.php?id=${id}`);
+      if (!response.success) {
+        throw new Error(response.message || "Failed to delete product");
+      }
       return String(id);
     } catch (err) {
       return rejectWithValue(err.message || String(err));
@@ -229,25 +194,25 @@ export const saveTeamMember = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     try {
       const isNewMember = !payload.id || payload.id === "NEW";
+
       if (isNewMember) {
         const { id: _id, ...memberData } = payload;
-        const now = new Date().toISOString();
-        const docRef = await addDoc(collection(dbLite, "team_members"), {
-          ...memberData,
-          created_at: now,
-          updated_at: now,
-        });
-        return { id: docRef.id, ...memberData };
+        const response = await apiClient.post("/admin/team.php", memberData);
+
+        if (response.success && response.data) {
+          return response.data;
+        }
+
+        throw new Error(response.message || "Failed to create team member");
       }
 
-      const { id, ...memberData } = payload;
-      const ref = doc(dbLite, "team_members", String(id));
-      await setDoc(
-        ref,
-        { ...memberData, updated_at: new Date().toISOString() },
-        { merge: true },
-      );
-      return { id: String(id), ...memberData };
+      const response = await apiClient.put("/admin/team.php", payload);
+
+      if (response.success && response.data) {
+        return response.data;
+      }
+
+      throw new Error(response.message || "Failed to update team member");
     } catch (err) {
       return rejectWithValue(err.message || String(err));
     }
@@ -259,7 +224,10 @@ export const deleteTeamMember = createAsyncThunk(
   "content/deleteTeamMember",
   async (id, { rejectWithValue }) => {
     try {
-      await deleteDoc(doc(dbLite, "team_members", String(id)));
+      const response = await apiClient.del(`/admin/team.php?id=${id}`);
+      if (!response.success) {
+        throw new Error(response.message || "Failed to delete team member");
+      }
       return String(id);
     } catch (err) {
       return rejectWithValue(err.message || String(err));
@@ -272,28 +240,26 @@ export const saveBlog = createAsyncThunk(
   "content/saveBlog",
   async (payload, { rejectWithValue }) => {
     try {
-      const isNewBlog =
-        !payload.id || (typeof payload.id === "number" && payload.id < 1000000);
+      const isNewBlog = !payload.id || payload.id === "NEW";
 
       if (isNewBlog) {
         const { id: _id, ...blogData } = payload;
-        const now = new Date().toISOString();
-        const docRef = await addDoc(collection(dbLite, "blogs"), {
-          ...blogData,
-          created_at: now,
-          updated_at: now,
-        });
-        return { id: docRef.id, ...blogData };
+        const response = await apiClient.post("/admin/blogs.php", blogData);
+
+        if (response.success && response.data) {
+          return response.data;
+        }
+
+        throw new Error(response.message || "Failed to create blog");
       }
 
-      const { id, ...blogData } = payload;
-      const ref = doc(dbLite, "blogs", String(id));
-      await setDoc(
-        ref,
-        { ...blogData, updated_at: new Date().toISOString() },
-        { merge: true },
-      );
-      return { id: String(id), ...blogData };
+      const response = await apiClient.put("/admin/blogs.php", payload);
+
+      if (response.success && response.data) {
+        return response.data;
+      }
+
+      throw new Error(response.message || "Failed to update blog");
     } catch (err) {
       return rejectWithValue(err.message || String(err));
     }
@@ -305,7 +271,10 @@ export const deleteBlog = createAsyncThunk(
   "content/deleteBlog",
   async (id, { rejectWithValue }) => {
     try {
-      await deleteDoc(doc(dbLite, "blogs", String(id)));
+      const response = await apiClient.del(`/admin/blogs.php?id=${id}`);
+      if (!response.success) {
+        throw new Error(response.message || "Failed to delete blog");
+      }
       return String(id);
     } catch (err) {
       return rejectWithValue(err.message || String(err));
@@ -315,7 +284,7 @@ export const deleteBlog = createAsyncThunk(
 
 /**
  * Content Slice
- * Manages all website content fetched from Firebase
+ * Manages all website content fetched from API endpoints
  */
 const contentSlice = createSlice({
   name: "content",

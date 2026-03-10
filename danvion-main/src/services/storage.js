@@ -1,23 +1,17 @@
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "./firebaseClient";
+import apiClient from "./apiClient";
 
-// Upload a File object to Firebase Storage and return a public URL
+// Upload a File object via PHP API and return a public URL.
 export async function uploadImage(file, folder = "images") {
   if (!file) throw new Error("No file provided");
 
-  if (!storage) {
-    throw new Error(
-      "Firebase storage is not configured. Check your Firebase web app config.",
-    );
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("folder", folder);
+
+  const response = await apiClient.upload("/admin/upload.php", formData);
+  if (!response?.success || !response?.data?.url) {
+    throw new Error(response?.message || "Upload failed");
   }
 
-  const safeName = file.name.replace(/\s+/g, "_");
-  const filename = `${folder}/${Date.now()}_${safeName}`;
-  const fileRef = ref(storage, filename);
-
-  await uploadBytes(fileRef, file, {
-    contentType: file.type || "application/octet-stream",
-  });
-
-  return getDownloadURL(fileRef);
+  return response.data.url;
 }

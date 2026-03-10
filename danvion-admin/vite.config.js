@@ -29,6 +29,16 @@ function crittersInlinePlugin() {
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), crittersInlinePlugin()],
+  server: {
+    proxy: {
+      // Local dev proxy to avoid browser CORS restrictions for API calls.
+      "/api": {
+        target: "https://danvion.com",
+        changeOrigin: true,
+        secure: true,
+      },
+    },
+  },
   build: {
     sourcemap: false,
     minify: "terser",
@@ -48,16 +58,15 @@ export default defineConfig({
         // Optimized code splitting - separate chunks by type
         manualChunks(id) {
           // Vendor: React ecosystem (core)
-          if (id.includes("node_modules/react") || id.includes("node_modules/react-dom")) {
+          if (
+            id.includes("node_modules/react") ||
+            id.includes("node_modules/react-dom")
+          ) {
             return "vendor-react";
           }
           // Vendor: State management
           if (id.includes("@reduxjs/toolkit") || id.includes("react-redux")) {
             return "vendor-state";
-          }
-          // Vendor: Firebase (lazy-loaded)
-          if (id.includes("firebase")) {
-            return "vendor-firebase";
           }
           // Vendor: Routing
           if (id.includes("react-router-dom")) {
@@ -119,7 +128,5 @@ export default defineConfig({
       "react-helmet-async",
       "@reduxjs/toolkit/query",
     ],
-    // Exclude to reduce pre-bundle size
-    exclude: ["firebase"],
   },
 });

@@ -4,13 +4,13 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { useEffect, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./services/firebaseClient";
-import { setAuthUser } from "./redux/slices/authSlice";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ToastProvider } from "./hooks/useToast";
+import { setAuthUser } from "./redux/slices/authSlice";
+import apiClient from "./services/apiClient";
 
 const AdminLogin = lazy(() => import("./admin/pages/AdminLogin"));
 const AdminDashboard = lazy(() => import("./admin/pages/AdminDashboard"));
@@ -25,17 +25,49 @@ function App() {
   const dispatch = useDispatch();
   const isAdminLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
-  // Firebase Auth listener
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user?.email) {
-        dispatch(setAuthUser({ email: user.email }));
-      } else {
-        dispatch(setAuthUser(null));
-      }
-    });
+    let mounted = true;
+    const token =
+      typeof window !== "undefined"
+        ? window.sessionStorage.getItem("danvion_admin_token")
+        : null;
 
-    return () => unsubscribe();
+    if (!token) {
+      return () => {
+        mounted = false;
+      };
+    }
+
+    const verifySession = async () => {
+      try {
+        apiClient.setToken(token);
+        const response = await apiClient.get("/auth/verify.php");
+
+        if (!mounted) return;
+
+        const user = response?.data?.user;
+        if (response?.success && user?.email) {
+          dispatch(
+            setAuthUser({
+              email: user.email,
+              role: user.role,
+            }),
+          );
+          return;
+        }
+      } catch {
+        // Invalid/expired tokens are cleared below.
+      }
+
+      if (!mounted) return;
+      apiClient.clearToken();
+    };
+
+    verifySession();
+
+    return () => {
+      mounted = false;
+    };
   }, [dispatch]);
 
   return (

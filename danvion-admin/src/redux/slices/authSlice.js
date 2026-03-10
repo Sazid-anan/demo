@@ -1,58 +1,60 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { auth } from "../../services/firebaseClient";
+import apiClient from "../../services/apiClient";
+
+const TOKEN_STORAGE_KEY = "danvion_admin_token";
 
 /**
  * Auth Slice
- * Manages admin authentication state with role-based access
- * Supports multiple admins with different roles
+ * Manages admin authentication state with JWT authentication
  */
-
-// Admin configuration - email:role mapping
-const DEFAULT_ADMIN_CONFIG = "sazid@danvion.com:admin";
-const ADMIN_CONFIG = (import.meta.env.VITE_ADMIN_CONFIG || DEFAULT_ADMIN_CONFIG)
-  .split(",")
-  .map((entry) => {
-    const [email, role = "editor"] = entry.trim().split(":");
-    return { email: email.toLowerCase(), role };
-  })
-  .filter((item) => item.email);
-
-const ADMIN_MAP = Object.fromEntries(ADMIN_CONFIG.map((item) => [item.email, item.role]));
 
 export const loginAdmin = createAsyncThunk(
   "auth/loginAdmin",
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const lowerEmail = String(email || "").toLowerCase();
-      if (!ADMIN_MAP[lowerEmail]) {
-        return rejectWithValue("Unauthorized admin email");
+      // Call PHP API login endpoint
+      const response = await apiClient.post("/auth/login.php", {
+        email,
+        password,
+      });
+
+      if (response.success && response.data) {
+        // Store JWT token in apiClient
+        apiClient.setToken(response.data.token);
+
+        return {
+          email: response.data.user.email,
+          role: response.data.user.role,
+          token: response.data.token,
+        };
+      } else {
+        return rejectWithValue(response.message || "Login failed");
       }
-
-      const result = await signInWithEmailAndPassword(auth, email, password);
-      const userEmail = result.user?.email || email;
-      const role = ADMIN_MAP[userEmail.toLowerCase()] || "viewer";
-
-      return {
-        email: userEmail,
-        role: role,
-      };
     } catch (error) {
-      const message = error?.message || "Invalid email or password";
+      const message =
+        error?.message || error?.toString() || "Invalid email or password";
       return rejectWithValue(message);
     }
   },
 );
 
-export const logoutAdmin = createAsyncThunk("auth/logoutAdmin", async (_, { rejectWithValue }) => {
-  try {
-    await signOut(auth);
-    return true;
-  } catch (error) {
-    const message = error?.message || "Failed to sign out";
-    return rejectWithValue(message);
-  }
-});
+export const logoutAdmin = createAsyncThunk(
+  "auth/logoutAdmin",
+  async (_, { rejectWithValue }) => {
+    try {
+      // Call PHP API logout endpoint (optional, JWT is stateless)
+      await apiClient.post("/auth/logout.php", {});
+
+      // Clear token from apiClient
+      apiClient.clearToken();
+
+      return true;
+    } catch (error) {
+      const message = error?.message || "Failed to sign out";
+      return rejectWithValue(message);
+    }
+  },
+);
 
 const authSlice = createSlice({
   name: "auth",
@@ -71,16 +73,10 @@ const authSlice = createSlice({
       state.loginError = null;
     },
     setAuthUser: (state, action) => {
-      const lowerEmail = String(action.payload?.email || "").toLowerCase();
-      if (ADMIN_MAP[lowerEmail]) {
-        state.isLoggedIn = true;
-        state.adminEmail = action.payload.email;
-        state.adminRole = ADMIN_MAP[lowerEmail];
-      } else {
-        state.isLoggedIn = false;
-        state.adminEmail = "";
-        state.adminRole = "viewer";
-      }
+      state.isLoggedIn = true;
+      state.adminEmail = action.payload?.email || "";
+      state.adminRole = action.payload?.role || "viewer";
+      state.loginError = null;
     },
   },
   extraReducers: (builder) => {
@@ -90,6 +86,16 @@ const authSlice = createSlice({
         state.loginError = null;
       })
       .addCase(loginAdmin.fulfilled, (state, action) => {
+        if (typeof window !== "undefined") {
+          try {
+            window.sessionStorage.setItem(
+              TOKEN_STORAGE_KEY,
+              action.payload.token,
+            );
+          } catch {
+            // Ignore storage write failures and continue with in-memory auth.
+          }
+        }
         state.loading = false;
         state.isLoggedIn = true;
         state.adminEmail = action.payload.email;
@@ -101,6 +107,13 @@ const authSlice = createSlice({
         state.loginError = action.payload || "Login failed";
       })
       .addCase(logoutAdmin.fulfilled, (state) => {
+        if (typeof window !== "undefined") {
+          try {
+            window.sessionStorage.removeItem(TOKEN_STORAGE_KEY);
+          } catch {
+            // Ignore storage cleanup failures.
+          }
+        }
         state.isLoggedIn = false;
         state.adminEmail = "";
         state.adminRole = "viewer";
@@ -112,6 +125,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { setLoginError, clearLoginError, setAuthUser } = authSlice.actions;
+export const { setLoginError, clearLoginError, setAuthUser } =
+  authSlice.actions;
 
 export default authSlice.reducer;

@@ -12,8 +12,7 @@ import CapabilitiesSection from "../components/CapabilitiesSection";
 import PhasesSection from "../components/PhasesSection";
 import { Link } from "react-router-dom";
 import SEO from "../components/SEO";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { db } from "../services/firebaseClient";
+import apiClient from "../services/apiClient";
 import { useToast } from "../hooks/useToast";
 import { useFormValidation } from "../hooks/useFormValidation";
 import { errorLogger } from "../services/errorLogger";
@@ -103,12 +102,9 @@ export default function Home() {
         email: form.values.email.trim(),
         phone: form.values.phone.trim() || null,
         message: form.values.message.trim(),
-        is_read: false,
-        created_at: serverTimestamp(),
-        consent_timestamp: serverTimestamp(),
       };
 
-      await addDoc(collection(db, "contact_messages"), payload);
+      await apiClient.post("/public/contact.php", payload);
 
       localStorage.setItem("lastContactSubmission", Date.now().toString());
 
@@ -130,7 +126,7 @@ export default function Home() {
         action: "submit_contact_form",
       });
 
-      if (error.code === "resource-exhausted") {
+      if (error?.message?.toLowerCase().includes("wait 1 minute")) {
         toast.error("⏱️ Too many submissions. Please try again in 5 minutes.");
       } else {
         toast.error("❌ Failed to submit form. Please try again.");

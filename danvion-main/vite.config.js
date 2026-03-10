@@ -120,7 +120,5 @@ export default defineConfig({
       "react-helmet-async",
       "@reduxjs/toolkit/query",
     ],
-    // Exclude to reduce pre-bundle size
-    exclude: ["firebase"],
   },
 });

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { collection, getDocs, orderBy, query } from "firebase/firestore/lite";
-import { dbLite } from "../../services/firebaseLiteClient";
+
+const API_URL = import.meta.env.VITE_API_URL || "https://danvion.com/api";
 
 export default function TestimonialsPreview() {
   const [testimonials, setTestimonials] = useState([]);
@@ -10,10 +10,19 @@ export default function TestimonialsPreview() {
   useEffect(() => {
     const loadTestimonials = async () => {
       try {
-        const snap = await getDocs(
-          query(collection(dbLite, "testimonials"), orderBy("created_at", "desc")),
-        );
-        const data = snap.docs.map((docSnap) => docSnap.data());
+        const response = await fetch(`${API_URL}/public/testimonials.php`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const payload = await response.json();
+        if (!response.ok || !payload?.success) {
+          throw new Error(payload?.message || "Failed to load testimonials");
+        }
+
+        const data = payload?.data || [];
         setTestimonials(data.slice(0, 2)); // Show only 2 latest
       } catch (error) {
         console.error("Failed to load testimonials:", error);
@@ -50,7 +59,9 @@ export default function TestimonialsPreview() {
     >
       <h3 className="text-lg font-bold text-brand-black flex items-center gap-2">
         <span>⭐ Recent Testimonials</span>
-        <span className="text-sm font-normal text-gray-600">({testimonials.length})</span>
+        <span className="text-sm font-normal text-gray-600">
+          ({testimonials.length})
+        </span>
       </h3>
 
       <div className="space-y-3">
@@ -64,7 +75,9 @@ export default function TestimonialsPreview() {
           >
             <div className="flex items-start justify-between gap-3 mb-2">
               <div>
-                <p className="font-semibold text-sm text-brand-black">{testimonial.name}</p>
+                <p className="font-semibold text-sm text-brand-black">
+                  {testimonial.name}
+                </p>
                 {testimonial.role && (
                   <p className="text-xs text-brand-orange">
                     {testimonial.role}
@@ -72,9 +85,13 @@ export default function TestimonialsPreview() {
                   </p>
                 )}
               </div>
-              <div className="text-yellow-500 text-sm">{"★".repeat(testimonial.rating || 5)}</div>
+              <div className="text-yellow-500 text-sm">
+                {"★".repeat(testimonial.rating || 5)}
+              </div>
             </div>
-            <p className="text-xs text-gray-600 line-clamp-2">"{testimonial.content}"</p>
+            <p className="text-xs text-gray-600 line-clamp-2">
+              "{testimonial.content}"
+            </p>
           </motion.div>
         ))}
       </div>

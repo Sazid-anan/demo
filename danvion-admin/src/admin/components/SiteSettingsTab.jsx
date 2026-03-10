@@ -21,7 +21,7 @@ export default function SiteSettingsTab() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isEditing, setIsEditing] = useState(false);
 
-  // Load settings from localStorage (in production, use Firebase)
+  // Load settings from localStorage.
   const [settings, setSettings] = useState(() => {
     const saved = localStorage.getItem("siteSettings");
     return saved
@@ -73,7 +73,7 @@ export default function SiteSettingsTab() {
         return;
       }
 
-      // Save to localStorage (would be Firebase in production)
+      // Save to localStorage.
       localStorage.setItem("siteSettings", JSON.stringify(settings));
 
       // Log audit
@@ -124,7 +124,11 @@ export default function SiteSettingsTab() {
   const canEdit = adminRole === "admin";
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="space-y-8"
+    >
       {/* Header */}
       <div>
         <div className="flex items-center gap-3 mb-2">
@@ -132,7 +136,9 @@ export default function SiteSettingsTab() {
           <h2 className="text-h3 font-bold text-brand-black">Site Settings</h2>
         </div>
         <p className="text-gray-600">
-          {canEdit ? "Manage your site configuration" : "View site configuration (read-only)"}
+          {canEdit
+            ? "Manage your site configuration"
+            : "View site configuration (read-only)"}
         </p>
       </div>
 
@@ -142,10 +148,12 @@ export default function SiteSettingsTab() {
           animate={{ opacity: 1, y: 0 }}
           className="p-4 bg-blue-50 border-l-4 border-blue-400 text-blue-700 text-sm rounded-lg flex gap-3"
         >
-          <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
+          <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" />
           <div>
             <p className="font-semibold">View-Only Mode</p>
-            <p>Only admins can edit site settings. Contact an admin for changes.</p>
+            <p>
+              Only admins can edit site settings. Contact an admin for changes.
+            </p>
           </div>
         </motion.div>
       )}
@@ -157,7 +165,7 @@ export default function SiteSettingsTab() {
           animate={{ opacity: 1 }}
           className="p-4 bg-red-50 border-l-4 border-red-400 text-red-700 text-sm rounded-lg flex gap-3"
         >
-          <AlertCircle className="h-5 w-5 flex-shrink-0" />
+          <AlertCircle className="h-5 w-5 shrink-0" />
           {errorMessage}
         </motion.div>
       )}
@@ -196,7 +204,9 @@ export default function SiteSettingsTab() {
               <input
                 type="text"
                 value={settings.company.name}
-                onChange={(e) => handleInputChange("company.name", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("company.name", e.target.value)
+                }
                 disabled={!canEdit}
                 className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-orange focus:outline-none disabled:bg-gray-50 disabled:cursor-not-allowed"
               />
@@ -204,11 +214,15 @@ export default function SiteSettingsTab() {
 
             {/* Tagline */}
             <div>
-              <label className="block text-sm font-semibold text-brand-black mb-2">Tagline</label>
+              <label className="block text-sm font-semibold text-brand-black mb-2">
+                Tagline
+              </label>
               <input
                 type="text"
                 value={settings.company.tagline}
-                onChange={(e) => handleInputChange("company.tagline", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("company.tagline", e.target.value)
+                }
                 disabled={!canEdit}
                 className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-orange focus:outline-none disabled:bg-gray-50 disabled:cursor-not-allowed"
               />
@@ -216,14 +230,16 @@ export default function SiteSettingsTab() {
 
             {/* Email */}
             <div>
-              <label className="block text-sm font-semibold text-brand-black mb-2 flex items-center gap-2">
+              <label className="text-sm font-semibold text-brand-black mb-2 flex items-center gap-2">
                 <Mail className="h-4 w-4" />
                 Email
               </label>
               <input
                 type="email"
                 value={settings.company.email}
-                onChange={(e) => handleInputChange("company.email", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("company.email", e.target.value)
+                }
                 disabled={!canEdit}
                 className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-orange focus:outline-none disabled:bg-gray-50 disabled:cursor-not-allowed"
               />
@@ -231,14 +247,16 @@ export default function SiteSettingsTab() {
 
             {/* Phone */}
             <div>
-              <label className="block text-sm font-semibold text-brand-black mb-2 flex items-center gap-2">
+              <label className="text-sm font-semibold text-brand-black mb-2 flex items-center gap-2">
                 <Phone className="h-4 w-4" />
                 Phone
               </label>
               <input
                 type="tel"
                 value={settings.company.phone}
-                onChange={(e) => handleInputChange("company.phone", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("company.phone", e.target.value)
+                }
                 disabled={!canEdit}
                 className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-orange focus:outline-none disabled:bg-gray-50 disabled:cursor-not-allowed"
               />
@@ -246,13 +264,15 @@ export default function SiteSettingsTab() {
 
             {/* Address */}
             <div className="md:col-span-2">
-              <label className="block text-sm font-semibold text-brand-black mb-2 flex items-center gap-2">
+              <label className="text-sm font-semibold text-brand-black mb-2 flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
                 Address
               </label>
               <textarea
                 value={settings.company.address}
-                onChange={(e) => handleInputChange("company.address", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("company.address", e.target.value)
+                }
                 disabled={!canEdit}
                 rows="2"
                 className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-orange focus:outline-none disabled:bg-gray-50 disabled:cursor-not-allowed"
@@ -277,7 +297,9 @@ export default function SiteSettingsTab() {
                 <input
                   type="url"
                   value={value}
-                  onChange={(e) => handleInputChange(`social.${key}`, e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange(`social.${key}`, e.target.value)
+                  }
                   disabled={!canEdit}
                   className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-orange focus:outline-none disabled:bg-gray-50 disabled:cursor-not-allowed"
                   placeholder="https://..."
@@ -303,7 +325,9 @@ export default function SiteSettingsTab() {
               <input
                 type="email"
                 value={settings.email.supportEmail}
-                onChange={(e) => handleInputChange("email.supportEmail", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("email.supportEmail", e.target.value)
+                }
                 disabled={!canEdit}
                 className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-orange focus:outline-none disabled:bg-gray-50 disabled:cursor-not-allowed"
               />
@@ -317,7 +341,9 @@ export default function SiteSettingsTab() {
               <input
                 type="email"
                 value={settings.email.noReplyEmail}
-                onChange={(e) => handleInputChange("email.noReplyEmail", e.target.value)}
+                onChange={(e) =>
+                  handleInputChange("email.noReplyEmail", e.target.value)
+                }
                 disabled={!canEdit}
                 className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-orange focus:outline-none disabled:bg-gray-50 disabled:cursor-not-allowed"
               />
@@ -329,7 +355,12 @@ export default function SiteSettingsTab() {
                 type="checkbox"
                 id="enableAutoResponder"
                 checked={settings.email.enableAutoResponder}
-                onChange={(e) => handleInputChange("email.enableAutoResponder", e.target.checked)}
+                onChange={(e) =>
+                  handleInputChange(
+                    "email.enableAutoResponder",
+                    e.target.checked,
+                  )
+                }
                 disabled={!canEdit}
                 className="w-4 h-4 rounded cursor-pointer"
               />
@@ -351,7 +382,10 @@ export default function SiteSettingsTab() {
                     type="text"
                     value={settings.email.autoResponderSubject}
                     onChange={(e) =>
-                      handleInputChange("email.autoResponderSubject", e.target.value)
+                      handleInputChange(
+                        "email.autoResponderSubject",
+                        e.target.value,
+                      )
                     }
                     disabled={!canEdit}
                     className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-orange focus:outline-none disabled:bg-gray-50 disabled:cursor-not-allowed"
@@ -365,7 +399,10 @@ export default function SiteSettingsTab() {
                   <textarea
                     value={settings.email.autoResponderMessage}
                     onChange={(e) =>
-                      handleInputChange("email.autoResponderMessage", e.target.value)
+                      handleInputChange(
+                        "email.autoResponderMessage",
+                        e.target.value,
+                      )
                     }
                     disabled={!canEdit}
                     rows="4"
@@ -380,13 +417,21 @@ export default function SiteSettingsTab() {
 
       {/* Save Button */}
       {canEdit && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-4">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex gap-4"
+        >
           <Button onClick={handleSave} size="lg" variant="default">
             <Save className="h-4 w-4" />
             Save Settings
           </Button>
           {isEditing && (
-            <Button onClick={() => setIsEditing(false)} size="lg" variant="outline">
+            <Button
+              onClick={() => setIsEditing(false)}
+              size="lg"
+              variant="outline"
+            >
               <X className="h-4 w-4" />
               Cancel
             </Button>

@@ -58,63 +58,14 @@ function App() {
     dispatch(fetchContent());
   }, [dispatch]);
 
-  // Real-time Firebase listeners — deferred after page is interactive
+  // Poll API periodically to keep public content fresh.
   useEffect(() => {
-    let isActive = true;
-    let unsubscribers = [];
-    let debounceTimer = null;
-
-    const setupListeners = async () => {
-      if (!isActive) return;
-
-      const [{ onSnapshot, doc, collection }, { db }] = await Promise.all([
-        import("firebase/firestore"),
-        import("./services/firebaseClient"),
-      ]);
-
-      if (!isActive) return;
-
-      // Debounced refresh to prevent excessive updates
-      const refresh = () => {
-        if (debounceTimer) clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
-          if (isActive) dispatch(fetchContent({ force: true }));
-        }, 500); // 500ms debounce
-      };
-
-      unsubscribers = [
-        onSnapshot(doc(db, "home_page", "singleton"), refresh),
-        onSnapshot(doc(db, "services_page", "singleton"), refresh),
-        onSnapshot(collection(db, "products"), refresh),
-        onSnapshot(collection(db, "blogs"), refresh),
-      ];
-    };
-
-    // Defer until browser is idle (better FID)
-    if (document.readyState === "complete") {
-      if ("requestIdleCallback" in window) {
-        requestIdleCallback(() => setupListeners(), { timeout: 5000 });
-      } else {
-        setTimeout(setupListeners, 3000);
-      }
-    } else {
-      window.addEventListener(
-        "load",
-        () => {
-          if ("requestIdleCallback" in window) {
-            requestIdleCallback(() => setupListeners(), { timeout: 5000 });
-          } else {
-            setTimeout(setupListeners, 3000);
-          }
-        },
-        { once: true },
-      );
-    }
+    const pollInterval = window.setInterval(() => {
+      dispatch(fetchContent({ force: true }));
+    }, 30000);
 
     return () => {
-      isActive = false;
-      if (debounceTimer) clearTimeout(debounceTimer);
-      unsubscribers.forEach((unsubscribe) => unsubscribe());
+      window.clearInterval(pollInterval);
     };
   }, [dispatch]);
 

@@ -1,23 +1,61 @@
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "./firebaseClient";
+/**
+ * Danvion Admin - Storage Service
+ *
+ * File upload to PHP API
+ */
 
-// Upload a File object to Firebase Storage and return a public URL
-export async function uploadImage(file, folder = "images") {
-  if (!file) throw new Error("No file provided");
+import apiClient from "./apiClient";
 
-  if (!storage) {
-    throw new Error(
-      "Firebase storage is not configured. Check your Firebase web app config.",
-    );
+/**
+ * Upload image file
+ * @param {File} file - The file to upload
+ * @param {string} folder - Optional folder name (not used in current implementation)
+ * @returns {Promise<string>} - The public URL of the uploaded image
+ */
+export const uploadImage = async (file, folder = "general") => {
+  if (!file) {
+    throw new Error("No file provided");
   }
 
-  const safeName = file.name.replace(/\s+/g, "_");
-  const filename = `${folder}/${Date.now()}_${safeName}`;
-  const fileRef = ref(storage, filename);
+  // Validate file type
+  const allowedTypes = [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "image/webp",
+    "image/gif",
+    "image/svg+xml",
+  ];
+  if (!allowedTypes.includes(file.type)) {
+    throw new Error("Invalid file type. Only images are allowed.");
+  }
 
-  await uploadBytes(fileRef, file, {
-    contentType: file.type || "application/octet-stream",
-  });
+  // Validate file size (5MB max)
+  const maxSize = 5 * 1024 * 1024; // 5MB
+  if (file.size > maxSize) {
+    throw new Error("File size exceeds 5MB limit");
+  }
 
-  return getDownloadURL(fileRef);
-}
+  // Create FormData
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("folder", folder);
+
+  try {
+    // Upload to PHP API
+    const response = await apiClient.upload("/admin/upload.php", formData);
+
+    if (response.success && response.data?.url) {
+      return response.data.url;
+    } else {
+      throw new Error(response.message || "Upload failed");
+    }
+  } catch (error) {
+    console.error("Image upload error:", error);
+    throw error;
+  }
+};
+
+export default {
+  uploadImage,
+};

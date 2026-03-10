@@ -31,8 +31,12 @@ const SiteSettingsTab = lazy(() => import("../components/SiteSettingsTab"));
 const EmailTemplatesTab = lazy(() => import("../components/EmailTemplatesTab"));
 const ActivityLogsTab = lazy(() => import("../components/ActivityLogsTab"));
 const MediaLibraryTab = lazy(() => import("../components/MediaLibraryTab"));
-const ContentSchedulerTab = lazy(() => import("../components/ContentSchedulerTab"));
-const ThemeCustomizerTab = lazy(() => import("../components/ThemeCustomizerTab"));
+const ContentSchedulerTab = lazy(
+  () => import("../components/ContentSchedulerTab"),
+);
+const ThemeCustomizerTab = lazy(
+  () => import("../components/ThemeCustomizerTab"),
+);
 const SEOManagerTab = lazy(() => import("../components/SEOManagerTab"));
 
 const TABS = [
@@ -101,8 +105,9 @@ export default function AdminDashboard() {
   const { isLoggedIn, adminEmail } = useSelector((state) => state.auth);
   const { activeTab } = useSelector((state) => state.admin);
   const storageBucket =
-    import.meta.env.VITE_FIREBASE_STORAGE_BUCKET ||
-    "danvion-ltd.firebasestorage.app";
+    import.meta.env.VITE_UPLOAD_BUCKET ||
+    import.meta.env.VITE_STORAGE_BUCKET ||
+    "uploads";
   const tabById = useMemo(() => {
     return Object.fromEntries(TABS.map((tab) => [tab.id, tab]));
   }, []);
@@ -130,9 +135,7 @@ export default function AdminDashboard() {
   if (!isLoggedIn) return null;
 
   return (
-    <div
-      className="min-h-screen admin-area text-brand-black"
-    >
+    <div className="min-h-screen admin-area text-brand-black">
       {/* Main Content */}
       <div className="w-full mx-auto px-4 py-12">
         <div className="admin-header mb-8 flex flex-wrap items-center justify-between gap-4">

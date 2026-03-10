@@ -1,16 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Download, RefreshCw, BookOpen, Eye, Trash2 } from "lucide-react";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  orderBy,
-  query,
-  setDoc,
-} from "firebase/firestore/lite";
-import { dbLite } from "../../services/firebaseLiteClient";
+import apiClient from "../../services/apiClient";
 import Button from "../../components/ui/Button";
 
 const formatDate = (value) => {
@@ -26,7 +17,6 @@ export default function MessagesTab() {
   const [loading, setLoading] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
   const [error, setError] = useState("");
-  const [lastDeleted, setLastDeleted] = useState(null);
   const [messageQuery, setMessageQuery] = useState("");
   const [lastLoadedAt, setLastLoadedAt] = useState("");
 
@@ -37,24 +27,30 @@ export default function MessagesTab() {
       const name = String(message.name || "").toLowerCase();
       const email = String(message.email || "").toLowerCase();
       const content = String(message.message || "").toLowerCase();
-      return name.includes(queryText) || email.includes(queryText) || content.includes(queryText);
+      return (
+        name.includes(queryText) ||
+        email.includes(queryText) ||
+        content.includes(queryText)
+      );
     });
   }, [messages, messageQuery]);
 
   const selectedMessage = useMemo(() => {
-    return filteredMessages.find((msg) => msg.id === selectedId) || filteredMessages[0] || null;
+    return (
+      filteredMessages.find((msg) => msg.id === selectedId) ||
+      filteredMessages[0] ||
+      null
+    );
   }, [filteredMessages, selectedId]);
 
   const loadMessages = useCallback(async () => {
     setLoading(true);
     setError("");
     try {
-      const snap = await getDocs(
-        query(collection(dbLite, "contact_messages"), orderBy("created_at", "desc")),
-      );
-      const data = snap.docs.map((docSnap) => ({
-        id: docSnap.id,
-        ...docSnap.data(),
+      const response = await apiClient.get("/admin/messages.php");
+      const data = (response?.data || []).map((item) => ({
+        ...item,
+        id: String(item.id),
       }));
       setMessages(data);
       setLastLoadedAt(new Date().toLocaleString());
@@ -78,14 +74,12 @@ export default function MessagesTab() {
     setDeletingId(id);
     setError("");
     try {
-      const deleted = messages.find((msg) => msg.id === id);
-      await deleteDoc(doc(dbLite, "contact_messages", id));
+      await apiClient.del(`/admin/messages.php?id=${id}`);
       const nextMessages = messages.filter((msg) => msg.id !== id);
       setMessages(nextMessages);
-      setSelectedId((prev) => (prev === id ? nextMessages[0]?.id || null : prev));
-      if (deleted) {
-        setLastDeleted({ id, data: deleted });
-      }
+      setSelectedId((prev) =>
+        prev === id ? nextMessages[0]?.id || null : prev,
+      );
     } catch (err) {
       setError(err?.message || "Failed to delete message");
     } finally {
@@ -93,32 +87,18 @@ export default function MessagesTab() {
     }
   };
 
-  const handleUndo = async () => {
-    if (!lastDeleted?.id || !lastDeleted?.data) return;
-    setError("");
-    try {
-      const { id, data } = lastDeleted;
-      const { id: _id, ...payload } = data;
-      await setDoc(doc(dbLite, "contact_messages", id), payload);
-      setLastDeleted(null);
-      await loadMessages();
-    } catch (err) {
-      setError(err?.message || "Failed to restore message");
-    }
-  };
-
   const handleToggleRead = async (id, currentReadStatus) => {
     try {
-      const newReadStatus = !currentReadStatus;
-      await setDoc(
-        doc(dbLite, "contact_messages", id),
-        { is_read: newReadStatus },
-        {
-          merge: true,
-        },
-      );
+      const response = await apiClient.put("/admin/messages.php", {
+        id: Number(id),
+      });
+      const updatedMessage = response?.data;
       setMessages((prev) =>
-        prev.map((msg) => (msg.id === id ? { ...msg, is_read: newReadStatus } : msg)),
+        prev.map((msg) =>
+          msg.id === id
+            ? { ...msg, ...updatedMessage, id: String(updatedMessage.id) }
+            : msg,
+        ),
       );
     } catch (err) {
       setError(err?.message || "Failed to update message status");
@@ -131,7 +111,15 @@ export default function MessagesTab() {
       return;
     }
 
-    const headers = ["Date", "Name", "Email", "Phone", "Company", "Message", "Status"];
+    const headers = [
+      "Date",
+      "Name",
+      "Email",
+      "Phone",
+      "Company",
+      "Message",
+      "Status",
+    ];
     const rows = messages.map((msg) => [
       formatDate(msg.created_at),
       msg.name || "",
@@ -142,7 +130,10 @@ export default function MessagesTab() {
       msg.is_read ? "Read" : "Unread",
     ]);
 
-    const csvContent = [headers.join(","), ...rows.map((row) => row.join(","))].join("\n");
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((row) => row.join(",")),
+    ].join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
@@ -162,10 +153,16 @@ export default function MessagesTab() {
     >
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-brand-black mb-2">Contact Messages</h2>
-          <p className="text-gray-600 text-sm">View messages sent from the website contact form</p>
+          <h2 className="text-xl font-bold text-brand-black mb-2">
+            Contact Messages
+          </h2>
+          <p className="text-gray-600 text-sm">
+            View messages sent from the website contact form
+          </p>
           {lastLoadedAt && (
-            <p className="text-xs text-gray-500 mt-2">Last loaded: {lastLoadedAt}</p>
+            <p className="text-xs text-gray-500 mt-2">
+              Last loaded: {lastLoadedAt}
+            </p>
           )}
         </div>
         <div className="flex flex-wrap items-center gap-3">
@@ -198,15 +195,6 @@ export default function MessagesTab() {
         </div>
       )}
 
-      {lastDeleted && (
-        <div className="admin-section admin-section--soft p-4 text-gray-700 border border-gray-200 flex flex-wrap items-center justify-between gap-3">
-          <span>Message deleted. You can undo this action.</span>
-          <Button onClick={handleUndo} size="md" variant="default">
-            ↶ Undo Delete
-          </Button>
-        </div>
-      )}
-
       {messages.length === 0 && !loading ? (
         <div className="admin-section admin-section--soft p-8 text-center text-gray-600">
           No messages yet. Submissions from the website will appear here.
@@ -224,7 +212,9 @@ export default function MessagesTab() {
                 type="button"
                 onClick={() => setSelectedId(message.id)}
                 className={`admin-card-lite w-full text-left p-4 transition-all relative ${
-                  selectedId === message.id ? "border-brand-orange shadow-lg" : "hover:shadow-md"
+                  selectedId === message.id
+                    ? "border-brand-orange shadow-lg"
+                    : "hover:shadow-md"
                 }`}
               >
                 {!message.is_read && (
@@ -234,7 +224,9 @@ export default function MessagesTab() {
                   <h3 className="font-semibold text-brand-black text-sm">
                     {message.name || "Anonymous"}
                   </h3>
-                  <span className="text-xs text-gray-500">{formatDate(message.created_at)}</span>
+                  <span className="text-xs text-gray-500">
+                    {formatDate(message.created_at)}
+                  </span>
                 </div>
                 <p className="text-xs text-brand-orange mt-1 break-all">
                   {message.email || "No email"}
@@ -260,7 +252,12 @@ export default function MessagesTab() {
                   </div>
                   <div className="flex flex-wrap gap-2">
                     <Button
-                      onClick={() => handleToggleRead(selectedMessage.id, selectedMessage.is_read)}
+                      onClick={() =>
+                        handleToggleRead(
+                          selectedMessage.id,
+                          selectedMessage.is_read,
+                        )
+                      }
                       size="md"
                       variant="outline"
                     >
@@ -283,7 +280,9 @@ export default function MessagesTab() {
                       variant="destructive"
                     >
                       <Trash2 className="h-4 w-4" />
-                      {deletingId === selectedMessage.id ? "Deleting..." : "Delete"}
+                      {deletingId === selectedMessage.id
+                        ? "Deleting..."
+                        : "Delete"}
                     </Button>
                   </div>
                 </div>
