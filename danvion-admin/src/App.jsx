@@ -73,7 +73,7 @@ function App() {
   return (
     <ErrorBoundary>
       <ToastProvider>
-        <Router>
+        <Router basename={import.meta.env.DEV ? "/" : "/admin"}>
           <Routes>
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route

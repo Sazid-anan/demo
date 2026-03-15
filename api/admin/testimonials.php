@@ -18,8 +18,19 @@ try {
     
     $db = getDb();
     $method = $_SERVER['REQUEST_METHOD'];
-    
-    if ($method === 'POST') {
+
+    if ($method === 'GET') {
+        // LIST TESTIMONIALS
+        $stmt = $db->query("SELECT * FROM testimonials ORDER BY created_at DESC, id DESC");
+        $testimonials = $stmt->fetchAll();
+
+        http_response_code(200);
+        echo json_encode([
+            'success' => true,
+            'data' => $testimonials
+        ]);
+
+    } elseif ($method === 'POST') {
         // CREATE TESTIMONIAL
         $input = json_decode(file_get_contents('php://input'), true);
         

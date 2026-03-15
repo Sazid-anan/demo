@@ -8,7 +8,8 @@ export const SITE_CONTENT = {
   // Company Information
   company: {
     name: "DANVION",
-    tagline: "Leading provider of Edge AI solutions and product development services.",
+    tagline:
+      "Leading provider of Edge AI solutions and product development services.",
     description:
       "We specialize in Edge AI solutions, embedded systems, and complete product development from concept to production.",
   },
@@ -64,56 +65,103 @@ export const SITE_CONTENT = {
 
   // Capabilities Section
   capabilities: {
-    title: "End-to-End Engineering",
-    subtitle: "From Hardware to Cloud",
+    title: "Our Engineering",
+    subtitle: "Capabilities",
+    description:
+      "From hardware design to edge AI deployment, we deliver complete engineering solutions that bring intelligent products to life.",
     items: [
       {
-        title: "PCB Design & Layout",
-        category: "Hardware",
-        description:
-          "Custom circuit board design from concept to production. Multi-layer PCBs, high-speed signals, and power-efficient layouts.",
+        title: "System Architecture",
+        icon: "zap",
       },
       {
-        title: "Embedded Systems",
-        category: "Hardware",
-        description:
-          "Complete embedded system development with ARM, RISC-V, and custom ASIC solutions tailored to your requirements.",
+        title: "PCB Design & Layout",
+        icon: "circuit-board",
+      },
+      {
+        title: "Signal & Power Integrity",
+        icon: "signal",
       },
       {
         title: "Firmware Development",
-        category: "Firmware",
-        description:
-          "Real-time firmware for microcontrollers and processors. RTOS, bare-metal, and custom bootloader development.",
+        icon: "code",
+      },
+      {
+        title: "IoT Connectivity",
+        icon: "smartphone",
       },
       {
         title: "Edge AI Integration",
-        category: "AI",
-        description:
-          "Deploy machine learning models on edge devices. TensorFlow Lite, optimized neural networks, and custom accelerators.",
+        icon: "brain",
+      },
+    ],
+    dropdownCategories: [
+      {
+        name: "EMBEDDED SYSTEMS",
+        items: [
+          {
+            title: "Edge AI Integration",
+            description:
+              "Deploy intelligent processing at the edge for real-time insights.",
+            icon: "cpu",
+          },
+          {
+            title: "PCB Design & Layout",
+            description: "Custom circuit board layouts for robust hardware.",
+            icon: "circuit-board",
+          },
+          {
+            title: "Firmware Development",
+            description: "Optimized code for seamless device performance.",
+            icon: "code",
+          },
+        ],
       },
       {
-        title: "IoT & Connectivity",
-        category: "Connectivity",
-        description:
-          "Wireless protocols (WiFi, BLE, LoRa, NB-IoT), cloud integration, and secure device communication.",
+        name: "CONNECTIVITY",
+        items: [
+          {
+            title: "IoT Connectivity",
+            description:
+              "Connect devices securely for scalable networks and remote monitoring.",
+            icon: "wifi",
+          },
+          {
+            title: "Signal & Power Integrity",
+            description:
+              "Maintain reliable data transmission and clean power delivery across complex systems.",
+            icon: "zap",
+          },
+          {
+            title: "Protocol Integration",
+            description:
+              "Integrate BLE, Wi-Fi, LoRa, and cellular protocols for production-ready connected products.",
+            icon: "activity",
+          },
+        ],
       },
       {
-        title: "Security Implementation",
-        category: "Security",
-        description:
-          "Hardware security modules, secure boot, encryption, and compliance with industry standards.",
-      },
-      {
-        title: "Power Management",
-        category: "Power",
-        description:
-          "Ultra-low power design, battery optimization, energy harvesting, and power distribution systems.",
-      },
-      {
-        title: "Sensor Integration",
-        category: "Sensors",
-        description:
-          "Multi-sensor fusion, calibration, signal processing, and custom sensor interfaces for diverse applications.",
+        name: "ENGINEERING SERVICES",
+        items: [
+          {
+            title: "System Architecture",
+            description:
+              "Define scalable hardware and software foundations before implementation begins.",
+            icon: "network",
+          },
+          {
+            title: "Rapid Prototyping",
+            description:
+              "Accelerate development with fast iteration, validation, and proof-of-concept builds.",
+            icon: "hammer",
+          },
+          {
+            title: "Technical Consulting",
+            description:
+              "Get senior engineering guidance for complex product decisions and delivery planning.",
+            icon: "lightbulb",
+          },
+        ],
       },
     ],
   },
@@ -189,14 +237,16 @@ export const SITE_CONTENT = {
   products: {
     title: "Our Products",
     subtitle: "Innovative Solutions",
-    description: "Explore our range of Edge AI and IoT products designed for various industries.",
+    description:
+      "Explore our range of Edge AI and IoT products designed for various industries.",
   },
 
   // Blogs Page
   blogs: {
     title: "Latest Insights",
     subtitle: "Blog & Resources",
-    description: "Stay updated with the latest trends in Edge AI, IoT, and product development.",
+    description:
+      "Stay updated with the latest trends in Edge AI, IoT, and product development.",
     readMore: "Read More",
     readingTime: "{minutes} min read",
   },

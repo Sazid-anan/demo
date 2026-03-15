@@ -8,6 +8,7 @@
 require_once __DIR__ . '/config.php';
 
 // Explicitly allowed origins for local and production environments.
+// NOTE: Admin dashboard is deployed to danvion.com/admin (subdirectory), not a subdomain
 $allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:5174',
@@ -15,7 +16,6 @@ $allowedOrigins = [
     'http://localhost:5176',
     'http://localhost:5177',
     'https://danvion.com',
-    'https://admin.danvion.com',
 ];
 
 // Keep compatibility with ALLOWED_ORIGINS from config.php if present.

@@ -36,8 +36,9 @@ const BUTTON_CLASSES =
 
 export default function Header() {
   const location = useLocation();
-  const { isMobile, isDesktop } = useResponsive();
+  const { isMobile } = useResponsive();
   const [showSolutions, setShowSolutions] = useState(false);
+  const canUseSolutionsDropdown = !isMobile;
 
   const handleSolutionsClick = (e) => {
     e.preventDefault();
@@ -115,7 +116,7 @@ export default function Header() {
                   {NAVIGATION_ITEMS.map((item) =>
                     item.isSpecial &&
                     item.label === "Solutions" &&
-                    isDesktop ? (
+                    canUseSolutionsDropdown ? (
                       // Solutions Button (Toggle)
                       <motion.button
                         key={item.label}
@@ -156,7 +157,7 @@ export default function Header() {
 
       {/* Solutions Dropdown Section */}
       <SolutionsDropdown
-        isVisible={isDesktop && showSolutions}
+        isVisible={canUseSolutionsDropdown && showSolutions}
         onClose={() => setShowSolutions(false)}
       />
     </>

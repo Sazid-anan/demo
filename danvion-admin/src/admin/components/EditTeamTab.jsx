@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
-import { Lightbulb, Upload } from "lucide-react";
-import { saveTeamMember, deleteTeamMember } from "../../redux/slices/contentSlice";
+import { Edit2, Lightbulb, Plus, Save, Trash2, Upload, X } from "lucide-react";
+import {
+  saveTeamMember,
+  deleteTeamMember,
+} from "../../redux/slices/contentSlice";
 import { uploadImage } from "../../services/storage";
 import Button from "../../components/ui/Button";
 
@@ -126,7 +129,9 @@ export default function EditTeamTab() {
       className="space-y-6 max-w-4xl"
     >
       <div>
-        <h2 className="text-xl font-bold text-brand-black mb-2">Leadership Team</h2>
+        <h2 className="text-xl font-bold text-brand-black mb-2">
+          Leadership Team
+        </h2>
         <p className="text-gray-600 text-sm">Manage team members</p>
       </div>
 
@@ -153,7 +158,12 @@ export default function EditTeamTab() {
       {/* Team Members List */}
       {!isEditing && (
         <div className="space-y-4">
-          <Button onClick={handleNewMember} size="lg" variant="default" className="w-full">
+          <Button
+            onClick={handleNewMember}
+            size="lg"
+            variant="default"
+            className="w-full"
+          >
             <Plus className="h-4 w-4" />
             Add New Team Member
           </Button>
@@ -173,7 +183,7 @@ export default function EditTeamTab() {
                   className="admin-card-lite flex gap-4 p-4 hover:shadow-lg transition-all"
                 >
                   {member.image && (
-                    <div className="w-20 h-20 rounded overflow-hidden flex-shrink-0">
+                    <div className="w-20 h-20 rounded overflow-hidden shrink-0">
                       <img
                         src={member.image}
                         alt={member.name}
@@ -181,16 +191,28 @@ export default function EditTeamTab() {
                       />
                     </div>
                   )}
-                  <div className="flex-grow min-w-0">
-                    <h3 className="font-bold text-brand-black">{member.name}</h3>
-                    <p className="text-brand-orange font-semibold text-sm">{member.role}</p>
+                  <div className="grow min-w-0">
+                    <h3 className="font-bold text-brand-black">
+                      {member.name}
+                    </h3>
+                    <p className="text-brand-orange font-semibold text-sm">
+                      {member.role}
+                    </p>
                     {member.bio && (
-                      <p className="text-gray-600 text-sm mt-1 line-clamp-2">{member.bio}</p>
+                      <p className="text-gray-600 text-sm mt-1 line-clamp-2">
+                        {member.bio}
+                      </p>
                     )}
-                    <p className="text-xs text-gray-500 mt-1">Order: {member.display_order || 0}</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Order: {member.display_order || 0}
+                    </p>
                   </div>
-                  <div className="flex gap-2 flex-shrink-0">
-                    <Button onClick={() => handleEdit(member)} size="md" variant="outline">
+                  <div className="flex gap-2 shrink-0">
+                    <Button
+                      onClick={() => handleEdit(member)}
+                      size="md"
+                      variant="outline"
+                    >
                       <Edit2 className="h-4 w-4" />
                       Edit
                     </Button>
@@ -223,11 +245,15 @@ export default function EditTeamTab() {
 
           {/* Name */}
           <div>
-            <label className="block text-sm font-medium text-brand-black mb-2">Full Name *</label>
+            <label className="block text-sm font-medium text-brand-black mb-2">
+              Full Name *
+            </label>
             <input
               type="text"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
               className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 transition-all duration-300 shadow-sm hover:shadow-md orange-pop-hover"
               placeholder="John Doe"
             />
@@ -235,11 +261,15 @@ export default function EditTeamTab() {
 
           {/* Role */}
           <div>
-            <label className="block text-sm font-medium text-brand-black mb-2">Job Title *</label>
+            <label className="block text-sm font-medium text-brand-black mb-2">
+              Job Title *
+            </label>
             <input
               type="text"
               value={formData.role}
-              onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, role: e.target.value })
+              }
               className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 transition-all duration-300 shadow-sm hover:shadow-md orange-pop-hover"
               placeholder="Chief Technology Officer"
             />
@@ -252,7 +282,9 @@ export default function EditTeamTab() {
             </label>
             <textarea
               value={formData.bio}
-              onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, bio: e.target.value })
+              }
               rows="3"
               className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 transition-all duration-300 shadow-sm hover:shadow-md resize-none orange-pop-hover"
               placeholder="Brief bio or description..."
@@ -261,11 +293,15 @@ export default function EditTeamTab() {
 
           {/* Display Order */}
           <div>
-            <label className="block text-sm font-medium text-brand-black mb-2">Display Order</label>
+            <label className="block text-sm font-medium text-brand-black mb-2">
+              Display Order
+            </label>
             <input
               type="number"
               value={formData.displayOrder}
-              onChange={(e) => setFormData({ ...formData, displayOrder: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, displayOrder: e.target.value })
+              }
               className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 transition-all duration-300 shadow-sm hover:shadow-md orange-pop-hover"
               placeholder="0"
               min="0"
@@ -278,7 +314,11 @@ export default function EditTeamTab() {
             {imagePreview && (
               <div className="mb-4">
                 <div className="w-40 h-40 rounded overflow-hidden">
-                  <img src={imagePreview} alt="preview" className="w-full h-full object-cover" />
+                  <img
+                    src={imagePreview}
+                    alt="preview"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
             )}
@@ -303,7 +343,9 @@ export default function EditTeamTab() {
                       <Upload className="h-4 w-4" />
                       Choose file
                     </span>
-                    <p className="text-xs text-gray-500 mt-1">or drag and drop</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      or drag and drop
+                    </p>
                   </label>
                 </div>
               </div>
@@ -332,14 +374,24 @@ export default function EditTeamTab() {
           className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
         >
           <motion.div className="bg-white p-6 rounded-lg shadow-xl max-w-sm">
-            <h3 className="font-bold text-lg text-brand-black mb-4">Delete Team Member?</h3>
+            <h3 className="font-bold text-lg text-brand-black mb-4">
+              Delete Team Member?
+            </h3>
             <p className="text-gray-600 mb-6">This action cannot be undone.</p>
             <div className="flex gap-4">
-              <Button onClick={() => handleDelete(deleteConfirm)} size="lg" variant="destructive">
+              <Button
+                onClick={() => handleDelete(deleteConfirm)}
+                size="lg"
+                variant="destructive"
+              >
                 <Trash2 className="h-4 w-4" />
                 Confirm Delete
               </Button>
-              <Button onClick={() => setDeleteConfirm(null)} size="lg" variant="outline">
+              <Button
+                onClick={() => setDeleteConfirm(null)}
+                size="lg"
+                variant="outline"
+              >
                 <X className="h-4 w-4" />
                 Cancel
               </Button>
@@ -355,7 +407,9 @@ export default function EditTeamTab() {
           Tips
         </h3>
         <ul className="text-gray-600 text-sm space-y-1">
-          <li>• Images should be square (e.g., 300x300px) for best appearance</li>
+          <li>
+            • Images should be square (e.g., 300x300px) for best appearance
+          </li>
           <li>• Use display order to control team member position page</li>
           <li>• Members are displayed in order (0, 1, 2, etc.)</li>
         </ul>

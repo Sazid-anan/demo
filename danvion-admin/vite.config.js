@@ -33,9 +33,10 @@ export default defineConfig({
     proxy: {
       // Local dev proxy to avoid browser CORS restrictions for API calls.
       "/api": {
-        target: "https://danvion.com",
+        target: process.env.VITE_API_URL || "http://localhost/api",
         changeOrigin: true,
         secure: true,
+        rewrite: (path) => path,
       },
     },
   },
@@ -110,8 +111,8 @@ export default defineConfig({
     // Target modern browsers only (reduces polyfills)
     target: ["es2020", "edge88", "firefox78", "chrome90", "safari14"],
   },
-  // Base optimization
-  base: "/",
+  // Deploy admin under danvion.com/admin/
+  base: "/admin/",
   // Optimization for dependencies - pre-bundle heavy dependencies
   optimizeDeps: {
     // Include heavy dependencies for pre-bundling

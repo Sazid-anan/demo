@@ -35,7 +35,8 @@ class ErrorLogger {
     const message = getErrorMessage(error);
     const category = categorizeError(error);
     const errorSeverity =
-      severity || (error instanceof AppError ? error.severity : ErrorSeverity.MEDIUM);
+      severity ||
+      (error instanceof AppError ? error.severity : ErrorSeverity.MEDIUM);
 
     const loggedError: LoggedError = {
       id: this.generateErrorId(),
@@ -138,7 +139,8 @@ class ErrorLogger {
   downloadLogs(): void {
     const report = this.generateReport();
     const dataStr = JSON.stringify(report, null, 2);
-    const dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
+    const dataUri =
+      "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
 
     const exportFileDefaultName = `error-logs-${Date.now()}.json`;
     const linkElement = document.createElement("a");
@@ -209,8 +211,8 @@ class ErrorLogger {
   private sendToErrorService(errorData: any) {
     try {
       // Example: Send to custom logging endpoint
-      if (process.env.VITE_ERROR_REPORTING_ENDPOINT) {
-        fetch(process.env.VITE_ERROR_REPORTING_ENDPOINT, {
+      if (import.meta.env.VITE_ERROR_REPORTING_ENDPOINT) {
+        fetch(import.meta.env.VITE_ERROR_REPORTING_ENDPOINT, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(errorData),
@@ -238,7 +240,8 @@ class ErrorLogger {
       "auth/network-request-failed": "Network error. Check your connection.",
     };
 
-    const userFriendlyMessage = authErrors[error.code] || "Authentication error. Please try again.";
+    const userFriendlyMessage =
+      authErrors[error.code] || "Authentication error. Please try again.";
 
     this.captureException(error, {
       type: "auth",

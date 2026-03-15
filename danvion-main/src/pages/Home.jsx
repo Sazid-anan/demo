@@ -187,7 +187,7 @@ export default function Home() {
           "@type": "Organization",
           name: "Danvion Ltd",
           url: "https://danvion.com",
-          logo: "https://danvion.com/logo.png",
+          logo: "https://danvion.com/logo-optimized.png",
           description:
             "Leading provider of Edge AI solutions and complete product development services",
           sameAs: ["https://www.linkedin.com/company/danvion"],
@@ -210,7 +210,7 @@ export default function Home() {
       <HeroTextSection />
 
       {/* Engineering Capabilities Section */}
-      <CapabilitiesSection />
+      <CapabilitiesSection homePage={homePage} />
 
       {/* Phases Section */}
       <PhasesSection />

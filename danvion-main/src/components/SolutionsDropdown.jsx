@@ -6,12 +6,25 @@ import {
   Code,
   Wifi,
   Zap,
-  Box,
+  Activity,
   Network,
   Hammer,
   Lightbulb,
 } from "lucide-react";
+import { SITE_CONTENT } from "../config/content";
 import { EXTERNAL_LINKS } from "../config/links";
+
+const dropdownIconMap = {
+  cpu: Cpu,
+  "circuit-board": CircuitBoard,
+  code: Code,
+  wifi: Wifi,
+  zap: Zap,
+  activity: Activity,
+  network: Network,
+  hammer: Hammer,
+  lightbulb: Lightbulb,
+};
 
 /**
  * SolutionsDropdown Component
@@ -19,86 +32,24 @@ import { EXTERNAL_LINKS } from "../config/links";
  * Used in Header navigation
  */
 export default function SolutionsDropdown({ isVisible = true, onClose }) {
-  const capabilityCategories = [
-    {
-      name: "EMBEDDED SYSTEMS",
-      items: [
-        {
-          title: "Edge AI Integration",
-          description:
-            "Deploy intelligent processing at the edge for real-time insights.",
-          icon: Cpu,
-        },
-        {
-          title: "PCB Design",
-          description: "Custom circuit board layouts for robust hardware.",
-          icon: CircuitBoard,
-        },
-        {
-          title: "Firmware Development",
-          description: "Optimized code for seamless device performance.",
-          icon: Code,
-        },
-      ],
-    },
-    {
-      name: "CONNECTIVITY",
-      items: [
-        {
-          title: "IoT Integration",
-          description: "Connect devices securely for scalable networks.",
-          icon: Wifi,
-        },
-        {
-          title: "Signal Integrity",
-          description: "Ensure reliable data transmission and power delivery.",
-          icon: Zap,
-        },
-        {
-          title: "Enclosure Design",
-          description: "Precision housings for advanced electronics.",
-          icon: Box,
-        },
-      ],
-    },
-    {
-      name: "ENGINEERING SERVICES",
-      items: [
-        {
-          title: "System Architecture",
-          description: "Strategic planning for scalable hardware solutions.",
-          icon: Network,
-        },
-        {
-          title: "Prototyping",
-          description: "Accelerate development with rapid iteration.",
-          icon: Hammer,
-        },
-        {
-          title: "Consulting",
-          description: "Expert guidance for complex engineering challenges.",
-          icon: Lightbulb,
-        },
-      ],
-    },
-  ];
+  const capabilityCategories = SITE_CONTENT.capabilities.dropdownCategories;
 
   const content = (
-    <div className="bg-white border-2 border-gray-200 shadow-xl">
-      <div className="max-w-full mx-auto px-3 sm:px-5 md:px-6 lg:px-7 py-4 sm:py-5 md:py-5">
-        <div className="grid grid-cols-1 lg:grid-cols-[1.7fr_1fr] xl:grid-cols-[2.15fr_1fr] gap-5 md:gap-6 min-w-0">
+    <div className="solutions-dropdown-panel bg-white border-2 border-gray-200 shadow-xl">
+      <div className="solutions-dropdown-inner max-w-full mx-auto px-3 sm:px-5 md:px-6 lg:px-7 py-4 sm:py-5 md:py-5">
+        <div className="solutions-dropdown-layout grid grid-cols-1 lg:grid-cols-[1.62fr_1fr] xl:grid-cols-[2.15fr_1fr] gap-4 md:gap-5 lg:gap-6 min-w-0">
           {/* Left: 3 categories */}
-          <div className="solutions-categories-grid grid grid-cols-1 gap-4 md:gap-5 min-w-0">
+          <div className="solutions-categories-grid grid grid-cols-1 gap-3.5 md:gap-4 lg:gap-5 min-w-0">
             {capabilityCategories.map((category, idx) => (
               <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.08, duration: 0.28 }}
-                className="space-y-3.5 min-w-0 px-1.5 py-1 sm:px-2 sm:py-1.5"
+                className="solutions-category space-y-3 min-w-0 px-1.5 py-1 sm:px-2 sm:py-1.5"
               >
                 <p
-                  className={`font-semibold text-slate-500 uppercase leading-none mb-2.5 md:mb-3 min-h-3.5 md:min-h-4 whitespace-nowrap ${
+                  className={`font-semibold text-slate-500 uppercase leading-none mb-2.5 md:mb-3 min-h-3.5 md:min-h-4 ${
                     category.name === "ENGINEERING SERVICES"
                       ? "text-[8px] md:text-[9px] tracking-[0.08em]"
                       : "text-[9px] md:text-[10px] tracking-widest"
@@ -107,24 +58,24 @@ export default function SolutionsDropdown({ isVisible = true, onClose }) {
                   {category.name}
                 </p>
 
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-2.5 md:gap-3">
                   {category.items.map((item, itemIdx) => {
-                    const IconComponent = item.icon;
+                    const IconComponent = dropdownIconMap[item.icon] || Cpu;
                     return (
                       <div
                         key={itemIdx}
-                        className="grid grid-cols-[1.25rem_1fr] gap-2.5 md:gap-3 min-w-0 content-start"
+                        className="solutions-item grid grid-cols-[1.25rem_1fr] gap-2.5 md:gap-3 min-w-0 content-start"
                       >
                         <IconComponent className="w-4 h-4 md:w-4.5 md:h-4.5 text-slate-700 shrink-0 mt-0.5" />
                         <div className="flex-1 min-w-0">
                           <div
                             role="heading"
                             aria-level={3}
-                            className="text-[16px] font-semibold text-slate-900 mb-0.5 leading-[1.3] min-h-8 wrap-break-word"
+                            className="solutions-item-title text-[15px] md:text-[16px] font-semibold text-slate-900 mb-0.5 leading-[1.3] wrap-break-word"
                           >
                             {item.title}
                           </div>
-                          <div className="text-[13px] text-slate-600 leading-snug min-h-14 wrap-break-word">
+                          <div className="solutions-item-desc text-[12px] md:text-[13px] text-slate-600 leading-snug wrap-break-word">
                             {item.description}
                           </div>
                         </div>
@@ -141,7 +92,7 @@ export default function SolutionsDropdown({ isVisible = true, onClose }) {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.24, duration: 0.35 }}
-            className="w-full min-w-0 self-start"
+            className="solutions-consultation-panel w-full min-w-0 self-start lg:sticky lg:top-2"
           >
             <div className="p-3 md:p-3.5 lg:p-4 bg-white border-2 border-gray-200 rounded-2xl flex flex-col gap-3">
               <div>
@@ -187,9 +138,9 @@ export default function SolutionsDropdown({ isVisible = true, onClose }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="solutions-dropdown-shell fixed top-16 sm:top-20 left-1/2 -translate-x-1/2 w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)] md:w-[calc(100%-3rem)] lg:w-[84%] max-w-6xl max-h-[80vh] overflow-hidden z-50 rounded-xl sm:rounded-2xl shadow-2xl"
+            className="solutions-dropdown-shell fixed top-16 sm:top-20 left-1/2 -translate-x-1/2 w-[calc(100%-1rem)] sm:w-[calc(100%-2rem)] md:w-[calc(100%-3rem)] lg:w-[84%] max-w-6xl max-h-[calc(100dvh-4.5rem)] sm:max-h-[calc(100dvh-5.5rem)] overflow-y-auto overflow-x-hidden z-50 rounded-xl sm:rounded-2xl shadow-2xl"
           >
-            <div className="h-full overflow-y-auto overflow-x-hidden scrollbar-hide">
+            <div className="solutions-dropdown-scroll h-full scrollbar-hide">
               {content}
             </div>
           </motion.div>

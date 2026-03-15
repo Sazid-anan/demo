@@ -1,0 +1,7 @@
+# Danvion Admin Panel — Do not crawl
+User-agent: *
+Disallow: /
+
+# Prevent search engine indexing
+Disallow: /login
+Disallow: /dashboard

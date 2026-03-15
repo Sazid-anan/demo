@@ -42,7 +42,7 @@ export default function AdminLogin() {
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
             <img
-              src="/logo.png"
+              src="/admin/logo-optimized.png"
               alt="Danvion"
               className="h-12 w-12 rounded-xl border border-gray-200 bg-white p-2"
             />

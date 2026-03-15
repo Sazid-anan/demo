@@ -50,6 +50,7 @@ export default function StickyContactBar() {
     {
       icon: Calendar,
       label: "Book a 30 Minutes Free Consultation Call",
+      tooltipLabel: "Book a Free 30 Minute Consultation",
       href: EXTERNAL_LINKS.CALENDLY,
       color: "text-brand-orange",
       target: "_blank",
@@ -141,16 +142,16 @@ export default function StickyContactBar() {
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: 20, scale: 0.8 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
-                  className="hidden lg:block absolute right-14 top-1/2 -translate-y-1/2 bg-linear-to-br from-orange-400 via-orange-300 to-orange-400 backdrop-blur-xl text-white px-3 py-2 rounded-lg pointer-events-none shadow-[0_4px_16px_rgba(255,140,0,0.3)] border-2 border-orange-300/60 max-w-xs overflow-hidden"
+                  className="hidden lg:block absolute right-14 top-1/2 -translate-y-1/2 w-max min-w-48 max-w-60 bg-linear-to-br from-orange-400 via-orange-300 to-orange-400 backdrop-blur-xl text-white px-3 py-2 rounded-lg pointer-events-none shadow-[0_4px_16px_rgba(255,140,0,0.3)] border-2 border-orange-300/60 overflow-hidden"
                 >
                   <div className="flex items-start gap-1.5">
                     <div className="w-1 h-1 rounded-full bg-white animate-pulse shrink-0 mt-1" />
                     <div className="flex flex-col">
-                      <p className="font-bold text-xs text-white uppercase tracking-wide leading-tight">
-                        {item.label}
+                      <p className="font-bold text-xs text-white uppercase tracking-wide leading-tight wrap-break-word">
+                        {item.tooltipLabel || item.label}
                       </p>
                       {item.detail && (
-                        <p className="text-xs font-semibold text-white tracking-normal leading-tight mt-0.5">
+                        <p className="text-xs font-semibold text-white tracking-normal leading-tight mt-0.5 wrap-break-word">
                           {item.detail}
                         </p>
                       )}

@@ -222,32 +222,32 @@ export default function Footer() {
                 {SITE_CONTENT.footer.sections.getInTouch.title}
               </h3>
               <div className="h-0.5 w-7 sm:w-8 bg-linear-to-r from-brand-orange to-orange-500 mb-1 sm:mb-1.5 rounded-full" />
-              <div className="flex flex-col gap-1 sm:gap-1.5">
+              <div className="flex flex-col gap-1.5 sm:gap-2">
                 {/* Email */}
                 <a
-                  href="mailto:support@danvion.com"
-                  className="flex items-start gap-1.5 group"
+                  href={`mailto:${SITE_CONTENT.contact.email}`}
+                  className="flex items-start gap-2 group"
                 >
-                  <Mail className="w-2 h-2 text-brand-orange shrink-0 mt-0.5" />
-                  <div className="flex flex-col">
+                  <Mail className="w-3.5 h-3.5 text-brand-orange shrink-0 mt-0.5" />
+                  <div className="flex min-w-0 flex-col gap-0.5">
                     <p className="text-xs text-black uppercase tracking-wider leading-none mb-0.5">
                       Email
                     </p>
-                    <p className="text-xs sm:text-sm text-black group-hover:text-brand-orange transition-colors leading-tight break-all">
-                      support@danvion.com
+                    <p className="text-xs sm:text-sm text-black group-hover:text-brand-orange transition-colors leading-snug wrap-break-word">
+                      {SITE_CONTENT.contact.email}
                     </p>
                   </div>
                 </a>
 
                 {/* Address */}
-                <div className="flex items-start gap-1.5">
-                  <MapPin className="w-2 h-2 text-brand-orange shrink-0 mt-0.5" />
-                  <div className="flex flex-col">
+                <div className="flex items-start gap-2">
+                  <MapPin className="w-3.5 h-3.5 text-brand-orange shrink-0 mt-0.5" />
+                  <div className="flex min-w-0 flex-col gap-0.5">
                     <p className="text-xs text-black uppercase tracking-wider leading-none mb-0.5">
                       Location
                     </p>
-                    <p className="text-xs sm:text-sm text-black leading-tight">
-                      128 City Road, London, EC1V 2NX, GB
+                    <p className="text-xs sm:text-sm text-black leading-snug wrap-break-word">
+                      {SITE_CONTENT.contact.location}
                     </p>
                   </div>
                 </div>

@@ -6,11 +6,9 @@
 -- Tables: 10 (3 singleton + 7 multi-row)
 -- ============================================================================
 
--- Create database
-CREATE DATABASE IF NOT EXISTS danvion_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- Use the database
-USE danvion_db;
+-- Database already created on Hostinger as: u691300579_danvion_db
+-- No need to create it again (user doesn't have CREATE DATABASE permission)
+-- Tables will be created in the currently selected database
 
 -- ============================================================================
 -- TABLE 1: home_page (SINGLETON - only 1 row)

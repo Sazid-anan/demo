@@ -10,7 +10,7 @@
  * - Offline: Cached fallback pages
  */
 
-const CACHE_VERSION = "v1";
+const CACHE_VERSION = "v3";
 const STATIC_CACHE = `static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `dynamic-${CACHE_VERSION}`;
 const ASSETS_CACHE = `assets-${CACHE_VERSION}`;
@@ -21,9 +21,8 @@ const OFFLINE_CACHE = `offline-${CACHE_VERSION}`;
 const STATIC_ASSETS = [
   "/",
   "/index.html",
-  "/logo.png",
+  "/logo-optimized.png",
   "/robots.txt",
-  "/sitemap.xml",
 ];
 
 // Cache size limits (in MB)
@@ -41,11 +40,11 @@ const IMAGE_CACHE_TTL = 30;
  */
 async function cleanupCaches() {
   const cacheNames = await caches.keys();
-  
+
   for (const cacheName of cacheNames) {
     const cache = await caches.open(cacheName);
     const requests = await cache.keys();
-    
+
     // Remove old entries (older than TTL)
     for (const request of requests) {
       const response = await cache.match(request);
@@ -55,7 +54,7 @@ async function cleanupCaches() {
           const cacheTime = new Date(dateHeader).getTime();
           const now = Date.now();
           const daysDiff = (now - cacheTime) / (1000 * 60 * 60 * 24);
-          
+
           if (cacheName === IMAGE_CACHE && daysDiff > IMAGE_CACHE_TTL) {
             cache.delete(request);
           }
@@ -105,6 +104,15 @@ self.addEventListener("fetch", (event) => {
 
   // Skip cross-origin requests and non-GET
   if (url.origin !== location.origin) {
+    return;
+  }
+
+  // Always fetch SEO control files fresh to avoid stale sitemap/robots/manifest responses.
+  if (
+    request.method === "GET" &&
+    ["/sitemap.xml", "/robots.txt", "/manifest.json"].includes(url.pathname)
+  ) {
+    event.respondWith(fetch(request, { cache: "no-store" }));
     return;
   }
 
@@ -240,8 +248,8 @@ self.addEventListener("push", (event) => {
   let notificationData = {
     title: "Danvion Ltd",
     body: "You have a new message",
-    icon: "/logo.png",
-    badge: "/logo.png",
+    icon: "/logo-optimized.png",
+    badge: "/logo-optimized.png",
     tag: "danvion-notification",
     requireInteraction: false,
   };
@@ -255,7 +263,10 @@ self.addEventListener("push", (event) => {
   }
 
   event.waitUntil(
-    self.registration.showNotification(notificationData.title, notificationData),
+    self.registration.showNotification(
+      notificationData.title,
+      notificationData,
+    ),
   );
 });
 

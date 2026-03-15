@@ -12,8 +12,11 @@ const SEO = ({
   publishedDate,
   modifiedDate,
   pageType = "website",
+  breadcrumbs = [],
 }) => {
-  const fullTitle = title ? `${title} | Danvion` : "Danvion - Edge AI Solutions";
+  const fullTitle = title
+    ? `${title} | Danvion`
+    : "Danvion - Edge AI Solutions";
   const baseUrl = "https://danvion.com";
   const fullUrl = url ? `${baseUrl}${url}` : baseUrl;
   const defaultImage = image || `${baseUrl}/og-image.png`;
@@ -24,16 +27,71 @@ const SEO = ({
     "@type": "Organization",
     name: "Danvion",
     url: baseUrl,
-    logo: `${baseUrl}/logo.png`,
-    description: "Leading provider of Edge AI solutions and product development services",
+    logo: `${baseUrl}/logo-optimized.png`,
+    description:
+      "Leading provider of Edge AI solutions and product development services",
     sameAs: ["https://www.linkedin.com/company/danvion"],
     contact: {
       "@type": "ContactPoint",
       url: `${baseUrl}/contact`,
+      telephone: "+44-20-XXXX-XXXX",
+      contactType: "Customer Support",
+    },
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "128 City Road",
+      addressLocality: "London",
+      addressRegion: "EC1V 2NX",
+      postalCode: "EC1V 2NX",
+      addressCountry: "GB",
     },
   };
 
+  // WebSite Schema with search action
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    url: baseUrl,
+    name: "Danvion",
+    description: "Edge AI Solutions & Product Development",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${baseUrl}/search?q={search_term_string}`,
+      },
+      query_input: "required name=search_term_string",
+    },
+  };
 
+  // Breadcrumb Schema for navigation
+  const getBreadcrumbSchema = () => {
+    if (breadcrumbs.length === 0) {
+      return {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: baseUrl,
+          },
+        ],
+      };
+    }
+
+    return {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: breadcrumbs.map((crumb, idx) => ({
+        "@type": "ListItem",
+        position: idx + 1,
+        name: crumb.name,
+        item: crumb.url,
+      })),
+    };
+  };
 
   // Article/BlogPosting Schema
   const articleSchema = {
@@ -50,10 +108,16 @@ const SEO = ({
     dateModified: modifiedDate || publishedDate,
   };
 
-  const getFinalSchema = () => {
-    if (structuredData) return structuredData;
-    if (pageType === "article") return articleSchema;
-    return organizationSchema;
+  const getFinalSchemas = () => {
+    const schemas = [organizationSchema, websiteSchema, getBreadcrumbSchema()];
+
+    if (structuredData) {
+      schemas.push(structuredData);
+    } else if (pageType === "article") {
+      schemas.push(articleSchema);
+    }
+
+    return schemas;
   };
 
   return (
@@ -92,10 +156,17 @@ const SEO = ({
       {/* Additional SEO Tags */}
       <meta name="format-detection" content="telephone=no" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
-      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+      <meta
+        name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent"
+      />
 
-      {/* Structured Data (JSON-LD) */}
-      <script type="application/ld+json">{JSON.stringify(getFinalSchema())}</script>
+      {/* Structured Data (JSON-LD) - Multiple schemas for comprehensive SEO */}
+      {getFinalSchemas().map((schema, idx) => (
+        <script key={idx} type="application/ld+json">
+          {JSON.stringify(schema)}
+        </script>
+      ))}
     </Helmet>
   );
 };
@@ -111,10 +182,17 @@ SEO.propTypes = {
   publishedDate: PropTypes.string,
   modifiedDate: PropTypes.string,
   pageType: PropTypes.oneOf(["website", "article", "product"]),
+  breadcrumbs: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
+    }),
+  ),
 };
 
 SEO.defaultProps = {
   pageType: "website",
+  breadcrumbs: [],
 };
 
 export default SEO;

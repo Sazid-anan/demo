@@ -30,7 +30,7 @@ export default function ThemeCustomizerTab() {
             bodySize: "1rem",
           },
           branding: {
-            logoUrl: "/logo.png",
+            logoUrl: "/admin/logo-optimized.png",
             faviconUrl: "/favicon.ico",
             brandName: "DANVION",
           },
@@ -80,12 +80,18 @@ export default function ThemeCustomizerTab() {
   };
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="space-y-8"
+    >
       {/* Header */}
       <div>
         <div className="flex items-center gap-3 mb-2">
           <Palette className="h-6 w-6 text-brand-orange" />
-          <h2 className="text-h3 font-bold text-brand-black">Theme Customizer</h2>
+          <h2 className="text-h3 font-bold text-brand-black">
+            Theme Customizer
+          </h2>
         </div>
         <p className="text-gray-600">Customize colors, fonts, and branding</p>
       </div>
@@ -109,7 +115,9 @@ export default function ThemeCustomizerTab() {
         >
           {/* Colors */}
           <div className="bg-white border-2 border-gray-200 rounded-2xl p-6">
-            <h3 className="text-h4 font-bold text-brand-black mb-4">Brand Colors</h3>
+            <h3 className="text-h4 font-bold text-brand-black mb-4">
+              Brand Colors
+            </h3>
             <div className="space-y-4">
               {Object.entries(theme.colors).map(([key, value]) => (
                 <div key={key} className="flex items-center gap-4">
@@ -139,7 +147,9 @@ export default function ThemeCustomizerTab() {
 
           {/* Typography */}
           <div className="bg-white border-2 border-gray-200 rounded-2xl p-6">
-            <h3 className="text-h4 font-bold text-brand-black mb-4">Typography</h3>
+            <h3 className="text-h4 font-bold text-brand-black mb-4">
+              Typography
+            </h3>
             <div className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
@@ -148,7 +158,9 @@ export default function ThemeCustomizerTab() {
                   </label>
                   <select
                     value={theme.typography.headingFont}
-                    onChange={(e) => handleTypographyChange("headingFont", e.target.value)}
+                    onChange={(e) =>
+                      handleTypographyChange("headingFont", e.target.value)
+                    }
                     disabled={!canEdit}
                     className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg disabled:bg-gray-50"
                   >
@@ -164,7 +176,9 @@ export default function ThemeCustomizerTab() {
                   </label>
                   <select
                     value={theme.typography.bodyFont}
-                    onChange={(e) => handleTypographyChange("bodyFont", e.target.value)}
+                    onChange={(e) =>
+                      handleTypographyChange("bodyFont", e.target.value)
+                    }
                     disabled={!canEdit}
                     className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg disabled:bg-gray-50"
                   >
@@ -183,7 +197,9 @@ export default function ThemeCustomizerTab() {
                   <input
                     type="text"
                     value={theme.typography.headingSize}
-                    onChange={(e) => handleTypographyChange("headingSize", e.target.value)}
+                    onChange={(e) =>
+                      handleTypographyChange("headingSize", e.target.value)
+                    }
                     disabled={!canEdit}
                     className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg disabled:bg-gray-50"
                   />
@@ -196,7 +212,9 @@ export default function ThemeCustomizerTab() {
                   <input
                     type="text"
                     value={theme.typography.bodySize}
-                    onChange={(e) => handleTypographyChange("bodySize", e.target.value)}
+                    onChange={(e) =>
+                      handleTypographyChange("bodySize", e.target.value)
+                    }
                     disabled={!canEdit}
                     className="w-full px-3 py-2 border-2 border-gray-200 rounded-lg disabled:bg-gray-50"
                   />
@@ -207,7 +225,9 @@ export default function ThemeCustomizerTab() {
 
           {/* Branding */}
           <div className="bg-white border-2 border-gray-200 rounded-2xl p-6">
-            <h3 className="text-h4 font-bold text-brand-black mb-4">Branding</h3>
+            <h3 className="text-h4 font-bold text-brand-black mb-4">
+              Branding
+            </h3>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-brand-black mb-2">
@@ -219,7 +239,10 @@ export default function ThemeCustomizerTab() {
                   onChange={(e) =>
                     setTheme({
                       ...theme,
-                      branding: { ...theme.branding, brandName: e.target.value },
+                      branding: {
+                        ...theme.branding,
+                        brandName: e.target.value,
+                      },
                     })
                   }
                   disabled={!canEdit}
@@ -228,7 +251,9 @@ export default function ThemeCustomizerTab() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-brand-black mb-2">Logo URL</label>
+                <label className="block text-sm font-medium text-brand-black mb-2">
+                  Logo URL
+                </label>
                 <input
                   type="text"
                   value={theme.branding.logoUrl}
@@ -258,7 +283,12 @@ export default function ThemeCustomizerTab() {
                 <Save className="h-4 w-4" />
                 Save Theme
               </Button>
-              <Button onClick={handleResetTheme} size="lg" variant="outline" className="flex-1">
+              <Button
+                onClick={handleResetTheme}
+                size="lg"
+                variant="outline"
+                className="flex-1"
+              >
                 <RotateCcw className="h-4 w-4" />
                 Reset
               </Button>
@@ -280,7 +310,9 @@ export default function ThemeCustomizerTab() {
 
           {/* Color Swatches */}
           <div className="space-y-3">
-            <p className="text-xs font-semibold text-gray-600 uppercase">Colors</p>
+            <p className="text-xs font-semibold text-gray-600 uppercase">
+              Colors
+            </p>
             <div className="grid grid-cols-2 gap-2">
               {Object.entries(theme.colors).map(([key, value]) => (
                 <div key={key} className="space-y-1">
@@ -296,7 +328,9 @@ export default function ThemeCustomizerTab() {
 
           {/* Typography Preview */}
           <div className="mt-6 space-y-3 pt-6 border-t-2 border-gray-100">
-            <p className="text-xs font-semibold text-gray-600 uppercase">Typography</p>
+            <p className="text-xs font-semibold text-gray-600 uppercase">
+              Typography
+            </p>
             <div
               style={{
                 fontFamily: theme.typography.headingFont,

@@ -1,7 +1,14 @@
 import { useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
-import { Image as ImageIcon, Upload, Trash2, Download, Filter, Search } from "lucide-react";
+import {
+  Image as ImageIcon,
+  Upload,
+  Trash2,
+  Download,
+  Filter,
+  Search,
+} from "lucide-react";
 import Button from "../../components/ui/Button";
 import { addAuditLog } from "../../redux/slices/auditSlice";
 
@@ -12,28 +19,36 @@ export default function MediaLibraryTab() {
 
   const [media, setMedia] = useState(() => {
     const saved = localStorage.getItem("mediaLibrary");
-    return saved
-      ? JSON.parse(saved)
-      : [
-          {
-            id: 1,
-            name: "logo.png",
-            url: "/logo.png",
-            size: "45 KB",
-            category: "branding",
-            uploadedAt: "2026-02-20",
-            altText: "Danvion Logo",
-          },
-          {
-            id: 2,
-            name: "hero-image.jpg",
-            url: "/hero-image.jpg",
-            size: "320 KB",
-            category: "hero",
-            uploadedAt: "2026-02-18",
-            altText: "Hero section background",
-          },
-        ];
+    if (saved) {
+      // Backfill old seeded URLs that no longer exist on production.
+      return JSON.parse(saved).map((item) => {
+        if (item?.url === "/hero-image.jpg") {
+          return { ...item, url: "/admin/logo.webp", name: "logo.webp" };
+        }
+        return item;
+      });
+    }
+
+    return [
+      {
+        id: 1,
+        name: "logo-optimized.png",
+        url: "/admin/logo-optimized.png",
+        size: "45 KB",
+        category: "branding",
+        uploadedAt: "2026-02-20",
+        altText: "Danvion Logo",
+      },
+      {
+        id: 2,
+        name: "logo.webp",
+        url: "/admin/logo.webp",
+        size: "320 KB",
+        category: "hero",
+        uploadedAt: "2026-02-18",
+        altText: "Hero section background",
+      },
+    ];
   });
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -50,9 +65,11 @@ export default function MediaLibraryTab() {
 
   const filteredMedia = useMemo(() => {
     return media.filter((item) => {
-      const matchCategory = filterCategory === "all" || item.category === filterCategory;
+      const matchCategory =
+        filterCategory === "all" || item.category === filterCategory;
       const matchSearch =
-        searchTerm === "" || item.name.toLowerCase().includes(searchTerm.toLowerCase());
+        searchTerm === "" ||
+        item.name.toLowerCase().includes(searchTerm.toLowerCase());
       return matchCategory && matchSearch;
     });
   }, [media, filterCategory, searchTerm]);
@@ -149,14 +166,20 @@ export default function MediaLibraryTab() {
   };
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="space-y-8"
+    >
       {/* Header */}
       <div>
         <div className="flex items-center gap-3 mb-2">
           <ImageIcon className="h-6 w-6 text-brand-orange" />
           <h2 className="text-h3 font-bold text-brand-black">Media Library</h2>
         </div>
-        <p className="text-gray-600">Manage all images and assets for your website</p>
+        <p className="text-gray-600">
+          Manage all images and assets for your website
+        </p>
       </div>
 
       {/* Upload Section */}
@@ -164,9 +187,11 @@ export default function MediaLibraryTab() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-br from-orange-50 to-white border-2 border-brand-orange rounded-2xl p-6 space-y-4"
+          className="bg-linear-to-br from-orange-50 to-white border-2 border-brand-orange rounded-2xl p-6 space-y-4"
         >
-          <h3 className="text-h4 font-bold text-brand-black">Upload New Image</h3>
+          <h3 className="text-h4 font-bold text-brand-black">
+            Upload New Image
+          </h3>
 
           <div className="space-y-4">
             {/* File Input */}
@@ -182,7 +207,11 @@ export default function MediaLibraryTab() {
                   className="flex-1 px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-brand-orange focus:outline-none"
                 />
                 {newImage && (
-                  <img src={newImage} alt="Preview" className="h-16 w-16 rounded-lg object-cover" />
+                  <img
+                    src={newImage}
+                    alt="Preview"
+                    className="h-16 w-16 rounded-lg object-cover"
+                  />
                 )}
               </div>
             </div>
@@ -236,7 +265,12 @@ export default function MediaLibraryTab() {
                 </div>
 
                 {/* Upload Button */}
-                <Button onClick={handleUpload} size="lg" variant="default" className="w-full">
+                <Button
+                  onClick={handleUpload}
+                  size="lg"
+                  variant="default"
+                  className="w-full"
+                >
                   <Upload className="h-4 w-4" />
                   Upload Image
                 </Button>
@@ -331,7 +365,10 @@ export default function MediaLibraryTab() {
 
               {/* Info */}
               <div className="p-4">
-                <p className="font-semibold text-sm text-brand-black truncate" title={item.name}>
+                <p
+                  className="font-semibold text-sm text-brand-black truncate"
+                  title={item.name}
+                >
                   {item.name}
                 </p>
                 <p className="text-xs text-gray-500 mt-1">{item.size}</p>
@@ -341,7 +378,9 @@ export default function MediaLibraryTab() {
                   </span>
                   <p className="text-xs text-gray-500">{item.uploadedAt}</p>
                 </div>
-                <p className="text-xs text-gray-600 mt-2 line-clamp-1">{item.altText}</p>
+                <p className="text-xs text-gray-600 mt-2 line-clamp-1">
+                  {item.altText}
+                </p>
               </div>
             </motion.div>
           ))}
@@ -351,7 +390,8 @@ export default function MediaLibraryTab() {
       {/* Summary */}
       <div className="text-sm text-gray-600 text-center">
         <p>
-          Showing <strong>{filteredMedia.length}</strong> of <strong>{media.length}</strong> images
+          Showing <strong>{filteredMedia.length}</strong> of{" "}
+          <strong>{media.length}</strong> images
         </p>
       </div>
     </motion.div>

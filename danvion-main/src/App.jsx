@@ -58,11 +58,11 @@ function App() {
     dispatch(fetchContent());
   }, [dispatch]);
 
-  // Poll API periodically to keep public content fresh.
+  // Poll API periodically to keep public content fresh (every 5 minutes to reduce bandwidth).
   useEffect(() => {
     const pollInterval = window.setInterval(() => {
       dispatch(fetchContent({ force: true }));
-    }, 30000);
+    }, 300000);
 
     return () => {
       window.clearInterval(pollInterval);

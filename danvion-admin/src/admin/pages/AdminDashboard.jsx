@@ -141,7 +141,7 @@ export default function AdminDashboard() {
         <div className="admin-header mb-8 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <img
-              src="/logo.png"
+              src="/admin/logo-optimized.png"
               alt="Danvion"
               className="h-12 w-12 rounded-xl border border-gray-200 bg-white p-2"
             />
